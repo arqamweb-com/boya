@@ -1,0 +1,535 @@
+<?php
+defined('ABSPATH') || exit;
+
+require_once get_template_directory() . '/inc/setup.php';
+require_once get_template_directory() . '/inc/menus.php';
+
+/* ── Disable WooCommerce single-result search redirect ──────── */
+add_filter('woocommerce_redirect_single_search_result', '__return_false');
+
+/* ── Checkout fields ───────────────────────────────────────── */
+add_filter('woocommerce_checkout_fields', function ($fields) {
+    unset($fields['billing']['billing_postcode']);
+    unset($fields['shipping']['shipping_postcode']);
+
+    if (isset($fields['billing']['billing_company'])) {
+        $fields['billing']['billing_company']['label']       = 'اسم المؤسسة/المحل';
+        $fields['billing']['billing_company']['placeholder'] = 'اكتب اسم المؤسسة أو المحل';
+        $fields['billing']['billing_company']['required']    = false;
+        $fields['billing']['billing_company']['priority']    = 35;
+        $fields['billing']['billing_company']['class']       = ['form-row-wide'];
+        $fields['billing']['billing_company']['clear']       = true;
+    } else {
+        $fields['billing']['billing_company'] = [
+            'type'        => 'text',
+            'label'       => 'اسم المؤسسة/المحل',
+            'placeholder' => 'اكتب اسم المؤسسة أو المحل',
+            'required'    => false,
+            'class'       => ['form-row-wide'],
+            'clear'       => true,
+            'priority'    => 35,
+        ];
+    }
+
+    if (isset($fields['billing']['billing_phone'])) {
+        $fields['billing']['billing_phone']['label']       = 'رقم الموبايل';
+        $fields['billing']['billing_phone']['placeholder'] = 'اكتب رقم الموبايل';
+        $fields['billing']['billing_phone']['required']    = true;
+        $fields['billing']['billing_phone']['priority']    = 25;
+        $fields['billing']['billing_phone']['class']       = ['form-row-wide'];
+    }
+
+    return $fields;
+}, 1000);
+
+add_filter('woocommerce_form_field_args', function ($args, $key) {
+    if ($key !== 'billing_phone') {
+        return $args;
+    }
+
+    $args['label']       = 'رقم الموبايل';
+    $args['placeholder'] = 'اكتب رقم الموبايل';
+    $args['required']    = true;
+
+    $args['custom_attributes'] = isset($args['custom_attributes']) && is_array($args['custom_attributes'])
+        ? $args['custom_attributes']
+        : [];
+    $args['custom_attributes']['required']      = 'required';
+    $args['custom_attributes']['aria-required'] = 'true';
+
+    return $args;
+}, 1000, 2);
+
+add_action('woocommerce_after_checkout_validation', function ($data, $errors) {
+    if (trim((string) ($data['billing_phone'] ?? '')) === '') {
+        $errors->add('billing_phone_required', 'من فضلك اكتب رقم الموبايل.');
+    }
+}, 10, 2);
+
+/* Also drop the postcode from the address display/edit forms */
+add_filter('woocommerce_default_address_fields', function ($fields) {
+    unset($fields['postcode']);
+    return $fields;
+});
+
+/* ── Remove WooCommerce default layout wrappers ─────────────── */
+add_action('after_setup_theme', function () {
+    remove_action('woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10);
+    remove_action('woocommerce_after_main_content',  'woocommerce_output_content_wrapper_end', 10);
+    remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
+    remove_action('woocommerce_sidebar',             'woocommerce_get_sidebar', 10);
+});
+
+/* ── Theme support ──────────────────────────────────────────── */
+add_action('after_setup_theme', function () {
+    add_theme_support('title-tag');
+    add_theme_support('post-thumbnails');
+    add_theme_support('html5', ['search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script']);
+    add_theme_support('custom-logo', [
+        'height'      => 96,
+        'width'       => 260,
+        'flex-height' => true,
+        'flex-width'  => true,
+    ]);
+    add_theme_support('menus');
+    // WooCommerce
+    add_theme_support('woocommerce');
+    add_theme_support('wc-product-gallery-zoom');
+    add_theme_support('wc-product-gallery-lightbox');
+    add_theme_support('wc-product-gallery-slider');
+});
+
+function boya_get_site_logo_url() {
+    $custom_logo_id = get_theme_mod('custom_logo');
+    if ($custom_logo_id) {
+        $logo_url = wp_get_attachment_image_url($custom_logo_id, 'full');
+        if ($logo_url) {
+            return $logo_url;
+        }
+    }
+
+    return 'https://www.arqamweb.com/wp-content/uploads/2026/05/BOYA-LOGO-WEB.png';
+}
+
+function boya_get_site_logo_alt() {
+    $custom_logo_id = get_theme_mod('custom_logo');
+    if ($custom_logo_id) {
+        $logo_alt = get_post_meta($custom_logo_id, '_wp_attachment_image_alt', true);
+        if ($logo_alt) {
+            return $logo_alt;
+        }
+    }
+
+    return get_bloginfo('name') ?: 'Boya Store';
+}
+
+/* ── Lightweight first-paint loader ─────────────────────────── */
+add_action('wp_head', function () {
+    ?>
+    <style id="boya-loader-css">
+      .boya-site-loader{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:var(--background,#fff);transition:opacity .24s ease,visibility .24s ease;contain:layout paint style}
+      .boya-site-loader.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+      .boya-site-loader__mark{position:relative;display:grid;place-items:center;width:min(44vw,12rem);aspect-ratio:1}
+      .boya-site-loader__mark::before{content:"";position:absolute;inset:0;border-radius:999px;border:3px solid rgba(15,23,42,.08);border-block-start-color:var(--brand-orange,#f16722);animation:boya-loader-spin .75s linear infinite}
+      .boya-site-loader__logo{width:min(30vw,7.5rem);height:min(18vw,5rem);background:center/contain no-repeat var(--boya-loader-logo)}
+      .boya-site-loader__text{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+      @keyframes boya-loader-spin{to{transform:rotate(360deg)}}
+      @media (prefers-reduced-motion:reduce){.boya-site-loader__mark::before{animation:none}}
+    </style>
+    <?php
+}, 1);
+
+/* ── Enqueue assets ─────────────────────────────────────────── */
+add_action('wp_enqueue_scripts', function () {
+    wp_enqueue_style(
+        'boya-google-fonts',
+        'https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap',
+        [],
+        null
+    );
+    wp_enqueue_style(
+        'boya-store-styles',
+        get_template_directory_uri() . '/assets/css/styles.css',
+        ['boya-google-fonts'],
+        filemtime(get_template_directory() . '/assets/css/styles.css')
+    );
+    wp_add_inline_style('boya-store-styles', boya_menu_inline_css());
+    wp_add_inline_style('boya-store-styles', boya_product_inline_css());
+    wp_enqueue_script(
+        'boya-store-theme',
+        get_template_directory_uri() . '/assets/js/theme.js',
+        [],
+        filemtime(get_template_directory() . '/assets/js/theme.js'),
+        true
+    );
+    // Force cart fragments on all pages so the mini-cart stays fresh
+    if (function_exists('WC')) {
+        wp_enqueue_script('wc-cart-fragments');
+    }
+});
+
+/* ── Strip WP body classes to avoid Tailwind conflicts ─────── */
+add_filter('body_class', function ($classes) {
+    $keep = ['logged-in', 'admin-bar', 'rtl'];
+    return array_intersect($classes, $keep);
+});
+
+/* ── Remove WP head clutter ─────────────────────────────────── */
+remove_action('wp_head', 'wp_generator');
+remove_action('wp_head', 'rsd_link');
+remove_action('wp_head', 'wlwmanifest_link');
+remove_action('wp_head', 'wp_shortlink_wp_head');
+add_action('init', function () {
+    remove_action('wp_head', 'print_emoji_detection_script', 7);
+    remove_action('wp_print_styles', 'print_emoji_styles');
+    remove_action('admin_print_scripts', 'print_emoji_detection_script');
+    remove_action('admin_print_styles', 'print_emoji_styles');
+});
+
+/* ── Remove block editor CSS (prevents Tailwind conflicts) ──── */
+add_action('wp_enqueue_scripts', function () {
+    wp_dequeue_style('wp-block-library');
+    wp_dequeue_style('wp-block-library-theme');
+    wp_dequeue_style('classic-theme-styles');
+    wp_dequeue_style('global-styles');
+}, 100);
+
+/* ── Helper: current page slug ──────────────────────────────── */
+function boya_current_slug() {
+    if (is_front_page()) {
+        return 'home';
+    }
+    $obj = get_queried_object();
+    if ($obj && isset($obj->post_name)) {
+        return $obj->post_name;
+    }
+    return '';
+}
+
+/* ── Contact form handler ───────────────────────────────────── */
+add_action('admin_post_nopriv_boya_contact', 'boya_handle_contact');
+add_action('admin_post_boya_contact', 'boya_handle_contact');
+
+function boya_handle_contact() {
+    if (
+        !isset($_POST['boya_contact_nonce']) ||
+        !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['boya_contact_nonce'])), 'boya_contact_form')
+    ) {
+        wp_safe_redirect(esc_url(home_url('/contact?contact=error')));
+        exit;
+    }
+
+    $name    = sanitize_text_field(wp_unslash($_POST['contact_name'] ?? ''));
+    $phone   = sanitize_text_field(wp_unslash($_POST['contact_phone'] ?? ''));
+    $email   = sanitize_email(wp_unslash($_POST['contact_email'] ?? ''));
+    $subject = sanitize_text_field(wp_unslash($_POST['contact_subject'] ?? ''));
+    $message = sanitize_textarea_field(wp_unslash($_POST['contact_message'] ?? ''));
+
+    $to      = 'info@boyastore-eg.com';
+    $headers = ['Content-Type: text/html; charset=UTF-8'];
+    if ($email) {
+        $headers[] = 'Reply-To: ' . $name . ' <' . $email . '>';
+    }
+
+    $body = '<p><strong>الاسم:</strong> ' . esc_html($name) . '</p>'
+          . '<p><strong>الجوال:</strong> ' . esc_html($phone) . '</p>'
+          . '<p><strong>البريد:</strong> ' . esc_html($email) . '</p>'
+          . '<p><strong>الموضوع:</strong> ' . esc_html($subject) . '</p>'
+          . '<p><strong>الرسالة:</strong><br>' . nl2br(esc_html($message)) . '</p>';
+
+    $sent = wp_mail($to, 'رسالة جديدة من بويا ستور: ' . $subject, $body, $headers);
+
+    if ($sent) {
+        wp_safe_redirect(esc_url(home_url('/contact?contact=success')));
+    } else {
+        wp_safe_redirect(esc_url(home_url('/contact?contact=error')));
+    }
+    exit;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   WOOCOMMERCE INTEGRATION
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Cart fragments: refresh mini-cart + count + footer on AJAX ─ */
+add_filter('woocommerce_add_to_cart_fragments', function ($fragments) {
+    if (!function_exists('WC') || !WC()->cart) return $fragments;
+
+    $count    = WC()->cart->get_cart_contents_count();
+    $is_empty = WC()->cart->is_empty();
+
+    // Header badge
+    $fragments['.boya-cart-count'] =
+        '<span class="boya-cart-count absolute -top-1 -left-1 h-5 w-5 rounded-full bg-brand-red text-white text-[10px] font-bold flex items-center justify-center' .
+        ($count === 0 ? ' !hidden' : '') . '">' . $count . '</span>';
+
+    // Count label inside cart panel header
+    $fragments['.boya-cart-count-label'] =
+        '<span class="boya-cart-count-label mt-1">' . $count . ' منتج في السلة</span>';
+
+    // Mini-cart items
+    ob_start();
+    woocommerce_mini_cart();
+    $fragments['div.boya-mini-cart'] = '<div class="boya-mini-cart p-6">' . ob_get_clean() . '</div>';
+
+    // Cart footer — always present so WooCommerce can find and replace it
+    if ($is_empty) {
+        $fragments['div.boya-cart-footer'] = '<div class="boya-cart-footer hidden p-5 space-y-3 shrink-0"></div>';
+    } else {
+        $subtotal     = WC()->cart->get_cart_subtotal();
+        $cart_url     = esc_url(wc_get_cart_url());
+        $checkout_url = esc_url(wc_get_checkout_url());
+        $fragments['div.boya-cart-footer'] =
+            '<div class="boya-cart-footer p-5 space-y-3 shrink-0">' .
+            '<div class="boya-cart-total flex items-center justify-between font-black text-lg"><span>الإجمالي</span><span>' . $subtotal . '</span></div>' .
+            '<a href="' . $cart_url . '" class="boya-cart-secondary-btn">عرض السلة</a>' .
+            '<a href="' . $checkout_url . '" class="boya-cart-primary-btn">إتمام الشراء</a>' .
+            '</div>';
+    }
+
+    return $fragments;
+});
+
+/* ── Detect installed brands taxonomy ───────────────────────── */
+function boya_get_brands_taxonomy() {
+    static $found = null;
+    if ($found !== null) return $found;
+    foreach (['product_brand', 'yith_product_brand', 'pwb-brand', 'pa_brand', 'brand'] as $tax) {
+        if (taxonomy_exists($tax)) { $found = $tax; return $found; }
+    }
+    return null;
+}
+
+/* ── Stable frontend brand URLs ─────────────────────────────── */
+function boya_get_brand_taxonomies() {
+    $taxonomies = [];
+    foreach (['product_brand', 'yith_product_brand', 'pwb-brand', 'pa_brand', 'brand'] as $tax) {
+        if (taxonomy_exists($tax)) {
+            $taxonomies[] = $tax;
+        }
+    }
+    return $taxonomies;
+}
+
+function boya_is_brand_taxonomy($taxonomy) {
+    return $taxonomy && in_array($taxonomy, boya_get_brand_taxonomies(), true);
+}
+
+function boya_brand_term_link($term) {
+    if (!($term instanceof WP_Term) || !boya_is_brand_taxonomy($term->taxonomy)) {
+        return '';
+    }
+    return home_url(user_trailingslashit('brands/' . $term->slug));
+}
+
+add_filter('term_link', function ($termlink, $term, $taxonomy) {
+    if (!boya_is_brand_taxonomy($taxonomy)) {
+        return $termlink;
+    }
+
+    $brand_link = boya_brand_term_link($term);
+    return $brand_link ?: $termlink;
+}, 10, 3);
+
+add_action('init', function () {
+    $taxonomy = boya_get_brands_taxonomy();
+    if (!$taxonomy) {
+        return;
+    }
+
+    add_rewrite_rule(
+        '^brands/([^/]+)/page/([0-9]+)/?$',
+        'index.php?taxonomy=' . $taxonomy . '&term=$matches[1]&paged=$matches[2]',
+        'top'
+    );
+
+    add_rewrite_rule(
+        '^brands/([^/]+)/?$',
+        'index.php?taxonomy=' . $taxonomy . '&term=$matches[1]',
+        'top'
+    );
+
+    add_rewrite_rule(
+        '^العلامة التجارية/([^/]+)/?$',
+        'index.php?taxonomy=' . $taxonomy . '&term=$matches[1]',
+        'top'
+    );
+
+    $rewrite_version = '2026-06-18-brand-links-v2';
+    if (get_option('boya_store_rewrite_version') !== $rewrite_version) {
+        flush_rewrite_rules();
+        update_option('boya_store_rewrite_version', $rewrite_version);
+    }
+}, 99);
+
+add_action('template_redirect', function () {
+    $queried = get_queried_object();
+    if (!($queried instanceof WP_Term) || !boya_is_brand_taxonomy($queried->taxonomy)) {
+        return;
+    }
+
+    $brand_link = boya_brand_term_link($queried);
+    if (!$brand_link) {
+        return;
+    }
+
+    $request_path = trim((string) wp_parse_url(wp_unslash($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH), '/');
+    $brand_path   = trim((string) wp_parse_url($brand_link, PHP_URL_PATH), '/');
+
+    // Allow paginated brand URLs (brands/slug/page/N/) without redirecting
+    if ($request_path !== $brand_path && strpos($request_path, $brand_path . '/page/') !== 0) {
+        wp_safe_redirect($brand_link, 301);
+        exit;
+    }
+});
+
+/* ── Get product code (ACF field with custom-field fallback) ── */
+function boya_get_product_code($product_id) {
+    if (function_exists('get_field')) {
+        $code = get_field('product_code', $product_id);
+    } else {
+        $code = get_post_meta($product_id, 'product_code', true);
+    }
+    if (is_array($code)) {
+        $code = reset($code);
+    }
+    return trim((string) $code);
+}
+
+/* ── Inline CSS: product-code badge + single-product lightbox ── */
+function boya_product_inline_css() {
+    return <<<'CSS'
+.boya-card-code-badge,.boya-product-code-badge{position:absolute;top:1rem;left:1rem;z-index:10;background:var(--brand-orange);color:#fff;font-weight:700;font-size:.75rem;line-height:1;display:inline-flex;align-items:center;min-height:2rem;padding:.4rem .75rem;border-radius:999px;box-shadow:0 10px 25px color-mix(in oklab, var(--brand-navy) 25%, transparent);pointer-events:none}
+.boya-product-code-badge{z-index:3}
+.boya-cat-pill{display:inline-flex;align-items:center;gap:.4rem;min-height:2.25rem;padding:.45rem .85rem;border-radius:999px;font-size:.8125rem;font-weight:900;text-decoration:none;background:color-mix(in oklab, var(--brand-blue) 12%, var(--card));color:var(--brand-blue);border:1px solid color-mix(in oklab, var(--brand-blue) 22%, transparent);transition:background-color .2s,color .2s}
+.boya-cat-pill:hover{background:var(--brand-blue);color:#fff}
+.boya-cat-pill svg{flex-shrink:0}
+#boya-product-main-image{cursor:zoom-in}
+.boya-lightbox{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:1.5rem;background:color-mix(in oklab, var(--brand-navy) 96%, transparent);backdrop-filter:blur(12px);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.boya-lightbox.is-open{opacity:1;visibility:visible}
+.boya-lightbox__figure{margin:0;max-width:min(90vw,1100px);max-height:86vh;display:flex;align-items:center;justify-content:center}
+.boya-lightbox__img{max-width:100%;max-height:86vh;object-fit:contain;border-radius:1rem;box-shadow:var(--shadow-elegant);background:var(--card);transition:opacity .2s}
+.boya-lightbox__btn{position:absolute;height:3rem;width:3rem;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;transition:background-color .2s,transform .2s}
+.boya-lightbox__btn:hover{background:rgba(255,255,255,.24)}
+.boya-lightbox__close{top:1.5rem;left:1.5rem}
+.boya-lightbox__prev{right:1.5rem;top:50%;transform:translateY(-50%)}
+.boya-lightbox__next{left:1.5rem;top:50%;transform:translateY(-50%)}
+.boya-lightbox__counter{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);color:#fff;font-weight:700;font-size:.9rem;background:rgba(255,255,255,.14);padding:.4rem 1rem;border-radius:999px}
+.boya-lightbox--single .boya-lightbox__prev,.boya-lightbox--single .boya-lightbox__next,.boya-lightbox--single .boya-lightbox__counter{display:none}
+CSS;
+}
+
+/* ── Get category thumbnail URL ─────────────────────────────── */
+function boya_term_image($term, $size = 'large') {
+    $id = get_term_meta($term->term_id, 'thumbnail_id', true);
+    if (!$id) $id = get_term_meta($term->term_id, 'brand_image', true);
+    if ($id) return wp_get_attachment_image_url($id, $size);
+    return function_exists('wc_placeholder_img_src') ? wc_placeholder_img_src() : '';
+}
+
+/* ── Render a single WooCommerce product card ───────────────── */
+function boya_render_product_card($product) {
+    if (!($product instanceof WC_Product) || !$product->is_visible()) return;
+
+    $id      = $product->get_id();
+    $name    = $product->get_name();
+    $link    = get_permalink($id);
+    $image   = get_the_post_thumbnail_url($id, 'full') ?: wc_placeholder_img_src();
+    $on_sale = $product->is_on_sale();
+    $price   = (float) $product->get_price();
+    $regular = (float) $product->get_regular_price();
+    $sale    = (float) $product->get_sale_price();
+    $rating  = (float) $product->get_average_rating();
+    $code    = boya_get_product_code($id);
+
+    // Brand term
+    $brand = '';
+    $tax   = boya_get_brands_taxonomy();
+    if ($tax) {
+        $terms = get_the_terms($id, $tax);
+        if ($terms && !is_wp_error($terms)) $brand = $terms[0]->name;
+    }
+
+    // Badge
+    $badge = '';
+    $badge_color = 'var(--brand-orange)';
+    if ($on_sale && $regular > 0) {
+        $pct         = round((($regular - $sale) / $regular) * 100);
+        $badge       = 'خصم ' . $pct . '%';
+        $badge_color = 'var(--brand-red)';
+    } elseif ($product->is_featured()) {
+        $badge       = 'مميز';
+        $badge_color = 'var(--brand-orange)';
+    } elseif (function_exists('get_post_time') && (time() - (int) get_post_time('U', false, $id)) < (30 * DAY_IN_SECONDS)) {
+        $badge       = 'جديد';
+        $badge_color = 'var(--brand-green)';
+    }
+
+    // Add-to-cart
+    $is_ajax  = $product->supports('ajax_add_to_cart') && $product->is_purchasable() && $product->is_in_stock();
+    $cart_url = esc_url($product->add_to_cart_url());
+    ?>
+    <div class="group relative bg-card rounded-3xl overflow-hidden border border-border/60 shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-elegant)] transition-all duration-500 hover:-translate-y-2 opacity-0 translate-y-8 blur-[2px]">
+      <div class="relative aspect-square overflow-hidden bg-secondary">
+        <a href="<?php echo esc_url($link); ?>">
+          <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($name); ?>" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+        </a>
+        <?php if ($code): ?>
+        <span class="boya-card-code-badge"><?php echo esc_html($code); ?></span>
+        <?php endif; ?>
+        <?php if ($badge): ?>
+        <span class="absolute top-4 right-4 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-lg" style="background:<?php echo esc_attr($badge_color); ?>"><?php echo esc_html($badge); ?></span>
+        <?php endif; ?>
+
+        <a href="<?php echo $cart_url; ?>"
+           data-quantity="1"
+           data-product_id="<?php echo esc_attr($id); ?>"
+           data-product_sku="<?php echo esc_attr($product->get_sku()); ?>"
+           class="add_to_cart_button<?php echo $is_ajax ? ' ajax_add_to_cart' : ''; ?> absolute bottom-4 left-4 right-4 py-3 rounded-2xl bg-brand-navy text-white font-bold text-sm flex items-center justify-center gap-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 hover:bg-brand-orange no-underline"
+           aria-label="<?php echo esc_attr($product->add_to_cart_description()); ?>"
+           rel="nofollow">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>
+          <?php echo esc_html($product->add_to_cart_text()); ?>
+        </a>
+      </div>
+
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-brand-blue uppercase tracking-wider"><?php echo esc_html($brand); ?></span>
+          <?php if ($rating > 0): ?>
+          <div class="flex items-center gap-1 text-xs">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="h-3 w-3 text-brand-yellow"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span class="font-bold"><?php echo esc_html(number_format($rating, 1)); ?></span>
+          </div>
+          <?php endif; ?>
+        </div>
+        <h3 class="font-bold text-foreground mb-3 leading-tight">
+          <a href="<?php echo esc_url($link); ?>" class="hover:text-brand-orange transition-colors"><?php echo esc_html($name); ?></a>
+        </h3>
+        <div class="flex items-baseline gap-2">
+          <?php if ($on_sale && $sale > 0): ?>
+            <span class="text-xl font-black text-brand-navy"><?php echo esc_html(number_format($sale, 0)); ?> ج.م</span>
+            <span class="text-sm text-muted-foreground line-through"><?php echo esc_html(number_format($regular, 0)); ?> ج.م</span>
+          <?php elseif ($price > 0): ?>
+            <span class="text-xl font-black text-brand-navy"><?php echo esc_html(number_format($price, 0)); ?> ج.م</span>
+          <?php else: ?>
+            <span class="text-xl font-black text-brand-navy"><?php echo wp_kses_post($product->get_price_html()); ?></span>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+    <?php
+}
+
+/* ── WooCommerce products query helper ──────────────────────── */
+function boya_get_products($args = []) {
+    $defaults = [
+        'post_type'      => 'product',
+        'post_status'    => 'publish',
+        'posts_per_page' => 4,
+        'meta_key'       => 'total_sales',
+        'orderby'        => 'meta_value_num',
+        'order'          => 'DESC',
+    ];
+    return new WP_Query(array_merge($defaults, $args));
+}
