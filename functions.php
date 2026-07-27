@@ -379,12 +379,25 @@ add_action('wp_enqueue_scripts', function () {
         true
     );
 
-    // AJAX product filtering (products page only).
-    if (is_page_template('page-products.php')) {
+    // AJAX product filtering (products page + single brand archive).
+    $boya_brand_taxonomies = boya_get_brand_taxonomies();
+    $boya_is_brand_archive = $boya_brand_taxonomies && is_tax($boya_brand_taxonomies);
+
+    if (is_page_template('page-products.php') || $boya_is_brand_archive) {
+        $boya_filter_base = home_url('/products');
+
+        if ($boya_is_brand_archive) {
+            $boya_brand_term  = get_queried_object();
+            $boya_brand_link  = ($boya_brand_term instanceof WP_Term) ? boya_brand_term_link($boya_brand_term) : '';
+            $boya_filter_base = $boya_brand_link ?: $boya_filter_base;
+        }
+
         wp_localize_script('boya-store-theme', 'boyaProductFilter', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce'   => wp_create_nonce('boya_filter_products'),
-            'baseUrl' => home_url('/products'),
+            'baseUrl'     => $boya_filter_base,
+            // Brand archives paginate with /page/N/ instead of ?paged=N.
+            'pathPaging'  => (bool) $boya_is_brand_archive,
         ]);
     }
 
@@ -930,7 +943,7 @@ function boya_get_products($args = []) {
  */
 const BOYA_PRODUCTS_PER_PAGE = 8;
 
-function boya_products_filter_query($cat = 0, $tag = 0, $paged = 1) {
+function boya_products_filter_query($cat = 0, $tag = 0, $paged = 1, $brand = 0) {
     $args = [
         'post_type'      => 'product',
         'post_status'    => 'publish',
@@ -959,6 +972,16 @@ function boya_products_filter_query($cat = 0, $tag = 0, $paged = 1) {
         ];
     }
 
+    // Brand archives reuse this query, locked to a single brand term.
+    $brand_tax = boya_get_brands_taxonomy();
+    if ($brand > 0 && $brand_tax) {
+        $tax_query[] = [
+            'taxonomy' => $brand_tax,
+            'field'    => 'term_id',
+            'terms'    => [(int) $brand],
+        ];
+    }
+
     if ($tax_query) {
         // Both filters together narrow the results rather than widening them.
         $tax_query['relation'] = 'AND';
@@ -969,11 +992,72 @@ function boya_products_filter_query($cat = 0, $tag = 0, $paged = 1) {
 }
 
 /**
+ * Category/tag terms that actually occur on a given brand's products,
+ * with the per-brand product count (not the site-wide term count).
+ *
+ * @return array List of objects with term_id, name and count.
+ */
+function boya_brand_filter_terms($brand, $taxonomy) {
+    $brand     = (int) $brand;
+    $brand_tax = boya_get_brands_taxonomy();
+    if (!$brand || !$brand_tax || !taxonomy_exists($taxonomy)) {
+        return [];
+    }
+
+    $cache_key = 'boya_brand_terms_' . $brand . '_' . $taxonomy;
+    $cached    = wp_cache_get($cache_key, 'boya');
+    if (is_array($cached)) {
+        return $cached;
+    }
+
+    $product_ids = get_posts([
+        'post_type'              => 'product',
+        'post_status'            => 'publish',
+        'fields'                 => 'ids',
+        'posts_per_page'         => -1,
+        'no_found_rows'          => true,
+        'update_post_meta_cache' => false,
+        'update_post_term_cache' => false,
+        'tax_query'              => [[
+            'taxonomy' => $brand_tax,
+            'field'    => 'term_id',
+            'terms'    => [$brand],
+        ]],
+    ]);
+
+    $terms = [];
+    if ($product_ids) {
+        $rows = wp_get_object_terms($product_ids, $taxonomy, ['fields' => 'all_with_object_id']);
+        if (!is_wp_error($rows)) {
+            foreach ($rows as $row) {
+                if (!isset($terms[$row->term_id])) {
+                    $terms[$row->term_id] = (object) [
+                        'term_id' => (int) $row->term_id,
+                        'name'    => $row->name,
+                        'count'   => 0,
+                    ];
+                }
+                $terms[$row->term_id]->count++;
+            }
+        }
+    }
+
+    $terms = array_values($terms);
+    usort($terms, function ($a, $b) {
+        return strnatcasecmp($a->name, $b->name);
+    });
+
+    wp_cache_set($cache_key, $terms, 'boya', 5 * MINUTE_IN_SECONDS);
+
+    return $terms;
+}
+
+/**
  * Echo the grid + pagination + empty state for the products page.
  */
-function boya_render_products_results($cat = 0, $tag = 0, $paged = 1) {
+function boya_render_products_results($cat = 0, $tag = 0, $paged = 1, $brand = 0) {
     $paged = max(1, (int) $paged);
-    $query = boya_products_filter_query($cat, $tag, $paged);
+    $query = boya_products_filter_query($cat, $tag, $paged, $brand);
 
     if (!$query->have_posts()) {
         ?>
@@ -1007,15 +1091,27 @@ function boya_render_products_results($cat = 0, $tag = 0, $paged = 1) {
     if ((int) $query->max_num_pages > 1) :
         // Keep the active filters in the pagination links; JS intercepts the
         // clicks, but the links stay valid without JavaScript.
-        $base = home_url('/products');
-        $keep = array_filter(['cat' => (int) $cat, 'tag' => (int) $tag]);
-        if ($keep) {
-            $base = add_query_arg($keep, $base);
+        $brand_term = $brand > 0 ? get_term((int) $brand) : null;
+        $brand_link = ($brand_term instanceof WP_Term) ? boya_brand_term_link($brand_term) : '';
+        $keep       = array_filter(['pcat' => (int) $cat, 'ptag' => (int) $tag]);
+
+        if ($brand_link) {
+            // Brand archives keep their pretty /brands/<slug>/page/N/ URLs.
+            // The query string is appended by hand: add_query_arg() would read
+            // the `#` of the %#% placeholder as a fragment separator.
+            $base = trailingslashit($brand_link) . 'page/%#%/'
+                  . ($keep ? '?' . http_build_query($keep) : '');
+        } else {
+            $base = home_url('/products');
+            if ($keep) {
+                $base = add_query_arg($keep, $base);
+            }
+            $base = add_query_arg('paged', '%#%', $base);
         }
     ?>
     <nav class="boya-pagination mt-14" aria-label="صفحات المنتجات">
       <?php echo paginate_links([
-        'base'      => esc_url_raw(add_query_arg('paged', '%#%', $base)),
+        'base'      => esc_url_raw($base),
         'format'    => '',
         'total'     => (int) $query->max_num_pages,
         'current'   => $paged,
@@ -1037,6 +1133,7 @@ function boya_ajax_filter_products() {
 
     $cat   = isset($_POST['cat']) ? absint($_POST['cat']) : 0;
     $tag   = isset($_POST['tag']) ? absint($_POST['tag']) : 0;
+    $brand = isset($_POST['brand']) ? absint($_POST['brand']) : 0;
     $paged = isset($_POST['paged']) ? max(1, absint($_POST['paged'])) : 1;
 
     // Ignore terms that don't exist in the expected taxonomy.
@@ -1046,14 +1143,19 @@ function boya_ajax_filter_products() {
     if ($tag && !term_exists($tag, 'product_tag')) {
         $tag = 0;
     }
+    $brand_tax = boya_get_brands_taxonomy();
+    if ($brand && (!$brand_tax || !term_exists($brand, $brand_tax))) {
+        $brand = 0;
+    }
 
     ob_start();
-    boya_render_products_results($cat, $tag, $paged);
+    boya_render_products_results($cat, $tag, $paged, $brand);
 
     wp_send_json_success([
         'html'  => ob_get_clean(),
         'cat'   => $cat,
         'tag'   => $tag,
+        'brand' => $brand,
         'paged' => $paged,
     ]);
 }

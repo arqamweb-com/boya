@@ -522,8 +522,8 @@ $images = get_template_directory_uri() . '/assets/images';
       <div class="lg:col-span-2 space-y-4">
         <?php
         $contacts = [
-          ['icon'=>'phone','title'=>'اتصل بنا','value'=>"01017616408\n01017616401\n0237532216",'color'=>'var(--brand-red)'],
-          ['icon'=>'message-circle','title'=>'واتساب','value'=>'01017616408','color'=>'var(--brand-green)','cta'=>'ابدأ المحادثة'],
+          ['icon'=>'phone','title'=>'اتصل بنا','value'=>"01038304949\n01038314148\n0237532216",'color'=>'var(--brand-red)'],
+          ['icon'=>'message-circle','title'=>'واتساب','value'=>'01038314148','color'=>'var(--brand-green)','cta'=>'ابدأ المحادثة'],
           ['icon'=>'mail','title'=>'البريد الإلكتروني','value'=>'info@boyastore-eg.com','color'=>'var(--brand-blue)'],
           ['icon'=>'map-pin','title'=>'العنوان','value'=>'34 ش محمد حمزة البطران، متفرع من الفريق علي فهمي، المنصورية - الهرم','color'=>'var(--brand-orange)'],
           ['icon'=>'clock','title'=>'مواعيد التسليم','value'=>"الطلبات من 6 صباحًا إلى 3 عصرًا تُسلّم في نفس اليوم.\nمن 4 عصرًا إلى 12 منتصف الليل تُسلّم في اليوم التالي.",'color'=>'var(--brand-purple)'],

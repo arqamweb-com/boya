@@ -550,6 +550,8 @@
     var cfg = window.boyaProductFilter;
     var catSelect = filterForm.querySelector('#boya-filter-cat');
     var tagSelect = filterForm.querySelector('#boya-filter-tag');
+    var brandInput = filterForm.querySelector('[data-boya-brand]');
+    var brandId = brandInput ? parseInt(brandInput.value, 10) || 0 : 0;
     var resetBtn = filterForm.querySelector('[data-boya-filter-reset]');
     var requestToken = 0;
 
@@ -558,11 +560,27 @@
     }
 
     function buildUrl(cat, tag, paged) {
-      var url = new URL(cfg.baseUrl, window.location.origin);
-      if (cat) url.searchParams.set('cat', cat);
-      if (tag) url.searchParams.set('tag', tag);
-      if (paged > 1) url.searchParams.set('paged', paged);
+      var base = cfg.baseUrl;
+
+      // Brand archives keep pretty /brands/<slug>/page/N/ URLs.
+      if (cfg.pathPaging && paged > 1) {
+        base = base.replace(/\/+$/, '') + '/page/' + paged + '/';
+      }
+
+      var url = new URL(base, window.location.origin);
+      if (cat) url.searchParams.set('pcat', cat);
+      if (tag) url.searchParams.set('ptag', tag);
+      if (!cfg.pathPaging && paged > 1) url.searchParams.set('paged', paged);
       return url.toString();
+    }
+
+    function pagedFromLink(href) {
+      var url = new URL(href, window.location.origin);
+      var fromQuery = parseInt(url.searchParams.get('paged'), 10);
+      if (fromQuery) return fromQuery;
+
+      var fromPath = url.pathname.match(/\/page\/(\d+)/);
+      return fromPath ? parseInt(fromPath[1], 10) || 1 : 1;
     }
 
     function loadProducts(paged, pushUrl) {
@@ -578,6 +596,7 @@
       body.set('nonce', cfg.nonce);
       body.set('cat', cat);
       body.set('tag', tag);
+      body.set('brand', brandId);
       body.set('paged', paged || 1);
 
       fetch(cfg.ajaxUrl, {
@@ -636,7 +655,7 @@
       var link = e.target.closest('.boya-pagination a');
       if (!link) return;
 
-      var paged = parseInt(new URL(link.href, window.location.origin).searchParams.get('paged'), 10) || 1;
+      var paged = pagedFromLink(link.href);
       e.preventDefault();
       loadProducts(paged);
 

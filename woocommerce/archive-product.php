@@ -13,8 +13,29 @@ $is_search    = is_search();
 $search_query = get_search_query();
 $queried      = get_queried_object();
 $result_count = isset($wp_query->found_posts) ? (int) $wp_query->found_posts : 0;
-$paged        = max(1, (int) get_query_var('paged'));
+$paged        = max(1, (int) get_query_var('paged'), (int) ($_GET['paged'] ?? 0));
 $is_brand_archive = $queried instanceof WP_Term && function_exists('boya_is_brand_taxonomy') && boya_is_brand_taxonomy($queried->taxonomy);
+
+// Brand archives get the same category/tag filter as the products page,
+// scoped to the products of this brand only.
+$brand_id      = $is_brand_archive ? (int) $queried->term_id : 0;
+// NOTE: `cat`/`tag` are reserved WordPress query vars and 404 a taxonomy
+// archive, so the filter uses `pcat`/`ptag` instead.
+$active_cat    = isset($_GET['pcat']) ? absint($_GET['pcat']) : 0;
+$active_tag    = isset($_GET['ptag']) ? absint($_GET['ptag']) : 0;
+$brand_cats    = [];
+$brand_tags    = [];
+
+if ($is_brand_archive) {
+    $brand_cats = boya_brand_filter_terms($brand_id, 'product_cat');
+    $brand_tags = boya_brand_filter_terms($brand_id, 'product_tag');
+
+    // Drop selections that don't belong to this brand.
+    $cat_ids = wp_list_pluck($brand_cats, 'term_id');
+    $tag_ids = wp_list_pluck($brand_tags, 'term_id');
+    if ($active_cat && !in_array($active_cat, $cat_ids, true)) $active_cat = 0;
+    if ($active_tag && !in_array($active_tag, $tag_ids, true)) $active_tag = 0;
+}
 
 // Page title
 if ($is_search && $search_query) {
@@ -128,9 +149,65 @@ if ($is_search && $search_query) {
         </a>
       </div>
       <?php endif; ?>
+
+      <?php if ($is_brand_archive && ($brand_cats || $brand_tags)): ?>
+      <form class="boya-product-filters" id="boya-product-filters" method="get"
+            action="<?php echo esc_url(get_term_link($queried)); ?>">
+        <input type="hidden" name="boya_brand" value="<?php echo esc_attr($brand_id); ?>" data-boya-brand />
+
+        <?php if ($brand_cats): ?>
+        <div class="boya-filter-field">
+          <label for="boya-filter-cat">القسم</label>
+          <div class="boya-filter-select">
+            <select id="boya-filter-cat" name="pcat" data-boya-filter>
+              <option value="0">كل الأقسام</option>
+              <?php foreach ($brand_cats as $fc): ?>
+              <option value="<?php echo esc_attr($fc->term_id); ?>" <?php selected($active_cat, $fc->term_id); ?>>
+                <?php echo esc_html($fc->name); ?> (<?php echo esc_html($fc->count); ?>)
+              </option>
+              <?php endforeach; ?>
+            </select>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
+        <?php endif; ?>
+
+        <?php if ($brand_tags): ?>
+        <div class="boya-filter-field">
+          <label for="boya-filter-tag">الوسم</label>
+          <div class="boya-filter-select">
+            <select id="boya-filter-tag" name="ptag" data-boya-filter>
+              <option value="0">كل الوسوم</option>
+              <?php foreach ($brand_tags as $ft): ?>
+              <option value="<?php echo esc_attr($ft->term_id); ?>" <?php selected($active_tag, $ft->term_id); ?>>
+                <?php echo esc_html($ft->name); ?> (<?php echo esc_html($ft->count); ?>)
+              </option>
+              <?php endforeach; ?>
+            </select>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
+        <?php endif; ?>
+
+        <button type="button" class="boya-filter-reset" data-boya-filter-reset
+                <?php echo ($active_cat || $active_tag) ? '' : 'hidden'; ?>>
+          إعادة تعيين
+        </button>
+
+        <noscript><button type="submit" class="boya-filter-submit">تصفية</button></noscript>
+      </form>
+      <?php endif; ?>
     </div>
 
-    <?php if (have_posts()): ?>
+    <?php if ($is_brand_archive): ?>
+
+    <div id="boya-products-results" class="boya-products-results" aria-live="polite" aria-busy="false">
+      <?php boya_render_products_results($active_cat, $active_tag, $paged, $brand_id); ?>
+    </div>
+
+    <?php elseif (have_posts()): ?>
 
     <!-- Products Grid -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">

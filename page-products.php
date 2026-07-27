@@ -35,8 +35,10 @@ get_header();
 
     <?php
     $paged        = max(1, (int) get_query_var('paged'), (int) ($_GET['paged'] ?? 0));
-    $active_cat   = isset($_GET['cat']) ? absint($_GET['cat']) : 0;
-    $active_tag   = isset($_GET['tag']) ? absint($_GET['tag']) : 0;
+    // `pcat`/`ptag` instead of `cat`/`tag`: the latter are reserved WordPress
+    // query vars. Old links still work.
+    $active_cat   = absint($_GET['pcat'] ?? $_GET['cat'] ?? 0);
+    $active_tag   = absint($_GET['ptag'] ?? $_GET['tag'] ?? 0);
     $filter_cats  = get_terms(['taxonomy' => 'product_cat', 'hide_empty' => true]);
     $filter_tags  = get_terms(['taxonomy' => 'product_tag', 'hide_empty' => true]);
     $filter_cats  = is_wp_error($filter_cats) ? [] : $filter_cats;
@@ -62,7 +64,7 @@ get_header();
         <div class="boya-filter-field">
           <label for="boya-filter-cat">القسم</label>
           <div class="boya-filter-select">
-            <select id="boya-filter-cat" name="cat" data-boya-filter>
+            <select id="boya-filter-cat" name="pcat" data-boya-filter>
               <option value="0">كل الأقسام</option>
               <?php foreach ($filter_cats as $fc): ?>
               <option value="<?php echo esc_attr($fc->term_id); ?>" <?php selected($active_cat, $fc->term_id); ?>>
@@ -80,7 +82,7 @@ get_header();
         <div class="boya-filter-field">
           <label for="boya-filter-tag">الوسم</label>
           <div class="boya-filter-select">
-            <select id="boya-filter-tag" name="tag" data-boya-filter>
+            <select id="boya-filter-tag" name="ptag" data-boya-filter>
               <option value="0">كل الوسوم</option>
               <?php foreach ($filter_tags as $ft): ?>
               <option value="<?php echo esc_attr($ft->term_id); ?>" <?php selected($active_tag, $ft->term_id); ?>>
