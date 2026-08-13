@@ -299,15 +299,18 @@ $images = get_template_directory_uri() . '/assets/images';
         <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-brand-orange/40 blur-3xl animate-blob"></div>
         <div class="absolute -bottom-20 -left-20 w-96 h-96 rounded-full bg-brand-red/30 blur-3xl animate-blob" style="animation-delay:5s"></div>
         <div class="relative">
-          <div class="inline-block px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-bold mb-4">عرض حصري لفترة محدودة</div>
+            <div class="inline-block px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-bold mb-4">تواصل
+                معنا
+            </div>
           <h3 class="text-4xl lg:text-6xl font-black leading-tight mb-4">
-            خصم يصل إلى <span class="text-gradient-warm">40%</span><br />على دهانات السيارات
+              اطلب كتالوج المنتجات الان من خلال الواتساب
           </h3>
           <p class="text-white/70 max-w-md">على جميع منتجات الفئة الذهبية من أفضل العلامات التجارية العالمية</p>
         </div>
         <div class="relative flex flex-wrap items-center gap-4">
-          <a href="<?php echo esc_url(home_url('/products')); ?>" class="group px-7 py-3.5 rounded-full bg-white text-brand-navy font-bold flex items-center gap-2 hover:scale-105 transition-transform">
-            تسوق الآن
+            <a href="https://wa.me/201017616408" target="_blank"
+               class="group px-7 py-3.5 rounded-full bg-white text-brand-navy font-bold flex items-center gap-2 hover:scale-105 transition-transform">
+                واتساب
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 group-hover:-translate-x-1 transition-transform"><path d="m15 18-6-6 6-6" /></svg>
           </a>
           <div class="flex flex-wrap items-center gap-2">
@@ -331,10 +334,11 @@ $images = get_template_directory_uri() . '/assets/images';
         <div class="relative overflow-hidden rounded-[2rem] p-8 text-white" style="background:linear-gradient(135deg,var(--brand-red),var(--brand-orange))">
           <div class="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-white/15 blur-2xl"></div>
           <div class="relative">
-            <div class="text-xs font-bold opacity-90 mb-2">شحن مجاني</div>
-            <h4 class="text-2xl font-black mb-3 leading-tight">للطلبات فوق 500 ج.م</h4>
-            <a href="<?php echo esc_url(home_url('/products')); ?>" class="text-sm font-bold inline-flex items-center gap-1 hover:gap-2 transition-all">
-              تعرف على المزيد
+              <div class="text-xs font-bold opacity-90 mb-2">شحن</div>
+              <h4 class="text-2xl font-black mb-3 leading-tight">للاستفسار عن التوصيل <br/> تواصل خلال الواتساب</h4>
+              <a href="https://wa.me/201017616408" target="_blank"
+                 class="text-sm font-bold inline-flex items-center gap-1 hover:gap-2 transition-all">
+                  تواصل معنا
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
             </a>
           </div>
