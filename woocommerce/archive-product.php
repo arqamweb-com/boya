@@ -210,7 +210,7 @@ if ($is_search && $search_query) {
     <?php elseif (have_posts()): ?>
 
     <!-- Products Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6" data-boya-grid>
       <?php while (have_posts()): the_post();
         $product = wc_get_product(get_the_ID());
         if ($product) {
@@ -219,17 +219,29 @@ if ($is_search && $search_query) {
       endwhile; ?>
     </div>
 
-    <!-- Pagination -->
-    <?php if ((int) $wp_query->max_num_pages > 1): ?>
-    <nav class="boya-pagination mt-14" aria-label="صفحات المنتجات">
-      <?php echo paginate_links([
-        'total'     => (int) $wp_query->max_num_pages,
-        'current'   => $paged,
-        'prev_text' => 'السابق',
-        'next_text' => 'التالي',
-      ]); ?>
-    </nav>
-    <?php endif; ?>
+    <!-- Load more (replaces numeric pagination) -->
+    <?php
+    // Context the AJAX handler needs to rebuild this archive's query.
+    $lm_query = ['orderby' => isset($_GET['orderby']) ? sanitize_key(wp_unslash($_GET['orderby'])) : ''];
+
+    if ($is_search) {
+      $lm_query['s'] = $search_query;
+    } elseif ($queried instanceof WP_Term) {
+      $lm_query['tax']  = $queried->taxonomy;
+      $lm_query['term'] = (int) $queried->term_id;
+    }
+
+    boya_render_load_more([
+      'action'    => 'boya_load_more_products',
+      'nonce'     => 'boya_load_more_products',
+      'paged'     => $paged,
+      'max_pages' => (int) $wp_query->max_num_pages,
+      'loaded'    => min($result_count, $paged * max(1, (int) $wp_query->get('posts_per_page'))),
+      'total'     => $result_count,
+      'query'     => $lm_query,
+      'next_url'  => (string) get_next_posts_page_link((int) $wp_query->max_num_pages),
+    ]);
+    ?>
 
     <?php else: ?>
 

@@ -574,15 +574,6 @@
       return url.toString();
     }
 
-    function pagedFromLink(href) {
-      var url = new URL(href, window.location.origin);
-      var fromQuery = parseInt(url.searchParams.get('paged'), 10);
-      if (fromQuery) return fromQuery;
-
-      var fromPath = url.pathname.match(/\/page\/(\d+)/);
-      return fromPath ? parseInt(fromPath[1], 10) || 1 : 1;
-    }
-
     function loadProducts(paged, pushUrl) {
       var cat = currentValue(catSelect);
       var tag = currentValue(tagSelect);
@@ -649,19 +640,115 @@
       });
     }
 
-    // Pagination inside the results container is swapped out on every load,
-    // so listen on the container instead of the links themselves.
-    resultsBox.addEventListener('click', function (e) {
-      var link = e.target.closest('.boya-pagination a');
-      if (!link) return;
-
-      var paged = pagedFromLink(link.href);
-      e.preventDefault();
-      loadProducts(paged);
-
-      var top = resultsBox.getBoundingClientRect().top + window.pageYOffset - 120;
-      window.scrollTo({ top: top, behavior: 'smooth' });
-    });
+    // The no-JS fallback link inside the results box ("عرض المزيد" without
+    // JavaScript) is handled by the load-more module below; nothing else in
+    // the box needs a click handler.
   }
+
+  /* ── 13. "عرض المزيد": append the next batch of products ──── */
+  // One delegated handler serves every listing (shop, category, tag, brand,
+  // products page, search), because each button carries its own AJAX action,
+  // nonce and query context in data attributes.
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('[data-boya-load-more-btn]') : null;
+    if (!btn) return;
+
+    var wrap = btn.closest('[data-boya-load-more]');
+    if (!wrap || wrap.classList.contains('is-loading')) return;
+
+    var ajaxUrl = (window.boyaAjax && window.boyaAjax.url) ||
+                  (window.boyaProductFilter && window.boyaProductFilter.ajaxUrl);
+    var grid = wrap.parentElement ? wrap.parentElement.querySelector('[data-boya-grid]') : null;
+    if (!ajaxUrl || !grid) return;
+
+    e.preventDefault();
+
+    var next = (parseInt(wrap.getAttribute('data-paged'), 10) || 1) + 1;
+    var body = new URLSearchParams();
+    body.set('action', wrap.getAttribute('data-action') || '');
+    body.set('nonce', wrap.getAttribute('data-nonce') || '');
+    body.set('mode', 'append');
+    body.set('paged', next);
+
+    // data-q-* attributes are the query context (cat, tag, brand, tax, s...).
+    Array.prototype.forEach.call(wrap.attributes, function (attr) {
+      if (attr.name.indexOf('data-q-') === 0) {
+        body.set(attr.name.slice(7), attr.value);
+      }
+    });
+
+    var label = wrap.querySelector('.boya-load-more-label');
+    var count = wrap.querySelector('[data-boya-load-more-count]');
+
+    wrap.classList.add('is-loading');
+    btn.disabled = true;
+    if (label) label.textContent = 'جارٍ التحميل...';
+
+    fetch(ajaxUrl, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+      body: body.toString()
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (payload) {
+        if (!payload || !payload.success || !payload.data) throw new Error('bad payload');
+        var data = payload.data;
+
+        var holder = document.createElement('div');
+        holder.innerHTML = data.html || '';
+        var added = Array.prototype.slice.call(holder.children);
+        added.forEach(function (node, i) {
+          grid.appendChild(node);
+
+          // The visitor asked for these cards, so fade them in straight away
+          // instead of leaving them to the scroll-triggered reveal (which
+          // would keep them invisible if they land above the fold).
+          if (node.classList && node.classList.contains('opacity-0')) {
+            window.setTimeout(function () {
+              node.style.transition = 'opacity .5s ease, transform .5s ease, filter .5s ease';
+              node.classList.remove('opacity-0', 'translate-y-8', 'blur-[2px]');
+              node.classList.add('opacity-100', 'translate-y-0', 'blur-0');
+            }, Math.min(i, 8) * 40);
+          }
+        });
+
+        wrap.setAttribute('data-paged', data.paged || next);
+
+        if (count && data.total) {
+          count.textContent = 'عرض ' + (data.loaded_text || data.loaded) +
+                              ' من ' + (data.total_text || data.total) +
+                              ' ' + (wrap.getAttribute('data-unit') || 'منتج');
+        }
+
+        wrap.classList.remove('is-loading');
+        if (label) label.textContent = 'عرض المزيد';
+
+        // Nothing left to load: drop the button, keep the counter.
+        if (!data.has_more || !added.length) {
+          btn.remove();
+          if (!count) wrap.remove();
+          return;
+        }
+
+        btn.disabled = false;
+
+        // Move focus to the first new card so keyboard users don't lose place.
+        var firstLink = added[0] && added[0].querySelector ? added[0].querySelector('a') : null;
+        if (firstLink && document.activeElement === document.body) firstLink.focus();
+      })
+      .catch(function () {
+        wrap.classList.remove('is-loading');
+        btn.disabled = false;
+        if (label) label.textContent = 'عرض المزيد';
+
+        // Never leave the visitor stuck: fall back to the plain next page.
+        var fallback = wrap.getAttribute('data-next-url');
+        if (fallback) window.location.href = fallback;
+      });
+  });
 
 })();

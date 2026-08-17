@@ -85,66 +85,32 @@ $all_url           = add_query_arg(['s' => $search_query], home_url('/'));
 
     <?php if ($search_query && have_posts()) : ?>
       <?php if ($is_product_search && function_exists('wc_get_product')) : ?>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
-        <?php while (have_posts()) : the_post();
-          $product = wc_get_product(get_the_ID());
-          if ($product) {
-            boya_render_product_card($product);
-          }
-        endwhile; ?>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6" data-boya-grid>
+        <?php boya_render_search_cards($wp_query, true); ?>
       </div>
       <?php else : ?>
-      <div class="grid lg:grid-cols-3 gap-6">
-        <?php while (have_posts()) : the_post(); ?>
-        <?php if (get_post_type() === 'product' && function_exists('wc_get_product')) :
-          $product = wc_get_product(get_the_ID());
-          if ($product) {
-            boya_render_product_card($product);
-          }
-          continue;
-        endif; ?>
-        <?php
-        $post_type_obj   = get_post_type_object(get_post_type());
-        $post_type_label = $post_type_obj ? $post_type_obj->labels->singular_name : 'نتيجة';
-        ?>
-        <article class="group bg-card rounded-3xl border border-border/60 shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-elegant)] overflow-hidden transition-all duration-500 hover:-translate-y-1">
-          <?php if (has_post_thumbnail()) : ?>
-          <a href="<?php the_permalink(); ?>" class="block aspect-[16/9] overflow-hidden bg-secondary">
-            <?php the_post_thumbnail('large', ['class' => 'w-full h-full object-cover transition-transform duration-700 group-hover:scale-105']); ?>
-          </a>
-          <?php endif; ?>
-          <div class="p-6">
-            <div class="text-xs font-bold text-brand-orange mb-2 tracking-wider">
-              <?php echo esc_html($post_type_label); ?>
-            </div>
-            <h3 class="text-xl font-black leading-tight mb-3">
-              <a href="<?php the_permalink(); ?>" class="hover:text-brand-orange transition-colors"><?php the_title(); ?></a>
-            </h3>
-            <p class="text-muted-foreground text-sm leading-relaxed mb-5">
-              <?php echo esc_html(wp_trim_words(get_the_excerpt(), 22)); ?>
-            </p>
-            <a href="<?php the_permalink(); ?>" class="inline-flex items-center gap-2 text-sm font-bold text-brand-navy hover:text-brand-orange transition-colors">
-              عرض التفاصيل
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
-            </a>
-          </div>
-        </article>
-        <?php endwhile; ?>
+      <div class="grid lg:grid-cols-3 gap-6" data-boya-grid>
+        <?php boya_render_search_cards($wp_query); ?>
       </div>
       <?php endif; ?>
 
-      <?php if ((int) $wp_query->max_num_pages > 1) : ?>
-      <nav class="boya-pagination mt-14" aria-label="صفحات نتائج البحث">
-        <?php
-        echo paginate_links([
-          'total'     => (int) $wp_query->max_num_pages,
-          'current'   => $paged,
-          'prev_text' => 'السابق',
-          'next_text' => 'التالي',
-        ]);
-        ?>
-      </nav>
-      <?php endif; ?>
+      <?php
+      boya_render_load_more([
+        'action'    => 'boya_load_more_search',
+        'nonce'     => 'boya_load_more_search',
+        'paged'     => $paged,
+        'max_pages' => (int) $wp_query->max_num_pages,
+        'loaded'    => min($result_count, $paged * max(1, (int) $wp_query->get('posts_per_page'))),
+        'total'     => $result_count,
+        'unit'      => $is_product_search ? 'منتج' : 'نتيجة',
+        'query'     => [
+          's'         => $search_query,
+          'post_type' => $is_product_search ? 'product' : '',
+        ],
+        'next_url'  => (string) get_next_posts_page_link((int) $wp_query->max_num_pages),
+      ]);
+      ?>
+
 
     <?php else : ?>
       <div class="relative overflow-hidden rounded-[2rem] bg-card border border-border/60 shadow-[var(--shadow-soft)] p-8 md:p-12 text-center">

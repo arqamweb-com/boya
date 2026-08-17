@@ -379,6 +379,12 @@ add_action('wp_enqueue_scripts', function () {
         true
     );
 
+    // Endpoint for the "عرض المزيد" buttons; each button carries its own
+    // action + nonce in data attributes.
+    wp_localize_script('boya-store-theme', 'boyaAjax', [
+        'url' => admin_url('admin-ajax.php'),
+    ]);
+
     // AJAX product filtering (products page + single brand archive).
     $boya_brand_taxonomies = boya_get_brand_taxonomies();
     $boya_is_brand_archive = $boya_brand_taxonomies && is_tax($boya_brand_taxonomies);
@@ -779,6 +785,76 @@ function boya_product_inline_css() {
   to{ transform:rotate(360deg); }
 }
 
+/* ── "عرض المزيد" button (replaces numeric pagination) ── */
+.boya-load-more{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.75rem;
+  text-align:center;
+}
+
+.boya-load-more-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:.6rem;
+  min-width:14rem;
+  padding:.95rem 2.25rem;
+  border:0;
+  border-radius:999px;
+  background:var(--brand-navy,#0f172a);
+  color:#fff;
+  font-weight:800;
+  font-size:1rem;
+  cursor:pointer;
+  transition:background-color .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+
+.boya-load-more-btn:hover{
+  background:var(--brand-orange,#f16722);
+  transform:translateY(-2px);
+  box-shadow:0 14px 30px color-mix(in oklab, var(--brand-orange,#f16722) 30%, transparent);
+}
+
+.boya-load-more-btn:disabled{
+  cursor:default;
+  opacity:.75;
+  transform:none;
+  box-shadow:none;
+}
+
+.boya-load-more-spinner{
+  display:none;
+  width:1.05rem;
+  height:1.05rem;
+  border:2px solid rgba(255,255,255,.35);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:boya-cart-spin .7s linear infinite;
+}
+
+.boya-load-more.is-loading .boya-load-more-spinner{
+  display:inline-block;
+}
+
+.boya-load-more-count{
+  margin:0;
+  font-size:.85rem;
+  font-weight:700;
+  color:var(--muted-foreground,#64748b);
+}
+
+.boya-load-more-fallback{
+  display:inline-block;
+  padding:.85rem 2rem;
+  border-radius:999px;
+  background:var(--brand-navy,#0f172a);
+  color:#fff;
+  font-weight:800;
+  text-decoration:none;
+}
+
 
 
 .boya-card-code-badge,.boya-product-code-badge{position:absolute;top:1rem;left:1rem;z-index:10;background:var(--brand-orange);color:#fff;font-weight:700;font-size:.75rem;line-height:1;display:inline-flex;align-items:center;min-height:2rem;padding:.4rem .75rem;border-radius:999px;box-shadow:0 10px 25px color-mix(in oklab, var(--brand-navy) 25%, transparent);pointer-events:none}
@@ -941,13 +1017,31 @@ function boya_get_products($args = []) {
  * Shared by page-products.php and the AJAX endpoint below, so a filtered
  * page load and an AJAX refresh always produce identical markup.
  */
-const BOYA_PRODUCTS_PER_PAGE = 8;
+const BOYA_PRODUCTS_PER_PAGE = 20;
 
-function boya_products_filter_query($cat = 0, $tag = 0, $paged = 1, $brand = 0) {
+/**
+ * Every product listing loads 20 items per batch behind the "عرض المزيد"
+ * button, so the shop/category/tag archives use the same size.
+ */
+add_filter('loop_shop_per_page', function () {
+    return BOYA_PRODUCTS_PER_PAGE;
+}, 20);
+
+// Product search (?s=...&post_type=product) is a normal WP search query, so it
+// never passes through loop_shop_per_page.
+add_action('pre_get_posts', function ($query) {
+    if (is_admin() || !$query->is_main_query() || !$query->is_search()) {
+        return;
+    }
+    $query->set('posts_per_page', BOYA_PRODUCTS_PER_PAGE);
+});
+
+function boya_products_filter_query($cat = 0, $tag = 0, $paged = 1, $brand = 0, $per_page = 0) {
+    $per_page = (int) $per_page > 0 ? (int) $per_page : BOYA_PRODUCTS_PER_PAGE;
     $args = [
         'post_type'      => 'product',
         'post_status'    => 'publish',
-        'posts_per_page' => BOYA_PRODUCTS_PER_PAGE,
+        'posts_per_page' => $per_page,
         'paged'          => max(1, (int) $paged),
         'meta_key'       => 'total_sales',
         'orderby'        => 'meta_value_num',
@@ -1053,11 +1147,161 @@ function boya_brand_filter_terms($brand, $taxonomy) {
 }
 
 /**
- * Echo the grid + pagination + empty state for the products page.
+ * Echo the product cards of a query — no grid wrapper, so the same markup can
+ * be printed on first paint and appended by the "عرض المزيد" button.
+ */
+function boya_render_product_cards($query) {
+    if (!($query instanceof WP_Query)) {
+        return;
+    }
+    while ($query->have_posts()) : $query->the_post();
+        $product = function_exists('wc_get_product') ? wc_get_product(get_the_ID()) : null;
+        if ($product) {
+            boya_render_product_card($product);
+        }
+    endwhile;
+}
+
+/**
+ * Echo the search-result cards of a query — shared by search.php and the
+ * "عرض المزيد" endpoint so both batches look identical.
+ *
+ * @param WP_Query $query
+ * @param bool     $products_only Product-only results use the product grid.
+ */
+function boya_render_search_cards($query, $products_only = false) {
+    if (!($query instanceof WP_Query)) {
+        return;
+    }
+
+    if ($products_only && function_exists('wc_get_product')) {
+        boya_render_product_cards($query);
+        return;
+    }
+
+    while ($query->have_posts()) : $query->the_post();
+        if (get_post_type() === 'product' && function_exists('wc_get_product')) {
+            $product = wc_get_product(get_the_ID());
+            if ($product) {
+                boya_render_product_card($product);
+            }
+            continue;
+        }
+
+        $post_type_obj   = get_post_type_object(get_post_type());
+        $post_type_label = $post_type_obj ? $post_type_obj->labels->singular_name : 'نتيجة';
+        ?>
+        <article class="group bg-card rounded-3xl border border-border/60 shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-elegant)] overflow-hidden transition-all duration-500 hover:-translate-y-1">
+          <?php if (has_post_thumbnail()) : ?>
+          <a href="<?php the_permalink(); ?>" class="block aspect-[16/9] overflow-hidden bg-secondary">
+            <?php the_post_thumbnail('large', ['class' => 'w-full h-full object-cover transition-transform duration-700 group-hover:scale-105']); ?>
+          </a>
+          <?php endif; ?>
+          <div class="p-6">
+            <div class="text-xs font-bold text-brand-orange mb-2 tracking-wider">
+              <?php echo esc_html($post_type_label); ?>
+            </div>
+            <h3 class="text-xl font-black leading-tight mb-3">
+              <a href="<?php the_permalink(); ?>" class="hover:text-brand-orange transition-colors"><?php the_title(); ?></a>
+            </h3>
+            <p class="text-muted-foreground text-sm leading-relaxed mb-5">
+              <?php echo esc_html(wp_trim_words(get_the_excerpt(), 22)); ?>
+            </p>
+            <a href="<?php the_permalink(); ?>" class="inline-flex items-center gap-2 text-sm font-bold text-brand-navy hover:text-brand-orange transition-colors">
+              عرض التفاصيل
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+            </a>
+          </div>
+        </article>
+        <?php
+    endwhile;
+}
+
+/**
+ * "عرض المزيد" button — the replacement for numeric pagination.
+ *
+ * The button carries everything the AJAX handler needs (action, nonce and the
+ * query context as data-q-* attributes), so any template can drop one in
+ * next to a grid marked with data-boya-grid.
+ *
+ * @param array $args {
+ *   @type string $action    AJAX action name.
+ *   @type string $nonce     Nonce action used by that handler.
+ *   @type int    $paged     Pages already rendered.
+ *   @type int    $max_pages Total pages available.
+ *   @type int    $loaded    Items already rendered.
+ *   @type int    $total     Items found in total.
+ *   @type array  $query     Extra fields posted with each request.
+ *   @type string $next_url  Plain link used as the no-JS fallback.
+ *   @type string $unit      Word used in the counter ("منتج" / "نتيجة").
+ * }
+ */
+function boya_render_load_more($args = []) {
+    $args = wp_parse_args($args, [
+        'action'    => '',
+        'nonce'     => '',
+        'paged'     => 1,
+        'max_pages' => 1,
+        'loaded'    => 0,
+        'total'     => 0,
+        'query'     => [],
+        'next_url'  => '',
+        'unit'      => 'منتج',
+    ]);
+
+    $paged     = max(1, (int) $args['paged']);
+    $max_pages = (int) $args['max_pages'];
+
+    if ($max_pages <= $paged || !$args['action']) {
+        return;
+    }
+    ?>
+    <div class="boya-load-more mt-14"
+         data-boya-load-more
+         data-action="<?php echo esc_attr($args['action']); ?>"
+         data-nonce="<?php echo esc_attr(wp_create_nonce($args['nonce'] ?: $args['action'])); ?>"
+         data-paged="<?php echo esc_attr($paged); ?>"
+         data-max="<?php echo esc_attr($max_pages); ?>"
+         data-loaded="<?php echo esc_attr((int) $args['loaded']); ?>"
+         data-total="<?php echo esc_attr((int) $args['total']); ?>"
+         data-unit="<?php echo esc_attr($args['unit']); ?>"
+         data-next-url="<?php echo esc_url($args['next_url']); ?>"
+         <?php foreach ((array) $args['query'] as $key => $value) : ?>
+         data-q-<?php echo esc_attr($key); ?>="<?php echo esc_attr($value); ?>"
+         <?php endforeach; ?>>
+      <button type="button" class="boya-load-more-btn" data-boya-load-more-btn>
+        <span class="boya-load-more-label">عرض المزيد</span>
+        <span class="boya-load-more-spinner" aria-hidden="true"></span>
+      </button>
+      <?php if ((int) $args['total'] > 0) : ?>
+      <p class="boya-load-more-count" data-boya-load-more-count>
+        <?php printf(
+            'عرض %s من %s %s',
+            esc_html(number_format_i18n((int) $args['loaded'])),
+            esc_html(number_format_i18n((int) $args['total'])),
+            esc_html($args['unit'])
+        ); ?>
+      </p>
+      <?php endif; ?>
+      <?php if ($args['next_url']) : ?>
+      <noscript>
+        <a class="boya-load-more-fallback" href="<?php echo esc_url($args['next_url']); ?>">عرض المزيد</a>
+      </noscript>
+      <?php endif; ?>
+    </div>
+    <?php
+}
+
+/**
+ * Echo the grid + "عرض المزيد" button + empty state for the products page.
+ *
+ * $paged counts how many batches are already loaded: a shared
+ * /products?paged=3 link renders the first 3 × 20 products in one grid so the
+ * page always looks the way the visitor left it.
  */
 function boya_render_products_results($cat = 0, $tag = 0, $paged = 1, $brand = 0) {
     $paged = max(1, (int) $paged);
-    $query = boya_products_filter_query($cat, $tag, $paged, $brand);
+    $query = boya_products_filter_query($cat, $tag, 1, $brand, BOYA_PRODUCTS_PER_PAGE * $paged);
 
     if (!$query->have_posts()) {
         ?>
@@ -1080,46 +1324,47 @@ function boya_render_products_results($cat = 0, $tag = 0, $paged = 1, $brand = 0
         return;
     }
     ?>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
-      <?php while ($query->have_posts()) : $query->the_post();
-        $product = wc_get_product(get_the_ID());
-        if ($product) boya_render_product_card($product);
-      endwhile; ?>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6" data-boya-grid>
+      <?php boya_render_product_cards($query); ?>
     </div>
 
     <?php
-    if ((int) $query->max_num_pages > 1) :
-        // Keep the active filters in the pagination links; JS intercepts the
-        // clicks, but the links stay valid without JavaScript.
+    $total     = (int) $query->found_posts;
+    $loaded    = (int) $query->post_count;
+    $max_pages = (int) ceil($total / BOYA_PRODUCTS_PER_PAGE);
+
+    if ($max_pages > $paged) :
+        // No-JS fallback link keeps the active filters.
         $brand_term = $brand > 0 ? get_term((int) $brand) : null;
         $brand_link = ($brand_term instanceof WP_Term) ? boya_brand_term_link($brand_term) : '';
         $keep       = array_filter(['pcat' => (int) $cat, 'ptag' => (int) $tag]);
 
         if ($brand_link) {
             // Brand archives keep their pretty /brands/<slug>/page/N/ URLs.
-            // The query string is appended by hand: add_query_arg() would read
-            // the `#` of the %#% placeholder as a fragment separator.
-            $base = trailingslashit($brand_link) . 'page/%#%/'
-                  . ($keep ? '?' . http_build_query($keep) : '');
+            $next_url = trailingslashit($brand_link) . 'page/' . ($paged + 1) . '/'
+                      . ($keep ? '?' . http_build_query($keep) : '');
         } else {
-            $base = home_url('/products');
+            $next_url = home_url('/products');
             if ($keep) {
-                $base = add_query_arg($keep, $base);
+                $next_url = add_query_arg($keep, $next_url);
             }
-            $base = add_query_arg('paged', '%#%', $base);
+            $next_url = add_query_arg('paged', $paged + 1, $next_url);
         }
-    ?>
-    <nav class="boya-pagination mt-14" aria-label="صفحات المنتجات">
-      <?php echo paginate_links([
-        'base'      => esc_url_raw($base),
-        'format'    => '',
-        'total'     => (int) $query->max_num_pages,
-        'current'   => $paged,
-        'prev_text' => 'السابق',
-        'next_text' => 'التالي',
-      ]); ?>
-    </nav>
-    <?php
+
+        boya_render_load_more([
+            'action'    => 'boya_filter_products',
+            'nonce'     => 'boya_filter_products',
+            'paged'     => $paged,
+            'max_pages' => $max_pages,
+            'loaded'    => $loaded,
+            'total'     => $total,
+            'next_url'  => $next_url,
+            'query'     => [
+                'cat'   => (int) $cat,
+                'tag'   => (int) $tag,
+                'brand' => (int) $brand,
+            ],
+        ]);
     endif;
 
     wp_reset_postdata();
@@ -1148,6 +1393,32 @@ function boya_ajax_filter_products() {
         $brand = 0;
     }
 
+    // "عرض المزيد" only asks for the next batch of cards; a filter change
+    // re-renders the whole results box.
+    $append = isset($_POST['mode']) && $_POST['mode'] === 'append';
+
+    if ($append) {
+        $query = boya_products_filter_query($cat, $tag, $paged, $brand);
+
+        ob_start();
+        boya_render_product_cards($query);
+        $html = ob_get_clean();
+
+        $total  = (int) $query->found_posts;
+        $loaded = min($total, $paged * BOYA_PRODUCTS_PER_PAGE);
+        wp_reset_postdata();
+
+        wp_send_json_success([
+            'html'     => $html,
+            'paged'    => $paged,
+            'loaded'   => $loaded,
+            'total'    => $total,
+            'loaded_text' => number_format_i18n($loaded),
+            'total_text'  => number_format_i18n($total),
+            'has_more' => $paged < (int) $query->max_num_pages,
+        ]);
+    }
+
     ob_start();
     boya_render_products_results($cat, $tag, $paged, $brand);
 
@@ -1161,6 +1432,149 @@ function boya_ajax_filter_products() {
 }
 add_action('wp_ajax_boya_filter_products', 'boya_ajax_filter_products');
 add_action('wp_ajax_nopriv_boya_filter_products', 'boya_ajax_filter_products');
+
+/**
+ * AJAX: next batch of products for the shop / category / tag / brand archives.
+ *
+ * Mirrors the main archive query from a whitelisted context (taxonomy term,
+ * search term, catalog ordering) instead of trusting arbitrary query vars.
+ */
+function boya_ajax_load_more_products() {
+    check_ajax_referer('boya_load_more_products', 'nonce');
+
+    $paged   = isset($_POST['paged']) ? max(1, absint($_POST['paged'])) : 1;
+    $tax     = isset($_POST['tax']) ? sanitize_key(wp_unslash($_POST['tax'])) : '';
+    $term    = isset($_POST['term']) ? absint($_POST['term']) : 0;
+    $search  = isset($_POST['s']) ? sanitize_text_field(wp_unslash($_POST['s'])) : '';
+    $orderby = isset($_POST['orderby']) ? sanitize_key(wp_unslash($_POST['orderby'])) : '';
+
+    $allowed_tax = array_merge(['product_cat', 'product_tag'], (array) boya_get_brand_taxonomies());
+    if ($tax && (!in_array($tax, $allowed_tax, true) || !$term || !term_exists($term, $tax))) {
+        $tax  = '';
+        $term = 0;
+    }
+
+    $args = [
+        'post_type'           => 'product',
+        'post_status'         => 'publish',
+        'posts_per_page'      => BOYA_PRODUCTS_PER_PAGE,
+        'paged'               => $paged,
+        'ignore_sticky_posts' => true,
+    ];
+
+    if ($search !== '') {
+        $args['s'] = $search;
+    }
+
+    $tax_query = [];
+    if ($tax) {
+        $tax_query[] = [
+            'taxonomy' => $tax,
+            'field'    => 'term_id',
+            'terms'    => [$term],
+        ];
+    }
+
+    // Same visibility rules WooCommerce applies to the archive itself.
+    if (function_exists('wc_get_product_visibility_term_ids')) {
+        $visibility = wc_get_product_visibility_term_ids();
+        $exclude    = [$search !== '' ? ($visibility['exclude-from-search'] ?? 0) : ($visibility['exclude-from-catalog'] ?? 0)];
+        if ('yes' === get_option('woocommerce_hide_out_of_stock_items')) {
+            $exclude[] = $visibility['outofstock'] ?? 0;
+        }
+        $exclude = array_filter(array_map('intval', $exclude));
+        if ($exclude) {
+            $tax_query[] = [
+                'taxonomy' => 'product_visibility',
+                'field'    => 'term_taxonomy_id',
+                'terms'    => $exclude,
+                'operator' => 'NOT IN',
+            ];
+        }
+    }
+
+    if ($tax_query) {
+        $tax_query['relation'] = 'AND';
+        $args['tax_query']     = $tax_query;
+    }
+
+    // Match the catalog ordering so batches never overlap or skip products.
+    if (function_exists('WC') && WC()->query && method_exists(WC()->query, 'get_catalog_ordering_args')) {
+        $args = array_merge($args, (array) WC()->query->get_catalog_ordering_args($orderby));
+    }
+
+    $query = new WP_Query($args);
+
+    ob_start();
+    boya_render_product_cards($query);
+    $html = ob_get_clean();
+
+    $total  = (int) $query->found_posts;
+    $loaded = min($total, $paged * BOYA_PRODUCTS_PER_PAGE);
+    wp_reset_postdata();
+
+    wp_send_json_success([
+        'html'     => $html,
+        'paged'    => $paged,
+        'loaded'   => $loaded,
+        'total'    => $total,
+        'loaded_text' => number_format_i18n($loaded),
+        'total_text'  => number_format_i18n($total),
+        'has_more' => $paged < (int) $query->max_num_pages,
+    ]);
+}
+add_action('wp_ajax_boya_load_more_products', 'boya_ajax_load_more_products');
+add_action('wp_ajax_nopriv_boya_load_more_products', 'boya_ajax_load_more_products');
+
+/**
+ * AJAX: next batch of search results (products page or mixed results page).
+ */
+function boya_ajax_load_more_search() {
+    check_ajax_referer('boya_load_more_search', 'nonce');
+
+    $paged     = isset($_POST['paged']) ? max(1, absint($_POST['paged'])) : 1;
+    $search    = isset($_POST['s']) ? sanitize_text_field(wp_unslash($_POST['s'])) : '';
+    $post_type = isset($_POST['post_type']) ? sanitize_key(wp_unslash($_POST['post_type'])) : '';
+
+    if ($search === '') {
+        wp_send_json_success(['html' => '', 'has_more' => false]);
+    }
+
+    $args = [
+        's'              => $search,
+        'post_status'    => 'publish',
+        'posts_per_page' => BOYA_PRODUCTS_PER_PAGE,
+        'paged'          => $paged,
+    ];
+
+    // Leaving post_type unset mirrors the main search query (WP_Query falls
+    // back to 'any' for search queries).
+    if ($post_type === 'product') {
+        $args['post_type'] = 'product';
+    }
+
+    $query = new WP_Query($args);
+
+    ob_start();
+    boya_render_search_cards($query, $post_type === 'product');
+    $html = ob_get_clean();
+
+    $total  = (int) $query->found_posts;
+    $loaded = min($total, $paged * BOYA_PRODUCTS_PER_PAGE);
+    wp_reset_postdata();
+
+    wp_send_json_success([
+        'html'     => $html,
+        'paged'    => $paged,
+        'loaded'   => $loaded,
+        'total'    => $total,
+        'loaded_text' => number_format_i18n($loaded),
+        'total_text'  => number_format_i18n($total),
+        'has_more' => $paged < (int) $query->max_num_pages,
+    ]);
+}
+add_action('wp_ajax_boya_load_more_search', 'boya_ajax_load_more_search');
+add_action('wp_ajax_nopriv_boya_load_more_search', 'boya_ajax_load_more_search');
 
 
 /**
