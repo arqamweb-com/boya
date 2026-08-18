@@ -207,7 +207,7 @@ while (have_posts()) :
                                 <?php woocommerce_template_single_add_to_cart(); ?>
                             </div>
 
-                            <a href="<?php echo esc_url('https://wa.me/201017616408?text=' . rawurlencode('أحتاج تفاصيل عن المنتج: ' . $name . ' - ' . get_permalink($product_id))); ?>"
+                            <a href="<?php echo esc_url('https://wa.me/201038314148?text=' . rawurlencode('أحتاج تفاصيل عن المنتج: ' . $name . ' - ' . get_permalink($product_id))); ?>"
                                class="boya-whatsapp-product"
                                target="_blank"
                                rel="noreferrer">

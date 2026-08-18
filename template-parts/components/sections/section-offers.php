@@ -26,7 +26,7 @@ if (!defined('ABSPATH')) {
                         العالمية</p>
                 </div>
                 <div class="relative flex flex-wrap items-center gap-4">
-                    <a href="https://wa.me/201017616408" target="_blank"
+                    <a href="https://wa.me/201038314148" target="_blank"
                        class="group px-7 py-3.5 rounded-full bg-white text-brand-navy font-bold flex items-center gap-2 hover:scale-105 transition-transform">
                         واتساب
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -76,7 +76,7 @@ if (!defined('ABSPATH')) {
                         <div class="text-xs font-bold opacity-90 mb-2">شحن</div>
                         <h4 class="text-2xl font-black mb-3 leading-tight">للاستفسار عن التوصيل <br/> تواصل خلال
                             الواتساب</h4>
-                        <a href="https://wa.me/201017616408" target="_blank"
+                        <a href="https://wa.me/201038314148" target="_blank"
                            class="text-sm font-bold inline-flex items-center gap-1 hover:gap-2 transition-all">
                             تواصل معنا
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"

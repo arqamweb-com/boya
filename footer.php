@@ -1,5 +1,5 @@
 <!-- WhatsApp FAB -->
-<a href="https://wa.me/201017616408" target="_blank" rel="noreferrer"
+<a href="https://wa.me/201038314148" target="_blank" rel="noreferrer"
    class="fixed bottom-6 left-6 z-40 h-14 w-14 rounded-full bg-brand-green text-white flex items-center justify-center shadow-[var(--shadow-elegant)] hover:scale-110 transition-transform"
    aria-label="تواصل واتساب">
   <span class="absolute inset-0 rounded-full bg-brand-green animate-ping opacity-30"></span>
