@@ -1,0 +1,29 @@
+# ── Dependencies ──────────────────────────────────────────────
+# Installed with `npm ci`; the lockfile is what gets committed.
+node_modules/
+
+# ── Build tooling ─────────────────────────────────────────────
+*.log
+npm-debug.log*
+.parcel-cache/
+
+# ── Compiled translations ─────────────────────────────────────
+# Keep the .po/.pot sources; .mo files are generated from them.
+languages/*.mo
+
+# ── OS noise ──────────────────────────────────────────────────
+.DS_Store
+._*
+Thumbs.db
+
+# ── Editors / IDEs ────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ── Local backups & scratch files ─────────────────────────────
+*.bak
+*.bak-*
+*.orig
+*.rej
