@@ -13,11 +13,11 @@ defined('ABSPATH') || exit;
 /* ── Register menu locations ────────────────────────────────── */
 add_action('after_setup_theme', function () {
     register_nav_menus([
-        'primary_menu'    => __('Primary Menu (Header)', 'boya-store'),
-        'mobile_menu'     => __('Mobile Menu', 'boya-store'),
-        'footer_sections' => __('Footer — Sections Column (الأقسام)', 'boya-store'),
-        'footer_brands'   => __('Footer — Brands Column (العلامات التجارية)', 'boya-store'),
-        'footer_links'    => __('Footer — Important Links Column (روابط مهمة)', 'boya-store'),
+        'primary_menu'    => __('القائمة الرئيسية (الهيدر)', 'arqamweb'),
+        'mobile_menu'     => __('قائمة الموبايل', 'arqamweb'),
+        'footer_sections' => __('الفوتر — عمود الأقسام', 'arqamweb'),
+        'footer_brands'   => __('الفوتر — عمود العلامات التجارية', 'arqamweb'),
+        'footer_links'    => __('الفوتر — عمود الروابط المهمة', 'arqamweb'),
     ]);
 });
 
@@ -113,7 +113,7 @@ class Boya_Mobile_Walker extends Walker_Nav_Menu {
             $output .= '<div class="boya-mobile-item">'
                      . '<div class="flex items-center gap-1">'
                      . '<a href="' . $url . '" class="' . esc_attr($class) . ' flex-1">' . $label . '</a>'
-                     . '<button type="button" class="boya-submenu-toggle shrink-0 p-3 rounded-xl text-foreground/70 hover:text-brand-orange hover:bg-secondary transition-colors" aria-expanded="false" aria-label="' . esc_attr('فتح/إغلاق القائمة الفرعية') . '">'
+                     . '<button type="button" class="boya-submenu-toggle shrink-0 p-3 rounded-xl text-foreground/70 hover:text-brand-orange hover:bg-secondary transition-colors" aria-expanded="false" aria-label="' . esc_attr__('فتح/إغلاق القائمة الفرعية', 'arqamweb') . '">'
                      . '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>'
                      . '</button>'
                      . '</div>';
@@ -161,13 +161,13 @@ class Boya_Footer_Walker extends Walker_Nav_Menu {
 /** Default header/mobile links — mirror the theme's original nav. */
 function boya_default_nav_links() {
     return [
-        '/'           => 'الرئيسية',
-        '/categories' => 'الأقسام',
-        '/brands'     => 'العلامات التجارية',
-        '/products'   => 'المنتجات',
-        '/offers'     => 'العروض',
-        '/about'      => 'من نحن',
-        '/contact'    => 'تواصل معنا',
+        '/'           => __('الرئيسية', 'arqamweb'),
+        '/categories' => __('الأقسام', 'arqamweb'),
+        '/brands'     => __('العلامات التجارية', 'arqamweb'),
+        '/products'   => __('المنتجات', 'arqamweb'),
+        '/offers'     => __('العروض', 'arqamweb'),
+        '/about'      => __('من نحن', 'arqamweb'),
+        '/contact'    => __('تواصل معنا', 'arqamweb'),
     ];
 }
 
@@ -245,7 +245,7 @@ function boya_footer_sections_fallback($args = []) {
             boya_footer_link_item(get_term_link($category), $category->name);
         }
     } else {
-        boya_footer_link_item(home_url('/categories'), 'عرض الأقسام');
+        boya_footer_link_item(home_url('/categories'), __('عرض الأقسام', 'arqamweb'));
     }
     echo '</ul>';
 }
@@ -267,7 +267,7 @@ function boya_footer_brands_fallback($args = []) {
             boya_footer_link_item(get_term_link($brand), $brand->name);
         }
     } else {
-        boya_footer_link_item(home_url('/brands'), 'عرض العلامات التجارية');
+        boya_footer_link_item(home_url('/brands'), __('عرض العلامات التجارية', 'arqamweb'));
     }
     echo '</ul>';
 }
@@ -275,11 +275,11 @@ function boya_footer_brands_fallback($args = []) {
 /** Footer "Important links" fallback — the original static list. */
 function boya_footer_links_fallback($args = []) {
     $links = [
-        '/about'         => 'من نحن',
-        '/contact'       => 'تواصل معنا',
-        '/products'      => 'المنتجات',
-        '/offers'        => 'العروض',
-        '/return-policy' => 'سياسة الاسترجاع والاستبدال',
+        '/about'         => __('من نحن', 'arqamweb'),
+        '/contact'       => __('تواصل معنا', 'arqamweb'),
+        '/products'      => __('المنتجات', 'arqamweb'),
+        '/offers'        => __('العروض', 'arqamweb'),
+        '/return-policy' => __('سياسة الاسترجاع والاستبدال', 'arqamweb'),
     ];
     echo '<ul class="space-y-3">';
     foreach ($links as $path => $label) {

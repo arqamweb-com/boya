@@ -16,19 +16,17 @@ if (!defined('ABSPATH')) {
                      style="animation-delay:5s"></div>
                 <div class="relative">
                     <div class="inline-block px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-bold mb-4">
-                        تواصل
-                        معنا
+                        <?php esc_html_e('تواصل معنا', 'arqamweb'); ?>
                     </div>
                     <h3 class="text-4xl lg:text-6xl font-black leading-tight mb-4">
-                        اطلب كتالوج المنتجات الان من خلال الواتساب
+                        <?php esc_html_e('اطلب كتالوج المنتجات الان من خلال الواتساب', 'arqamweb'); ?>
                     </h3>
-                    <p class="text-white/70 max-w-md">على جميع منتجات الفئة الذهبية من أفضل العلامات التجارية
-                        العالمية</p>
+                    <p class="text-white/70 max-w-md"><?php esc_html_e('على جميع منتجات الفئة الذهبية من أفضل العلامات التجارية العالمية', 'arqamweb'); ?></p>
                 </div>
                 <div class="relative flex flex-wrap items-center gap-4">
                     <a href="https://wa.me/201038314148" target="_blank"
                        class="group px-7 py-3.5 rounded-full bg-white text-brand-navy font-bold flex items-center gap-2 hover:scale-105 transition-transform">
-                        واتساب
+                        <?php esc_html_e('واتساب', 'arqamweb'); ?>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                              class="h-4 w-4 group-hover:-translate-x-1 transition-transform">
@@ -42,7 +40,7 @@ if (!defined('ABSPATH')) {
                                  stroke-linejoin="round">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                             </svg>
-                            منتجات أصلية
+                            <?php esc_html_e('منتجات أصلية', 'arqamweb'); ?>
                         </div>
                         <div class="px-4 py-2 rounded-full bg-white/10 backdrop-blur border border-white/15 flex items-center gap-2 text-xs font-bold">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
@@ -53,7 +51,7 @@ if (!defined('ABSPATH')) {
                                 <circle cx="5.5" cy="18.5" r="2.5"/>
                                 <circle cx="18.5" cy="18.5" r="2.5"/>
                             </svg>
-                            شحن سريع
+                            <?php esc_html_e('شحن سريع', 'arqamweb'); ?>
                         </div>
                         <div class="px-4 py-2 rounded-full bg-white/10 backdrop-blur border border-white/15 flex items-center gap-2 text-xs font-bold">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
@@ -62,7 +60,7 @@ if (!defined('ABSPATH')) {
                                 <circle cx="12" cy="8" r="6"/>
                                 <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
                             </svg>
-                            ضمان الجودة
+                            <?php esc_html_e('ضمان الجودة', 'arqamweb'); ?>
                         </div>
                     </div>
                 </div>
@@ -73,12 +71,17 @@ if (!defined('ABSPATH')) {
                      style="background:linear-gradient(135deg,var(--brand-red),var(--brand-orange))">
                     <div class="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-white/15 blur-2xl"></div>
                     <div class="relative">
-                        <div class="text-xs font-bold opacity-90 mb-2">شحن</div>
-                        <h4 class="text-2xl font-black mb-3 leading-tight">للاستفسار عن التوصيل <br/> تواصل خلال
-                            الواتساب</h4>
+                        <div class="text-xs font-bold opacity-90 mb-2"><?php esc_html_e('شحن', 'arqamweb'); ?></div>
+                        <h4 class="text-2xl font-black mb-3 leading-tight"><?php
+                            printf(
+                                /* translators: %s: line break tag */
+                                esc_html__('للاستفسار عن التوصيل %s تواصل خلال الواتساب', 'arqamweb'),
+                                '<br/>'
+                            );
+                        ?></h4>
                         <a href="https://wa.me/201038314148" target="_blank"
                            class="text-sm font-bold inline-flex items-center gap-1 hover:gap-2 transition-all">
-                            تواصل معنا
+                            <?php esc_html_e('تواصل معنا', 'arqamweb'); ?>
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                  stroke-linejoin="round">
@@ -91,11 +94,11 @@ if (!defined('ABSPATH')) {
                      style="background:linear-gradient(135deg,var(--brand-green),var(--brand-blue))">
                     <div class="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-white/15 blur-2xl"></div>
                     <div class="relative">
-                        <div class="text-xs font-bold opacity-90 mb-2">باقة المحترفين</div>
-                        <h4 class="text-2xl font-black mb-3 leading-tight">أسعار خاصة للمقاولين</h4>
+                        <div class="text-xs font-bold opacity-90 mb-2"><?php esc_html_e('باقة المحترفين', 'arqamweb'); ?></div>
+                        <h4 class="text-2xl font-black mb-3 leading-tight"><?php esc_html_e('أسعار خاصة للمقاولين', 'arqamweb'); ?></h4>
                         <a href="<?php echo esc_url(home_url('/contact')); ?>"
                            class="text-sm font-bold inline-flex items-center gap-1 hover:gap-2 transition-all">
-                            تواصل معنا الآن
+                            <?php esc_html_e('تواصل معنا الآن', 'arqamweb'); ?>
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                  stroke-linejoin="round">

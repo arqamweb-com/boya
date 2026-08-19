@@ -1,7 +1,7 @@
 <!-- WhatsApp FAB -->
 <a href="https://wa.me/201038314148" target="_blank" rel="noreferrer"
    class="fixed bottom-6 left-6 z-40 h-14 w-14 rounded-full bg-brand-green text-white flex items-center justify-center shadow-[var(--shadow-elegant)] hover:scale-110 transition-transform"
-   aria-label="تواصل واتساب">
+   aria-label="<?php esc_attr_e('تواصل واتساب', 'arqamweb'); ?>">
   <span class="absolute inset-0 rounded-full bg-brand-green animate-ping opacity-30"></span>
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 relative"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
 </a>
@@ -16,10 +16,10 @@
     <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
       <div class="lg:col-span-2">
         <a href="<?php echo esc_url(home_url('/')); ?>">
-          <img src="https://www.arqamweb.com/wp-content/uploads/2026/05/BOYA-LOGO-WEB-WHITE.png" alt="Boya Store" class="h-14 mb-5" />
+          <img src="https://www.arqamweb.com/wp-content/uploads/2026/05/BOYA-LOGO-WEB-WHITE.png" alt="<?php esc_attr_e('بويا ستور', 'arqamweb'); ?>" class="h-14 mb-5" />
         </a>
         <p class="text-white/70 leading-relaxed mb-6 max-w-sm">
-          وجهتك الأولى لأفضل دهانات السيارات، الإنشاءات، الأخشاب والمنتجات الصناعية من أرقى العلامات التجارية العالمية.
+          <?php esc_html_e('وجهتك الأولى لأفضل دهانات السيارات، الإنشاءات، الأخشاب والمنتجات الصناعية من أرقى العلامات التجارية العالمية.', 'arqamweb'); ?>
         </p>
         <div class="flex gap-3">
 			<a href="https://www.facebook.com/boya.store1/" target="_blank"
@@ -45,7 +45,7 @@
 
       <!-- Sections column -->
       <div>
-        <h4 class="font-black mb-5 text-lg">الأقسام</h4>
+        <h4 class="font-black mb-5 text-lg"><?php esc_html_e('الأقسام', 'arqamweb'); ?></h4>
         <?php
         wp_nav_menu([
           'theme_location' => 'footer_sections',
@@ -60,7 +60,7 @@
 
       <!-- Brands column -->
       <div>
-        <h4 class="font-black mb-5 text-lg">العلامات التجارية</h4>
+        <h4 class="font-black mb-5 text-lg"><?php esc_html_e('العلامات التجارية', 'arqamweb'); ?></h4>
         <?php
         wp_nav_menu([
           'theme_location' => 'footer_brands',
@@ -75,7 +75,7 @@
 
       <!-- Links column -->
       <div>
-        <h4 class="font-black mb-5 text-lg">روابط مهمة</h4>
+        <h4 class="font-black mb-5 text-lg"><?php esc_html_e('روابط مهمة', 'arqamweb'); ?></h4>
         <?php
         wp_nav_menu([
           'theme_location' => 'footer_links',
@@ -90,14 +90,14 @@
     </div>
 
     <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/60">
-      <div>© 2026 بويا ستور. جميع الحقوق محفوظة.</div>
+      <div><?php esc_html_e('© 2026 بويا ستور. جميع الحقوق محفوظة.', 'arqamweb'); ?></div>
       <div class="flex items-center gap-3 flex-wrap justify-center">
-        <span>طرق الدفع:</span>
-        <div class="h-9 px-3 rounded-md bg-white flex items-center" title="فوري">
+        <span><?php esc_html_e('طرق الدفع:', 'arqamweb'); ?></span>
+        <div class="h-9 px-3 rounded-md bg-white flex items-center" title="<?php esc_attr_e('فوري', 'arqamweb'); ?>">
           <img src="https://iconape.com/wp-content/files/gz/336170/svg/336170.svg" alt="Fawry" class="h-6 w-auto object-contain" />
         </div>
-        <div class="h-9 px-3 rounded-md bg-white flex items-center text-brand-navy text-xs font-bold" title="كاش عند الاستلام">
-          كاش عند الاستلام
+        <div class="h-9 px-3 rounded-md bg-white flex items-center text-brand-navy text-xs font-bold" title="<?php esc_attr_e('كاش عند الاستلام', 'arqamweb'); ?>">
+          <?php esc_html_e('كاش عند الاستلام', 'arqamweb'); ?>
         </div>
         <div class="h-9 px-3 rounded-md bg-white flex items-center" title="Visa">
           <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Visa_Inc._logo_%282005%E2%80%932014%29.svg" alt="Visa" class="h-4 w-auto" />
@@ -106,10 +106,10 @@
     </div>
 
     <div class="mt-6 text-center text-xs text-white/40">
-      الموقع من تصميم وبرمجة
+      <?php esc_html_e('الموقع من تصميم وبرمجة', 'arqamweb'); ?>
       <a href="https://www.arqamweb.com" target="_blank" rel="noreferrer"
          class="font-bold hover:opacity-80 transition-opacity underline underline-offset-2"
-         style="color: #f16722;">أرقام ويب</a>
+         style="color: #f16722;"><?php esc_html_e('أرقام ويب', 'arqamweb'); ?></a>
     </div>
   </div>
 </footer>

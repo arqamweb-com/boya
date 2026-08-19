@@ -20,61 +20,61 @@ $images = get_template_directory_uri() . '/assets/images';
       <div class="space-y-8 animate-fade-up">
         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-dark text-sm">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-brand-yellow"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" /><path d="M5 3v4" /><path d="M19 17v4" /><path d="M3 5h4" /><path d="M17 19h4" /></svg>
-          <span>الوجهة الأولى لدهانات السيارات والإنشاءات</span>
+          <span><?php esc_html_e('الوجهة الأولى لدهانات السيارات والإنشاءات', 'arqamweb'); ?></span>
         </div>
 
         <h1 class="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1]">
-          ألوان تصنع
+          <?php esc_html_e('ألوان تصنع', 'arqamweb'); ?>
           <span class="block mt-2">
-            <span class="text-gradient-warm">فرقاً حقيقياً</span>
+            <span class="text-gradient-warm"><?php esc_html_e('فرقاً حقيقياً', 'arqamweb'); ?></span>
           </span>
-          في عالمك
+          <?php esc_html_e('في عالمك', 'arqamweb'); ?>
         </h1>
 
         <p class="text-lg text-white/70 max-w-xl leading-relaxed">
-          بويا ستور — وجهتك الموثوقة لأفضل دهانات السيارات، الإنشاءات، الأخشاب والمنتجات الصناعية من أرقى العلامات التجارية العالمية.
+          <?php esc_html_e('بويا ستور — وجهتك الموثوقة لأفضل دهانات السيارات، الإنشاءات، الأخشاب والمنتجات الصناعية من أرقى العلامات التجارية العالمية.', 'arqamweb'); ?>
         </p>
 
         <div class="flex flex-wrap gap-4">
           <a href="<?php echo esc_url(home_url('/products')); ?>" class="group relative overflow-hidden px-8 py-4 rounded-full bg-white text-brand-navy font-bold shadow-[var(--shadow-elegant)] hover:scale-105 transition-transform inline-flex items-center gap-2">
-            تسوق الآن
+            <?php esc_html_e('تسوق الآن', 'arqamweb'); ?>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 group-hover:-translate-x-1 transition-transform"><path d="m15 18-6-6 6-6" /></svg>
           </a>
           <a href="<?php echo esc_url(home_url('/brands')); ?>" class="px-8 py-4 rounded-full border-2 border-white/20 hover:bg-white/10 font-bold transition-colors">
-            استكشف العلامات التجارية
+            <?php esc_html_e('استكشف العلامات التجارية', 'arqamweb'); ?>
           </a>
         </div>
 
         <div class="flex flex-wrap gap-8 pt-6 border-t border-white/10">
           <div>
             <div class="text-3xl font-black text-gradient-warm" data-count="15000">+15K</div>
-            <div class="text-sm text-white/60 mt-1">منتج متوفر</div>
+            <div class="text-sm text-white/60 mt-1"><?php esc_html_e('منتج متوفر', 'arqamweb'); ?></div>
           </div>
           <div>
             <div class="text-3xl font-black text-gradient-warm" data-count="8">+8</div>
-            <div class="text-sm text-white/60 mt-1">علامات عالمية</div>
+            <div class="text-sm text-white/60 mt-1"><?php esc_html_e('علامات عالمية', 'arqamweb'); ?></div>
           </div>
           <div>
             <div class="text-3xl font-black text-gradient-warm" data-count="50000">+50K</div>
-            <div class="text-sm text-white/60 mt-1">عميل سعيد</div>
+            <div class="text-sm text-white/60 mt-1"><?php esc_html_e('عميل سعيد', 'arqamweb'); ?></div>
           </div>
         </div>
       </div>
 
       <div class="relative">
         <div class="relative aspect-square rounded-[2.5rem] overflow-hidden shadow-[var(--shadow-elegant)]" id="hero-slideshow">
-          <img src="<?php echo esc_url($images . '/hero-auto.jpg'); ?>" alt="دهانات سيارات" width="600" height="600" class="absolute inset-0 w-full h-full object-cover scale-110 transition-opacity duration-1000 opacity-100 hero-slide" />
-          <img src="<?php echo esc_url($images . '/hero-wood.jpg'); ?>" alt="دهانات خشب" width="600" height="600" class="absolute inset-0 w-full h-full object-cover scale-110 transition-opacity duration-1000 opacity-0 hero-slide" />
-          <img src="<?php echo esc_url($images . '/hero-construction.jpg'); ?>" alt="دهانات إنشائية" width="600" height="600" class="absolute inset-0 w-full h-full object-cover scale-110 transition-opacity duration-1000 opacity-0 hero-slide" />
-          <img src="<?php echo esc_url($images . '/hero-industrial.jpg'); ?>" alt="منتجات صناعية" width="600" height="600" class="absolute inset-0 w-full h-full object-cover scale-110 transition-opacity duration-1000 opacity-0 hero-slide" />
+          <img src="<?php echo esc_url($images . '/hero-auto.jpg'); ?>" alt="<?php esc_attr_e('دهانات سيارات', 'arqamweb'); ?>" width="600" height="600" class="absolute inset-0 w-full h-full object-cover scale-110 transition-opacity duration-1000 opacity-100 hero-slide" />
+          <img src="<?php echo esc_url($images . '/hero-wood.jpg'); ?>" alt="<?php esc_attr_e('دهانات خشب', 'arqamweb'); ?>" width="600" height="600" class="absolute inset-0 w-full h-full object-cover scale-110 transition-opacity duration-1000 opacity-0 hero-slide" />
+          <img src="<?php echo esc_url($images . '/hero-construction.jpg'); ?>" alt="<?php esc_attr_e('دهانات إنشائية', 'arqamweb'); ?>" width="600" height="600" class="absolute inset-0 w-full h-full object-cover scale-110 transition-opacity duration-1000 opacity-0 hero-slide" />
+          <img src="<?php echo esc_url($images . '/hero-industrial.jpg'); ?>" alt="<?php esc_attr_e('منتجات صناعية', 'arqamweb'); ?>" width="600" height="600" class="absolute inset-0 w-full h-full object-cover scale-110 transition-opacity duration-1000 opacity-0 hero-slide" />
           <div class="absolute inset-0 bg-gradient-to-t from-brand-navy/60 via-transparent to-transparent"></div>
-          <div class="absolute top-6 right-6 glass-dark px-4 py-2 rounded-full text-sm font-bold text-white" id="hero-slide-label">دهانات سيارات</div>
+          <div class="absolute top-6 right-6 glass-dark px-4 py-2 rounded-full text-sm font-bold text-white" id="hero-slide-label"><?php esc_html_e('دهانات سيارات', 'arqamweb'); ?></div>
           <div class="absolute bottom-6 right-6 left-6 flex items-center justify-center">
             <div class="flex gap-1.5" id="hero-dots">
-              <button onclick="setHeroSlide(0)" aria-label="دهانات سيارات" class="h-2 rounded-full transition-all w-6 bg-white hero-dot"></button>
-              <button onclick="setHeroSlide(1)" aria-label="دهانات خشب" class="h-2 rounded-full transition-all w-2 bg-white/40 hero-dot"></button>
-              <button onclick="setHeroSlide(2)" aria-label="دهانات إنشائية" class="h-2 rounded-full transition-all w-2 bg-white/40 hero-dot"></button>
-              <button onclick="setHeroSlide(3)" aria-label="منتجات صناعية" class="h-2 rounded-full transition-all w-2 bg-white/40 hero-dot"></button>
+              <button onclick="setHeroSlide(0)" aria-label="<?php esc_attr_e('دهانات سيارات', 'arqamweb'); ?>" class="h-2 rounded-full transition-all w-6 bg-white hero-dot"></button>
+              <button onclick="setHeroSlide(1)" aria-label="<?php esc_attr_e('دهانات خشب', 'arqamweb'); ?>" class="h-2 rounded-full transition-all w-2 bg-white/40 hero-dot"></button>
+              <button onclick="setHeroSlide(2)" aria-label="<?php esc_attr_e('دهانات إنشائية', 'arqamweb'); ?>" class="h-2 rounded-full transition-all w-2 bg-white/40 hero-dot"></button>
+              <button onclick="setHeroSlide(3)" aria-label="<?php esc_attr_e('منتجات صناعية', 'arqamweb'); ?>" class="h-2 rounded-full transition-all w-2 bg-white/40 hero-dot"></button>
             </div>
           </div>
         </div>
@@ -86,8 +86,8 @@ $images = get_template_directory_uri() . '/assets/images';
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
             </div>
             <div>
-              <div class="text-xs text-muted-foreground">منتجات</div>
-              <div class="font-bold text-sm">أصلية 100%</div>
+              <div class="text-xs text-muted-foreground"><?php esc_html_e('منتجات', 'arqamweb'); ?></div>
+              <div class="font-bold text-sm"><?php esc_html_e('أصلية 100%', 'arqamweb'); ?></div>
             </div>
           </div>
         </div>
@@ -97,8 +97,8 @@ $images = get_template_directory_uri() . '/assets/images';
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><rect x="1" y="3" width="15" height="13" /><polygon points="16 8 20 8 23 11 23 16 16 16 16 8" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></svg>
             </div>
             <div>
-              <div class="text-xs text-muted-foreground">شحن</div>
-              <div class="font-bold text-sm">سريع وآمن</div>
+              <div class="text-xs text-muted-foreground"><?php esc_html_e('شحن', 'arqamweb'); ?></div>
+              <div class="font-bold text-sm"><?php esc_html_e('سريع وآمن', 'arqamweb'); ?></div>
             </div>
           </div>
         </div>
@@ -118,13 +118,13 @@ $images = get_template_directory_uri() . '/assets/images';
   <div class="container mx-auto px-6">
     <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-16">
       <div class="max-w-xl">
-        <div class="inline-block text-sm font-bold text-brand-orange mb-3 tracking-wider">أقسامنا</div>
+        <div class="inline-block text-sm font-bold text-brand-orange mb-3 tracking-wider"><?php esc_html_e('أقسامنا', 'arqamweb'); ?></div>
         <h2 class="text-4xl md:text-5xl font-black leading-tight">
-          تشكيلة <span class="text-gradient-warm">متكاملة</span> لكل احتياجاتك
+          <?php esc_html_e('تشكيلة', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('متكاملة', 'arqamweb'); ?></span> <?php esc_html_e('لكل احتياجاتك', 'arqamweb'); ?>
         </h2>
       </div>
       <p class="text-muted-foreground max-w-md">
-        من دهانات السيارات إلى المنتجات الصناعية، نوفر كل ما تحتاجه بأعلى معايير الجودة العالمية.
+        <?php esc_html_e('من دهانات السيارات إلى المنتجات الصناعية، نوفر كل ما تحتاجه بأعلى معايير الجودة العالمية.', 'arqamweb'); ?>
       </p>
     </div>
 
@@ -144,7 +144,13 @@ $images = get_template_directory_uri() . '/assets/images';
         foreach ($hp_cats as $ci => $hcat) :
           $img_url = boya_term_image($hcat, 'large');
           $accent  = $accent_colors[$ci % count($accent_colors)];
-          $cnt_txt = $hcat->count > 0 ? $hcat->count . ' منتج' : '';
+          $cnt_txt = $hcat->count > 0
+            ? sprintf(
+                /* translators: %s: number of products in the category */
+                _n('%s منتج', '%s منتجات', $hcat->count, 'arqamweb'),
+                number_format_i18n($hcat->count)
+              )
+            : '';
       ?>
       <a href="<?php echo esc_url(get_term_link($hcat)); ?>"
          class="group relative aspect-[3/4] rounded-3xl overflow-hidden cursor-pointer shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-elegant)] transition-all duration-500 hover:-translate-y-2">
@@ -160,19 +166,19 @@ $images = get_template_directory_uri() . '/assets/images';
           <h3 class="text-2xl font-black mb-1"><?php echo esc_html($hcat->name); ?></h3>
           <?php if ($hcat->description): ?><p class="text-sm text-white/80 mb-4"><?php echo esc_html(wp_trim_words($hcat->description, 6)); ?></p><?php endif; ?>
           <div class="flex items-center gap-2 text-sm font-bold opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500">
-            استكشف القسم
+            <?php esc_html_e('استكشف القسم', 'arqamweb'); ?>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
           </div>
         </div>
       </a>
       <?php endforeach; else: ?>
-      <div class="col-span-4 text-center py-8 text-muted-foreground">أضف أقسام المنتجات من WooCommerce لتظهر هنا.</div>
+      <div class="col-span-4 text-center py-8 text-muted-foreground"><?php esc_html_e('أضف أقسام المنتجات من WooCommerce لتظهر هنا.', 'arqamweb'); ?></div>
       <?php endif; ?>
     </div>
 
     <div class="flex justify-center mt-12">
       <a href="<?php echo esc_url(home_url('/categories')); ?>" class="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">
-        عرض كل الأقسام
+        <?php esc_html_e('عرض كل الأقسام', 'arqamweb'); ?>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 group-hover:-translate-x-1 transition-transform"><path d="m15 18-6-6 6-6" /></svg>
       </a>
     </div>
@@ -183,11 +189,11 @@ $images = get_template_directory_uri() . '/assets/images';
 <section id="brands" class="py-24 bg-secondary/40 relative overflow-hidden">
   <div class="container mx-auto px-6">
     <div class="text-center mb-16">
-      <div class="text-sm font-bold text-brand-blue mb-3 tracking-wider">شركاء النجاح</div>
+      <div class="text-sm font-bold text-brand-blue mb-3 tracking-wider"><?php esc_html_e('شركاء النجاح', 'arqamweb'); ?></div>
       <h2 class="text-4xl md:text-5xl font-black mb-4">
-        أرقى <span class="text-gradient-warm">العلامات التجارية</span> العالمية
+        <?php esc_html_e('أرقى', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('العلامات التجارية', 'arqamweb'); ?></span> <?php esc_html_e('العالمية', 'arqamweb'); ?>
       </h2>
-      <p class="text-muted-foreground max-w-2xl mx-auto">نفخر بكوننا الوكلاء المعتمدين لأشهر علامات الدهانات حول العالم</p>
+      <p class="text-muted-foreground max-w-2xl mx-auto"><?php esc_html_e('نفخر بكوننا الوكلاء المعتمدين لأشهر علامات الدهانات حول العالم', 'arqamweb'); ?></p>
     </div>
     <?php
     $hp_brands_tax = boya_get_brands_taxonomy();
@@ -206,7 +212,7 @@ $images = get_template_directory_uri() . '/assets/images';
         <div class="absolute bottom-0 right-0 left-0 h-1 origin-right scale-x-0 group-hover:scale-x-100 transition-transform duration-500" style="background:var(--brand-orange)"></div>
       </a>
       <?php endforeach; else: ?>
-      <div style="grid-column:1/-1" class="text-center py-8 text-muted-foreground text-sm">أضف العلامات التجارية من WooCommerce لتظهر هنا.</div>
+      <div style="grid-column:1/-1" class="text-center py-8 text-muted-foreground text-sm"><?php esc_html_e('أضف العلامات التجارية من WooCommerce لتظهر هنا.', 'arqamweb'); ?></div>
       <?php endif; ?>
     </div>
   </div>
@@ -217,13 +223,13 @@ $images = get_template_directory_uri() . '/assets/images';
   <div class="container mx-auto px-6">
     <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-16">
       <div>
-        <div class="text-sm font-bold text-brand-red mb-3 tracking-wider">منتجات مميزة</div>
+        <div class="text-sm font-bold text-brand-red mb-3 tracking-wider"><?php esc_html_e('منتجات مميزة', 'arqamweb'); ?></div>
         <h2 class="text-4xl md:text-5xl font-black">
-          الأكثر <span class="text-gradient-warm">رواجاً</span> هذا الشهر
+          <?php esc_html_e('الأكثر', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('رواجاً', 'arqamweb'); ?></span> <?php esc_html_e('هذا الشهر', 'arqamweb'); ?>
         </h2>
       </div>
       <a href="<?php echo esc_url(home_url('/products')); ?>" class="group inline-flex items-center gap-2 text-sm font-bold text-brand-navy hover:text-brand-orange transition-colors">
-        عرض كل المنتجات الرائجة
+        <?php esc_html_e('عرض كل المنتجات الرائجة', 'arqamweb'); ?>
         <span class="h-px w-8 bg-current group-hover:w-12 transition-all"></span>
       </a>
     </div>
@@ -237,13 +243,13 @@ $images = get_template_directory_uri() . '/assets/images';
         endwhile;
         wp_reset_postdata();
       else: ?>
-      <div style="grid-column:1/-1" class="text-center py-8 text-muted-foreground text-sm">أضف منتجات WooCommerce لتظهر هنا.</div>
+      <div style="grid-column:1/-1" class="text-center py-8 text-muted-foreground text-sm"><?php esc_html_e('أضف منتجات WooCommerce لتظهر هنا.', 'arqamweb'); ?></div>
       <?php endif; ?>
     </div>
 
     <div class="flex justify-center mt-14">
       <a href="<?php echo esc_url(home_url('/products')); ?>" class="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">
-        عرض كل المنتجات
+        <?php esc_html_e('عرض كل المنتجات', 'arqamweb'); ?>
         <span class="inline-block group-hover:-translate-x-1 transition-transform">←</span>
       </a>
     </div>
@@ -254,19 +260,19 @@ $images = get_template_directory_uri() . '/assets/images';
 <section class="py-24 bg-gradient-to-b from-secondary/40 to-background">
   <div class="container mx-auto px-6">
     <div class="text-center max-w-2xl mx-auto mb-16">
-      <div class="text-sm font-bold text-brand-green mb-3 tracking-wider">لماذا بويا ستور</div>
-      <h2 class="text-4xl md:text-5xl font-black mb-4">خبرة <span class="text-gradient-warm">تستحق الثقة</span></h2>
-      <p class="text-muted-foreground">نقدم لك تجربة شراء متكاملة من البداية للنهاية</p>
+      <div class="text-sm font-bold text-brand-green mb-3 tracking-wider"><?php esc_html_e('لماذا بويا ستور', 'arqamweb'); ?></div>
+      <h2 class="text-4xl md:text-5xl font-black mb-4"><?php esc_html_e('خبرة', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('تستحق الثقة', 'arqamweb'); ?></span></h2>
+      <p class="text-muted-foreground"><?php esc_html_e('نقدم لك تجربة شراء متكاملة من البداية للنهاية', 'arqamweb'); ?></p>
     </div>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       <?php
       $feats = [
-        ['title'=>'جودة موثوقة','desc'=>'منتجات معتمدة من أرقى المصانع العالمية','color'=>'var(--brand-green)','icon'=>'shield-check'],
-        ['title'=>'تشكيلة واسعة','desc'=>'أكثر من 15,000 منتج لكافة الاحتياجات','color'=>'var(--brand-orange)','icon'=>'package'],
-        ['title'=>'توصيل سريع','desc'=>'شحن سريع وآمن لجميع مناطق الجمهورية','color'=>'var(--brand-red)','icon'=>'truck'],
-        ['title'=>'دعم احترافي','desc'=>'فريق متخصص لمساعدتك على مدار الساعة','color'=>'var(--brand-blue)','icon'=>'headphones'],
-        ['title'=>'منتجات أصلية','desc'=>'ضمان الأصالة 100% من الوكلاء المعتمدين','color'=>'var(--brand-purple)','icon'=>'award'],
-        ['title'=>'أسعار تنافسية','desc'=>'أفضل الأسعار مع عروض حصرية متجددة','color'=>'var(--brand-yellow)','icon'=>'sparkles'],
+        ['title'=>__('جودة موثوقة', 'arqamweb'),'desc'=>__('منتجات معتمدة من أرقى المصانع العالمية', 'arqamweb'),'color'=>'var(--brand-green)','icon'=>'shield-check'],
+        ['title'=>__('تشكيلة واسعة', 'arqamweb'),'desc'=>__('أكثر من 15,000 منتج لكافة الاحتياجات', 'arqamweb'),'color'=>'var(--brand-orange)','icon'=>'package'],
+        ['title'=>__('توصيل سريع', 'arqamweb'),'desc'=>__('شحن سريع وآمن لجميع مناطق الجمهورية', 'arqamweb'),'color'=>'var(--brand-red)','icon'=>'truck'],
+        ['title'=>__('دعم احترافي', 'arqamweb'),'desc'=>__('فريق متخصص لمساعدتك على مدار الساعة', 'arqamweb'),'color'=>'var(--brand-blue)','icon'=>'headphones'],
+        ['title'=>__('منتجات أصلية', 'arqamweb'),'desc'=>__('ضمان الأصالة 100% من الوكلاء المعتمدين', 'arqamweb'),'color'=>'var(--brand-purple)','icon'=>'award'],
+        ['title'=>__('أسعار تنافسية', 'arqamweb'),'desc'=>__('أفضل الأسعار مع عروض حصرية متجددة', 'arqamweb'),'color'=>'var(--brand-yellow)','icon'=>'sparkles'],
       ];
       $feat_icons = [
         'shield-check' => '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
@@ -298,15 +304,15 @@ $images = get_template_directory_uri() . '/assets/images';
     <div class="grid lg:grid-cols-2 gap-16 items-center">
       <div class="relative">
         <div class="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-[var(--shadow-elegant)]">
-          <img src="<?php echo esc_url($images . '/about-factory.jpg'); ?>" alt="مصنع بويا ستور" width="800" height="1000" loading="lazy" class="w-full h-full object-cover" />
+          <img src="<?php echo esc_url($images . '/about-factory.jpg'); ?>" alt="<?php esc_attr_e('مصنع بويا ستور', 'arqamweb'); ?>" width="800" height="1000" loading="lazy" class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-gradient-to-tr from-brand-navy/40 to-transparent"></div>
         </div>
         <div class="absolute -bottom-8 -left-8 bg-white rounded-3xl p-6 shadow-[var(--shadow-elegant)] max-w-xs">
           <div class="grid grid-cols-2 gap-4">
-            <div class="p-3 rounded-2xl bg-secondary/60"><div class="text-2xl font-black" style="color:var(--brand-red)">+20</div><div class="text-xs text-muted-foreground mt-0.5">سنة خبرة</div></div>
-            <div class="p-3 rounded-2xl bg-secondary/60"><div class="text-2xl font-black" style="color:var(--brand-orange)">+50K</div><div class="text-xs text-muted-foreground mt-0.5">عميل</div></div>
-            <div class="p-3 rounded-2xl bg-secondary/60"><div class="text-2xl font-black" style="color:var(--brand-green)">+15K</div><div class="text-xs text-muted-foreground mt-0.5">منتج</div></div>
-            <div class="p-3 rounded-2xl bg-secondary/60"><div class="text-2xl font-black" style="color:var(--brand-blue)">+8</div><div class="text-xs text-muted-foreground mt-0.5">علامة</div></div>
+            <div class="p-3 rounded-2xl bg-secondary/60"><div class="text-2xl font-black" style="color:var(--brand-red)">+20</div><div class="text-xs text-muted-foreground mt-0.5"><?php esc_html_e('سنة خبرة', 'arqamweb'); ?></div></div>
+            <div class="p-3 rounded-2xl bg-secondary/60"><div class="text-2xl font-black" style="color:var(--brand-orange)">+50K</div><div class="text-xs text-muted-foreground mt-0.5"><?php esc_html_e('عميل', 'arqamweb'); ?></div></div>
+            <div class="p-3 rounded-2xl bg-secondary/60"><div class="text-2xl font-black" style="color:var(--brand-green)">+15K</div><div class="text-xs text-muted-foreground mt-0.5"><?php esc_html_e('منتج', 'arqamweb'); ?></div></div>
+            <div class="p-3 rounded-2xl bg-secondary/60"><div class="text-2xl font-black" style="color:var(--brand-blue)">+8</div><div class="text-xs text-muted-foreground mt-0.5"><?php esc_html_e('علامة', 'arqamweb'); ?></div></div>
           </div>
         </div>
         <div class="absolute -top-6 -right-6 w-40 h-40 rounded-full opacity-30" style="background:var(--gradient-rainbow);filter:blur(60px)"></div>
@@ -314,12 +320,12 @@ $images = get_template_directory_uri() . '/assets/images';
 
       <div class="space-y-8">
         <div>
-          <div class="text-sm font-bold text-brand-purple mb-3 tracking-wider">من نحن</div>
+          <div class="text-sm font-bold text-brand-purple mb-3 tracking-wider"><?php esc_html_e('من نحن', 'arqamweb'); ?></div>
           <h2 class="text-4xl md:text-5xl font-black leading-tight mb-6">
-            قصة شغف<span class="block text-gradient-warm">بالألوان والإتقان</span>
+            <?php esc_html_e('قصة شغف', 'arqamweb'); ?><span class="block text-gradient-warm"><?php esc_html_e('بالألوان والإتقان', 'arqamweb'); ?></span>
           </h2>
           <p class="text-muted-foreground leading-relaxed text-lg">
-            منذ تأسيس بويا ستور، التزمنا بتقديم أرقى منتجات الدهانات للعملاء في جمهورية مصر العربية. نعمل مع أكبر العلامات التجارية العالمية لنوفر حلولاً متكاملة للمحترفين والهواة على حدٍ سواء.
+            <?php esc_html_e('منذ تأسيس بويا ستور، التزمنا بتقديم أرقى منتجات الدهانات للعملاء في جمهورية مصر العربية. نعمل مع أكبر العلامات التجارية العالمية لنوفر حلولاً متكاملة للمحترفين والهواة على حدٍ سواء.', 'arqamweb'); ?>
           </p>
         </div>
         <div class="space-y-4">
@@ -327,24 +333,24 @@ $images = get_template_directory_uri() . '/assets/images';
             <div class="shrink-0 p-3 rounded-xl h-fit" style="background:color-mix(in oklab,var(--brand-red) 12%,transparent);color:var(--brand-red)">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
             </div>
-            <div><h4 class="font-bold mb-1">رسالتنا</h4><p class="text-sm text-muted-foreground">توفير أفضل الحلول والمنتجات في عالم الدهانات بمعايير عالمية.</p></div>
+            <div><h4 class="font-bold mb-1"><?php esc_html_e('رسالتنا', 'arqamweb'); ?></h4><p class="text-sm text-muted-foreground"><?php esc_html_e('توفير أفضل الحلول والمنتجات في عالم الدهانات بمعايير عالمية.', 'arqamweb'); ?></p></div>
           </div>
           <div class="flex gap-4 p-5 rounded-2xl hover:bg-secondary/50 transition-colors">
             <div class="shrink-0 p-3 rounded-xl h-fit" style="background:color-mix(in oklab,var(--brand-blue) 12%,transparent);color:var(--brand-blue)">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
             </div>
-            <div><h4 class="font-bold mb-1">رؤيتنا</h4><p class="text-sm text-muted-foreground">أن نكون الوجهة الأولى والأكثر ثقة لكل ما يخص الدهانات في المنطقة.</p></div>
+            <div><h4 class="font-bold mb-1"><?php esc_html_e('رؤيتنا', 'arqamweb'); ?></h4><p class="text-sm text-muted-foreground"><?php esc_html_e('أن نكون الوجهة الأولى والأكثر ثقة لكل ما يخص الدهانات في المنطقة.', 'arqamweb'); ?></p></div>
           </div>
           <div class="flex gap-4 p-5 rounded-2xl hover:bg-secondary/50 transition-colors">
             <div class="shrink-0 p-3 rounded-xl h-fit" style="background:color-mix(in oklab,var(--brand-green) 12%,transparent);color:var(--brand-green)">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </div>
-            <div><h4 class="font-bold mb-1">قيمنا</h4><p class="text-sm text-muted-foreground">الجودة، الأمانة، الاحترافية، والابتكار المستمر في خدمة عملائنا.</p></div>
+            <div><h4 class="font-bold mb-1"><?php esc_html_e('قيمنا', 'arqamweb'); ?></h4><p class="text-sm text-muted-foreground"><?php esc_html_e('الجودة، الأمانة، الاحترافية، والابتكار المستمر في خدمة عملائنا.', 'arqamweb'); ?></p></div>
           </div>
         </div>
         <div>
           <a href="<?php echo esc_url(home_url('/about')); ?>" class="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">
-            عرض المزيد <span class="inline-block group-hover:-translate-x-1 transition-transform">←</span>
+            <?php esc_html_e('عرض المزيد', 'arqamweb'); ?> <span class="inline-block group-hover:-translate-x-1 transition-transform">←</span>
           </a>
         </div>
       </div>
@@ -356,17 +362,17 @@ $images = get_template_directory_uri() . '/assets/images';
 <section id="testimonials" class="py-24 lg:py-32 bg-secondary/40 relative overflow-hidden">
   <div class="container mx-auto px-6">
     <div class="text-center max-w-2xl mx-auto mb-16">
-      <div class="text-sm font-bold text-brand-orange mb-3 tracking-wider">آراء عملائنا</div>
-      <h2 class="text-4xl md:text-5xl font-black">يثق بنا <span class="text-gradient-warm">المحترفون</span></h2>
+      <div class="text-sm font-bold text-brand-orange mb-3 tracking-wider"><?php esc_html_e('آراء عملائنا', 'arqamweb'); ?></div>
+      <h2 class="text-4xl md:text-5xl font-black"><?php esc_html_e('يثق بنا', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('المحترفون', 'arqamweb'); ?></span></h2>
     </div>
     <?php
     $testimonials = [
-      ['name'=>'أحمد المالكي','role'=>'مقاول دهانات','text'=>'تعاملت مع بويا ستور لسنوات وأشهد أنهم الأفضل في السوق من ناحية الجودة والسعر والخدمة.','color'=>'var(--brand-red)'],
-      ['name'=>'خالد العتيبي','role'=>'ورشة سيارات','text'=>'منتجات أصلية 100% وتوصيل سريع جداً. فريق الدعم محترف ويساعد في اختيار المنتج المناسب.','color'=>'var(--brand-orange)'],
-      ['name'=>'سعد الحربي','role'=>'نجار محترف','text'=>'أفضل تشكيلة من دهانات الأخشاب وجدتها. النتائج رائعة والعملاء سعداء دائماً بالنهائيات.','color'=>'var(--brand-green)'],
-      ['name'=>'محمود فؤاد','role'=>'صاحب شركة ديكور','text'=>'الجودة ثابتة في كل طلب، والألوان مطابقة تماماً للكتالوج. شركاء نجاح حقيقيون لمشاريعنا.','color'=>'var(--brand-blue)'],
-      ['name'=>'ياسر عبد الله','role'=>'فني دهانات','text'=>'أسعار منافسة وخامات ممتازة. التعامل سهل والطلب يوصل في ميعاده من غير أي تأخير.','color'=>'var(--brand-purple)'],
-      ['name'=>'كريم سمير','role'=>'مقاول تشطيبات','text'=>'خدمة عملاء تفهم شغلك وترشّحلك المنتج المناسب. وفّرت عليّ وقت ومجهود كبير في مشاريعي.','color'=>'var(--brand-green)'],
+      ['name'=>__('أحمد المالكي', 'arqamweb'),'role'=>__('مقاول دهانات', 'arqamweb'),'text'=>__('تعاملت مع بويا ستور لسنوات وأشهد أنهم الأفضل في السوق من ناحية الجودة والسعر والخدمة.', 'arqamweb'),'color'=>'var(--brand-red)'],
+      ['name'=>__('خالد العتيبي', 'arqamweb'),'role'=>__('ورشة سيارات', 'arqamweb'),'text'=>__('منتجات أصلية 100% وتوصيل سريع جداً. فريق الدعم محترف ويساعد في اختيار المنتج المناسب.', 'arqamweb'),'color'=>'var(--brand-orange)'],
+      ['name'=>__('سعد الحربي', 'arqamweb'),'role'=>__('نجار محترف', 'arqamweb'),'text'=>__('أفضل تشكيلة من دهانات الأخشاب وجدتها. النتائج رائعة والعملاء سعداء دائماً بالنهائيات.', 'arqamweb'),'color'=>'var(--brand-green)'],
+      ['name'=>__('محمود فؤاد', 'arqamweb'),'role'=>__('صاحب شركة ديكور', 'arqamweb'),'text'=>__('الجودة ثابتة في كل طلب، والألوان مطابقة تماماً للكتالوج. شركاء نجاح حقيقيون لمشاريعنا.', 'arqamweb'),'color'=>'var(--brand-blue)'],
+      ['name'=>__('ياسر عبد الله', 'arqamweb'),'role'=>__('فني دهانات', 'arqamweb'),'text'=>__('أسعار منافسة وخامات ممتازة. التعامل سهل والطلب يوصل في ميعاده من غير أي تأخير.', 'arqamweb'),'color'=>'var(--brand-purple)'],
+      ['name'=>__('كريم سمير', 'arqamweb'),'role'=>__('مقاول تشطيبات', 'arqamweb'),'text'=>__('خدمة عملاء تفهم شغلك وترشّحلك المنتج المناسب. وفّرت عليّ وقت ومجهود كبير في مشاريعي.', 'arqamweb'),'color'=>'var(--brand-green)'],
     ];
     ?>
     <div class="blaze-slider boya-testimonials-slider">
@@ -395,11 +401,11 @@ $images = get_template_directory_uri() . '/assets/images';
         </div>
 
         <div class="boya-slider-controls">
-          <button type="button" class="blaze-prev" aria-label="السابق">
+          <button type="button" class="blaze-prev" aria-label="<?php esc_attr_e('السابق', 'arqamweb'); ?>">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
           <div class="blaze-pagination"></div>
-          <button type="button" class="blaze-next" aria-label="التالي">
+          <button type="button" class="blaze-next" aria-label="<?php esc_attr_e('التالي', 'arqamweb'); ?>">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
           </button>
         </div>
@@ -413,20 +419,20 @@ $images = get_template_directory_uri() . '/assets/images';
   <div class="container mx-auto px-6">
     <div class="grid lg:grid-cols-12 gap-12">
       <div class="lg:col-span-4">
-        <div class="text-sm font-bold text-brand-blue mb-3 tracking-wider">الأسئلة الشائعة</div>
+        <div class="text-sm font-bold text-brand-blue mb-3 tracking-wider"><?php esc_html_e('الأسئلة الشائعة', 'arqamweb'); ?></div>
         <h2 class="text-4xl md:text-5xl font-black mb-4 leading-tight">
-          إجابات على<span class="block text-gradient-warm">استفساراتك</span>
+          <?php esc_html_e('إجابات على', 'arqamweb'); ?><span class="block text-gradient-warm"><?php esc_html_e('استفساراتك', 'arqamweb'); ?></span>
         </h2>
-        <p class="text-muted-foreground">كل ما تحتاج معرفته قبل اتخاذ قرار الشراء.</p>
+        <p class="text-muted-foreground"><?php esc_html_e('كل ما تحتاج معرفته قبل اتخاذ قرار الشراء.', 'arqamweb'); ?></p>
       </div>
       <div class="lg:col-span-8 space-y-3">
         <?php
         $faqs = [
-          ['q'=>'هل المنتجات أصلية ومضمونة؟','a'=>'نعم، جميع منتجاتنا أصلية 100% ومستوردة مباشرة من الوكلاء المعتمدين للعلامات التجارية العالمية، مع ضمان الجودة على كافة المنتجات.'],
-          ['q'=>'كم تستغرق مدة التوصيل؟','a'=>'نوفر خدمة توصيل سريعة خلال 24-48 ساعة داخل المدن الرئيسية، و3-5 أيام عمل لباقي مناطق الجمهورية.'],
-          ['q'=>'هل توفرون استشارات فنية مجانية؟','a'=>'نعم، فريقنا المتخصص متاح لتقديم الاستشارات الفنية المجانية لمساعدتك في اختيار المنتجات الأنسب لمشروعك.'],
-          ['q'=>'ما هي طرق الدفع المتاحة؟','a'=>'نقبل الدفع عبر البطاقات الائتمانية (Visa / Mastercard)، التحويل البنكي، والدفع عند الاستلام لطلبات محددة.'],
-          ['q'=>'هل لديكم برنامج للمقاولين والمحترفين؟','a'=>'نعم، نقدم باقة المحترفين بأسعار خاصة، دعم مخصص، وإمكانية الطلب بكميات كبيرة مع خصومات تنافسية.'],
+          ['q'=>__('هل المنتجات أصلية ومضمونة؟', 'arqamweb'),'a'=>__('نعم، جميع منتجاتنا أصلية 100% ومستوردة مباشرة من الوكلاء المعتمدين للعلامات التجارية العالمية، مع ضمان الجودة على كافة المنتجات.', 'arqamweb')],
+          ['q'=>__('كم تستغرق مدة التوصيل؟', 'arqamweb'),'a'=>__('نوفر خدمة توصيل سريعة خلال 24-48 ساعة داخل المدن الرئيسية، و3-5 أيام عمل لباقي مناطق الجمهورية.', 'arqamweb')],
+          ['q'=>__('هل توفرون استشارات فنية مجانية؟', 'arqamweb'),'a'=>__('نعم، فريقنا المتخصص متاح لتقديم الاستشارات الفنية المجانية لمساعدتك في اختيار المنتجات الأنسب لمشروعك.', 'arqamweb')],
+          ['q'=>__('ما هي طرق الدفع المتاحة؟', 'arqamweb'),'a'=>__('نقبل الدفع عبر البطاقات الائتمانية (Visa / Mastercard)، التحويل البنكي، والدفع عند الاستلام لطلبات محددة.', 'arqamweb')],
+          ['q'=>__('هل لديكم برنامج للمقاولين والمحترفين؟', 'arqamweb'),'a'=>__('نعم، نقدم باقة المحترفين بأسعار خاصة، دعم مخصص، وإمكانية الطلب بكميات كبيرة مع خصومات تنافسية.', 'arqamweb')],
         ];
         foreach ($faqs as $i => $f): ?>
         <div class="rounded-2xl border transition-all duration-300 overflow-hidden border-border bg-card" data-accordion-item>
@@ -452,18 +458,18 @@ $images = get_template_directory_uri() . '/assets/images';
 <section id="contact" class="py-24 lg:py-32 bg-secondary/40">
   <div class="container mx-auto px-6">
     <div class="text-center max-w-2xl mx-auto mb-16">
-      <div class="text-sm font-bold text-brand-green mb-3 tracking-wider">تواصل معنا</div>
-      <h2 class="text-4xl md:text-5xl font-black">دعنا <span class="text-gradient-warm">نساعدك</span> اليوم</h2>
+      <div class="text-sm font-bold text-brand-green mb-3 tracking-wider"><?php esc_html_e('تواصل معنا', 'arqamweb'); ?></div>
+      <h2 class="text-4xl md:text-5xl font-black"><?php esc_html_e('دعنا', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('نساعدك', 'arqamweb'); ?></span> <?php esc_html_e('اليوم', 'arqamweb'); ?></h2>
     </div>
     <div class="grid lg:grid-cols-5 gap-8">
       <div class="lg:col-span-2 space-y-4">
         <?php
         $contacts = [
-          ['icon'=>'phone','title'=>'اتصل بنا','value'=>"01038304949\n01038314148\n0237532216",'color'=>'var(--brand-red)'],
-          ['icon'=>'message-circle','title'=>'واتساب','value'=>'01038314148','color'=>'var(--brand-green)','cta'=>'ابدأ المحادثة'],
-          ['icon'=>'mail','title'=>'البريد الإلكتروني','value'=>'info@boyastore-eg.com','color'=>'var(--brand-blue)'],
-          ['icon'=>'map-pin','title'=>'العنوان','value'=>'34 ش محمد حمزة البطران، متفرع من الفريق علي فهمي، المنصورية - الهرم','color'=>'var(--brand-orange)'],
-          ['icon'=>'clock','title'=>'مواعيد التسليم','value'=>"الطلبات من 6 صباحًا إلى 3 عصرًا تُسلّم في نفس اليوم.\nمن 4 عصرًا إلى 12 منتصف الليل تُسلّم في اليوم التالي.",'color'=>'var(--brand-purple)'],
+          ['icon'=>'phone','title'=>__('اتصل بنا', 'arqamweb'),'value'=>"01038304949\n01038314148\n0237532216",'color'=>'var(--brand-red)'],
+          ['icon'=>'message-circle','title'=>__('واتساب', 'arqamweb'),'value'=>'01038314148','color'=>'var(--brand-green)','cta'=>__('ابدأ المحادثة', 'arqamweb')],
+          ['icon'=>'mail','title'=>__('البريد الإلكتروني', 'arqamweb'),'value'=>'info@boyastore-eg.com','color'=>'var(--brand-blue)'],
+          ['icon'=>'map-pin','title'=>__('العنوان', 'arqamweb'),'value'=>__('34 ش محمد حمزة البطران، متفرع من الفريق علي فهمي، المنصورية - الهرم', 'arqamweb'),'color'=>'var(--brand-orange)'],
+          ['icon'=>'clock','title'=>__('مواعيد التسليم', 'arqamweb'),'value'=>__("الطلبات من 6 صباحًا إلى 3 عصرًا تُسلّم في نفس اليوم.\nمن 4 عصرًا إلى 12 منتصف الليل تُسلّم في اليوم التالي.", 'arqamweb'),'color'=>'var(--brand-purple)'],
         ];
         $contact_icons = [
           'phone'          => '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.85 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.96 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>',
@@ -491,8 +497,8 @@ $images = get_template_directory_uri() . '/assets/images';
       </div>
 
      <div class="lg:col-span-3 bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)] border border-border/60 space-y-4">
-        <h3 class="text-2xl font-black mb-2">أرسل لنا رسالة</h3>
-        <p class="text-muted-foreground text-sm mb-6">سنرد عليك في أقرب وقت ممكن</p>
+        <h3 class="text-2xl font-black mb-2"><?php esc_html_e('أرسل لنا رسالة', 'arqamweb'); ?></h3>
+        <p class="text-muted-foreground text-sm mb-6"><?php esc_html_e('سنرد عليك في أقرب وقت ممكن', 'arqamweb'); ?></p>
 
           <div>
               <?php echo do_shortcode('[contact-form-7 id="14a5d4d" title="Contact Us"]'); ?>

@@ -1,6 +1,24 @@
 (function () {
   'use strict';
 
+  /* ── i18n ─────────────────────────────────────────────────────
+     Every user-facing string comes from wp_localize_script (see the
+     `boyaI18n` block in functions.php) so it stays translatable. */
+  var boyaI18n = window.boyaI18n || {};
+
+  function t(key) {
+    var value = boyaI18n[key];
+    return typeof value === 'string' ? value : '';
+  }
+
+  function tf(key) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    return t(key).replace(/%(\d+)\$s/g, function (_, n) {
+      var v = args[parseInt(n, 10) - 1];
+      return v === undefined ? '' : v;
+    });
+  }
+
   /* ── 0. First-paint loader ────────────────────────────────── */
   var siteLoader = document.getElementById('boya-site-loader');
   if (siteLoader) {
@@ -79,7 +97,7 @@
   var slides = document.querySelectorAll('.hero-slide');
   var dots = document.querySelectorAll('.hero-dot');
   var slideLabel = document.getElementById('hero-slide-label');
-  var slideLabels = ['دهانات سيارات', 'دهانات خشب', 'دهانات إنشائية', 'منتجات صناعية'];
+  var slideLabels = Array.isArray(boyaI18n.heroSlides) ? boyaI18n.heroSlides : [];
   var currentSlide = 0;
   var slideTimer;
 
@@ -375,17 +393,17 @@
     var lb = document.createElement('div');
     lb.className = 'boya-lightbox' + (galleryImages.length < 2 ? ' boya-lightbox--single' : '');
     lb.setAttribute('role', 'dialog');
-    lb.setAttribute('aria-label', 'معرض صور المنتج');
+    lb.setAttribute('aria-label', t('galleryLabel'));
     lb.setAttribute('aria-hidden', 'true');
     lb.innerHTML =
-      '<button type="button" class="boya-lightbox__btn boya-lightbox__close" aria-label="إغلاق">' +
+      '<button type="button" class="boya-lightbox__btn boya-lightbox__close" aria-label="' + t('close') + '">' +
         '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
       '</button>' +
-      '<button type="button" class="boya-lightbox__btn boya-lightbox__prev" aria-label="السابق">' +
+      '<button type="button" class="boya-lightbox__btn boya-lightbox__prev" aria-label="' + t('prev') + '">' +
         '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>' +
       '</button>' +
       '<figure class="boya-lightbox__figure"><img class="boya-lightbox__img" src="" alt=""/></figure>' +
-      '<button type="button" class="boya-lightbox__btn boya-lightbox__next" aria-label="التالي">' +
+      '<button type="button" class="boya-lightbox__btn boya-lightbox__next" aria-label="' + t('next') + '">' +
         '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>' +
       '</button>' +
       '<div class="boya-lightbox__counter"></div>';
@@ -534,10 +552,10 @@
   if (feedback) {
     var status = params.get('contact');
     if (status === 'success') {
-      feedback.innerHTML = '<div class="mt-4 p-4 rounded-2xl bg-brand-green/10 border border-brand-green/30 text-brand-green font-bold text-sm text-center">تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.</div>';
+      feedback.innerHTML = '<div class="mt-4 p-4 rounded-2xl bg-brand-green/10 border border-brand-green/30 text-brand-green font-bold text-sm text-center">' + t('contactSuccess') + '</div>';
       history.replaceState(null, '', window.location.pathname);
     } else if (status === 'error') {
-      feedback.innerHTML = '<div class="mt-4 p-4 rounded-2xl bg-brand-red/10 border border-brand-red/30 text-brand-red font-bold text-sm text-center">حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.</div>';
+      feedback.innerHTML = '<div class="mt-4 p-4 rounded-2xl bg-brand-red/10 border border-brand-red/30 text-brand-red font-bold text-sm text-center">' + t('contactError') + '</div>';
       history.replaceState(null, '', window.location.pathname);
     }
   }
@@ -682,7 +700,7 @@
 
     wrap.classList.add('is-loading');
     btn.disabled = true;
-    if (label) label.textContent = 'جارٍ التحميل...';
+    if (label) label.textContent = t('loading');
 
     fetch(ajaxUrl, {
       method: 'POST',
@@ -719,13 +737,16 @@
         wrap.setAttribute('data-paged', data.paged || next);
 
         if (count && data.total) {
-          count.textContent = 'عرض ' + (data.loaded_text || data.loaded) +
-                              ' من ' + (data.total_text || data.total) +
-                              ' ' + (wrap.getAttribute('data-unit') || 'منتج');
+          count.textContent = tf(
+            'countFormat',
+            data.loaded_text || data.loaded,
+            data.total_text || data.total,
+            wrap.getAttribute('data-unit') || t('defaultUnit')
+          );
         }
 
         wrap.classList.remove('is-loading');
-        if (label) label.textContent = 'عرض المزيد';
+        if (label) label.textContent = t('loadMore');
 
         // Nothing left to load: drop the button, keep the counter.
         if (!data.has_more || !added.length) {
@@ -743,7 +764,7 @@
       .catch(function () {
         wrap.classList.remove('is-loading');
         btn.disabled = false;
-        if (label) label.textContent = 'عرض المزيد';
+        if (label) label.textContent = t('loadMore');
 
         // Never leave the visitor stuck: fall back to the plain next page.
         var fallback = wrap.getAttribute('data-next-url');

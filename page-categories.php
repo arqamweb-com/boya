@@ -14,12 +14,12 @@ get_header();
   </div>
   <div class="absolute inset-0 opacity-[0.04]" style="background-image:linear-gradient(white 1px,transparent 1px),linear-gradient(90deg,white 1px,transparent 1px);background-size:60px 60px"></div>
   <div class="container mx-auto px-6 pt-20 pb-28 lg:pt-28 lg:pb-36 relative text-center">
-    <div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow">أقسامنا</div>
+    <div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow"><?php esc_html_e('أقسامنا', 'arqamweb'); ?></div>
     <h1 class="text-4xl md:text-6xl font-black leading-tight">
-      تشكيلة <span class="text-gradient-warm">متكاملة لكل احتياجاتك</span>
+      <?php esc_html_e('تشكيلة', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('متكاملة لكل احتياجاتك', 'arqamweb'); ?></span>
     </h1>
     <p class="text-lg text-white/70 max-w-2xl mx-auto mt-6 leading-relaxed">
-      من دهانات السيارات إلى المنتجات الصناعية، نوفر كل ما تحتاجه بأعلى معايير الجودة العالمية.
+      <?php esc_html_e('من دهانات السيارات إلى المنتجات الصناعية، نوفر كل ما تحتاجه بأعلى معايير الجودة العالمية.', 'arqamweb'); ?>
     </p>
   </div>
   <div class="absolute bottom-0 left-0 right-0">
@@ -34,12 +34,12 @@ get_header();
   <div class="container mx-auto px-6">
     <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-16">
       <div class="max-w-xl">
-        <div class="inline-block text-sm font-bold text-brand-orange mb-3 tracking-wider">أقسامنا</div>
+        <div class="inline-block text-sm font-bold text-brand-orange mb-3 tracking-wider"><?php esc_html_e('أقسامنا', 'arqamweb'); ?></div>
         <h2 class="text-4xl md:text-5xl font-black leading-tight">
-          تشكيلة <span class="text-gradient-warm">متكاملة</span> لكل احتياجاتك
+          <?php esc_html_e('تشكيلة', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('متكاملة', 'arqamweb'); ?></span> <?php esc_html_e('لكل احتياجاتك', 'arqamweb'); ?>
         </h2>
       </div>
-      <p class="text-muted-foreground max-w-md">من دهانات السيارات إلى المنتجات الصناعية، نوفر كل ما تحتاجه بأعلى معايير الجودة العالمية.</p>
+      <p class="text-muted-foreground max-w-md"><?php esc_html_e('من دهانات السيارات إلى المنتجات الصناعية، نوفر كل ما تحتاجه بأعلى معايير الجودة العالمية.', 'arqamweb'); ?></p>
     </div>
 
     <?php
@@ -68,7 +68,13 @@ get_header();
       <?php foreach ($cats as $i => $cat) :
         $image_url = boya_term_image($cat, 'large');
         $accent    = $accent_colors[$i % count($accent_colors)];
-        $count_txt = $cat->count > 0 ? $cat->count . ' منتج' : '';
+        $count_txt = $cat->count > 0
+          ? sprintf(
+              /* translators: %s: number of products in the category */
+              _n('%s منتج', '%s منتجات', $cat->count, 'arqamweb'),
+              number_format_i18n($cat->count)
+            )
+          : '';
         $term_link = get_term_link($cat);
       ?>
       <a href="<?php echo esc_url($term_link); ?>"
@@ -89,7 +95,7 @@ get_header();
           <p class="text-sm text-white/80 mb-4"><?php echo esc_html(wp_trim_words($cat->description, 6)); ?></p>
           <?php endif; ?>
           <div class="flex items-center gap-2 text-sm font-bold opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500">
-            استكشف القسم
+            <?php esc_html_e('استكشف القسم', 'arqamweb'); ?>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
           </div>
         </div>
@@ -99,11 +105,11 @@ get_header();
 
     <?php else: // Fallback if WooCommerce categories are empty ?>
     <div class="text-center py-16 text-muted-foreground">
-      <p>لا توجد أقسام حتى الآن. يرجى إضافة أقسام المنتجات من لوحة التحكم في WooCommerce.</p>
+      <p><?php esc_html_e('لا توجد أقسام حتى الآن. يرجى إضافة أقسام المنتجات من لوحة التحكم في WooCommerce.', 'arqamweb'); ?></p>
       <?php if (current_user_can('manage_options')): ?>
       <a href="<?php echo esc_url(admin_url('edit-tags.php?taxonomy=product_cat&post_type=product')); ?>"
          class="mt-4 inline-block px-6 py-3 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">
-        إضافة أقسام →
+        <?php esc_html_e('إضافة أقسام', 'arqamweb'); ?> →
       </a>
       <?php endif; ?>
     </div>

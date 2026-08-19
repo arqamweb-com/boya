@@ -14,12 +14,12 @@ get_header();
   </div>
   <div class="absolute inset-0 opacity-[0.04]" style="background-image:linear-gradient(white 1px,transparent 1px),linear-gradient(90deg,white 1px,transparent 1px);background-size:60px 60px"></div>
   <div class="container mx-auto px-6 pt-20 pb-28 lg:pt-28 lg:pb-36 relative text-center">
-    <div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow">تواصل معنا</div>
+    <div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow"><?php esc_html_e('تواصل معنا', 'arqamweb'); ?></div>
     <h1 class="text-4xl md:text-6xl font-black leading-tight">
-      دعنا <span class="text-gradient-warm">نساعدك اليوم</span>
+      <?php esc_html_e('دعنا', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('نساعدك اليوم', 'arqamweb'); ?></span>
     </h1>
     <p class="text-lg text-white/70 max-w-2xl mx-auto mt-6 leading-relaxed">
-      نحن هنا للإجابة على كل أسئلتك ومساعدتك في اختيار المنتج المناسب لمشروعك.
+      <?php esc_html_e('نحن هنا للإجابة على كل أسئلتك ومساعدتك في اختيار المنتج المناسب لمشروعك.', 'arqamweb'); ?>
     </p>
   </div>
   <div class="absolute bottom-0 left-0 right-0">
@@ -33,18 +33,18 @@ get_header();
 <section id="contact" class="py-24 lg:py-32 bg-secondary/40">
   <div class="container mx-auto px-6">
     <div class="text-center max-w-2xl mx-auto mb-16">
-      <div class="text-sm font-bold text-brand-green mb-3 tracking-wider">تواصل معنا</div>
-      <h2 class="text-4xl md:text-5xl font-black">دعنا <span class="text-gradient-warm">نساعدك</span> اليوم</h2>
+      <div class="text-sm font-bold text-brand-green mb-3 tracking-wider"><?php esc_html_e('تواصل معنا', 'arqamweb'); ?></div>
+      <h2 class="text-4xl md:text-5xl font-black"><?php esc_html_e('دعنا', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('نساعدك', 'arqamweb'); ?></span> <?php esc_html_e('اليوم', 'arqamweb'); ?></h2>
     </div>
     <div class="grid lg:grid-cols-5 gap-8">
       <div class="lg:col-span-2 space-y-4">
         <?php
         $contacts = [
-          ['icon'=>'phone','title'=>'اتصل بنا','value'=>"01038304949\n01038314148\n0237532216",'color'=>'var(--brand-red)'],
-          ['icon'=>'message-circle','title'=>'واتساب','value'=>'01038314148','color'=>'var(--brand-green)','cta'=>'ابدأ المحادثة'],
-          ['icon'=>'mail','title'=>'البريد الإلكتروني','value'=>'info@boyastore-eg.com','color'=>'var(--brand-blue)'],
-          ['icon'=>'map-pin','title'=>'العنوان','value'=>'34 ش محمد حمزة البطران، متفرع من الفريق علي فهمي، المنصورية - الهرم','color'=>'var(--brand-orange)'],
-          ['icon'=>'clock','title'=>'مواعيد التسليم','value'=>"الطلبات من 6 صباحًا إلى 3 عصرًا تُسلّم في نفس اليوم.\nمن 4 عصرًا إلى 12 منتصف الليل تُسلّم في اليوم التالي.",'color'=>'var(--brand-purple)'],
+          ['icon'=>'phone','title'=>__('اتصل بنا', 'arqamweb'),'value'=>"01038304949\n01038314148\n0237532216",'color'=>'var(--brand-red)'],
+          ['icon'=>'message-circle','title'=>__('واتساب', 'arqamweb'),'value'=>'01038314148','color'=>'var(--brand-green)','cta'=>__('ابدأ المحادثة', 'arqamweb')],
+          ['icon'=>'mail','title'=>__('البريد الإلكتروني', 'arqamweb'),'value'=>'info@boyastore-eg.com','color'=>'var(--brand-blue)'],
+          ['icon'=>'map-pin','title'=>__('العنوان', 'arqamweb'),'value'=>__('34 ش محمد حمزة البطران، متفرع من الفريق علي فهمي، المنصورية - الهرم', 'arqamweb'),'color'=>'var(--brand-orange)'],
+          ['icon'=>'clock','title'=>__('مواعيد التسليم', 'arqamweb'),'value'=>__("الطلبات من 6 صباحًا إلى 3 عصرًا تُسلّم في نفس اليوم.\nمن 4 عصرًا إلى 12 منتصف الليل تُسلّم في اليوم التالي.", 'arqamweb'),'color'=>'var(--brand-purple)'],
         ];
         $icons = [
           'phone'          => '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.85 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.96 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>',
@@ -72,8 +72,8 @@ get_header();
       </div>
 
       <div class="lg:col-span-3 bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)] border border-border/60 space-y-4">
-        <h3 class="text-2xl font-black mb-2">أرسل لنا رسالة</h3>
-        <p class="text-muted-foreground text-sm mb-6">سنرد عليك في أقرب وقت ممكن</p>
+        <h3 class="text-2xl font-black mb-2"><?php esc_html_e('أرسل لنا رسالة', 'arqamweb'); ?></h3>
+        <p class="text-muted-foreground text-sm mb-6"><?php esc_html_e('سنرد عليك في أقرب وقت ممكن', 'arqamweb'); ?></p>
 
           <div>
               <?php echo do_shortcode('[contact-form-7 id="14a5d4d" title="Contact Us"]'); ?>
@@ -88,7 +88,7 @@ get_header();
   <div class="container mx-auto px-6">
     <div class="rounded-3xl overflow-hidden border border-border/60 shadow-[var(--shadow-soft)] aspect-[16/9] md:aspect-[21/9]">
       <iframe
-        title="موقع بويا ستور على الخريطة"
+        title="<?php esc_attr_e('موقع بويا ستور على الخريطة', 'arqamweb'); ?>"
         src="https://www.google.com/maps?q=34+%D8%B4+%D9%85%D8%AD%D9%85%D8%AF+%D8%AD%D9%85%D8%B2%D8%A9+%D8%A7%D9%84%D8%A8%D8%B7%D8%B1%D8%A7%D9%86%D8%8C+%D8%A7%D9%84%D9%85%D9%86%D8%B5%D9%88%D8%B1%D9%8A%D8%A9%D8%8C+%D8%A7%D9%84%D9%87%D8%B1%D9%85&output=embed"
         width="100%"
         height="100%"

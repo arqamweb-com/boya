@@ -14,12 +14,12 @@ get_header();
   </div>
   <div class="absolute inset-0 opacity-[0.04]" style="background-image:linear-gradient(white 1px,transparent 1px),linear-gradient(90deg,white 1px,transparent 1px);background-size:60px 60px"></div>
   <div class="container mx-auto px-6 pt-20 pb-28 lg:pt-28 lg:pb-36 relative text-center">
-    <div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow">شركاء النجاح</div>
+    <div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow"><?php esc_html_e('شركاء النجاح', 'arqamweb'); ?></div>
     <h1 class="text-4xl md:text-6xl font-black leading-tight">
-      أرقى <span class="text-gradient-warm">العلامات التجارية العالمية</span>
+      <?php esc_html_e('أرقى', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('العلامات التجارية العالمية', 'arqamweb'); ?></span>
     </h1>
     <p class="text-lg text-white/70 max-w-2xl mx-auto mt-6 leading-relaxed">
-      نفخر بكوننا الوكلاء المعتمدين لأشهر علامات الدهانات حول العالم
+      <?php esc_html_e('نفخر بكوننا الوكلاء المعتمدين لأشهر علامات الدهانات حول العالم', 'arqamweb'); ?>
     </p>
   </div>
   <div class="absolute bottom-0 left-0 right-0">
@@ -33,11 +33,11 @@ get_header();
 <section id="brands" class="py-24 bg-secondary/40 relative overflow-hidden">
   <div class="container mx-auto px-6">
     <div class="text-center mb-16">
-      <div class="text-sm font-bold text-brand-blue mb-3 tracking-wider">شركاء النجاح</div>
+      <div class="text-sm font-bold text-brand-blue mb-3 tracking-wider"><?php esc_html_e('شركاء النجاح', 'arqamweb'); ?></div>
       <h2 class="text-4xl md:text-5xl font-black mb-4">
-        أرقى <span class="text-gradient-warm">العلامات التجارية</span> العالمية
+        <?php esc_html_e('أرقى', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('العلامات التجارية', 'arqamweb'); ?></span> <?php esc_html_e('العالمية', 'arqamweb'); ?>
       </h2>
-      <p class="text-muted-foreground max-w-2xl mx-auto">نفخر بكوننا الوكلاء المعتمدين لأشهر علامات الدهانات حول العالم</p>
+      <p class="text-muted-foreground max-w-2xl mx-auto"><?php esc_html_e('نفخر بكوننا الوكلاء المعتمدين لأشهر علامات الدهانات حول العالم', 'arqamweb'); ?></p>
     </div>
 
     <?php
@@ -68,15 +68,25 @@ get_header();
     <?php else: // No brands taxonomy installed ?>
     <div class="text-center py-16 text-muted-foreground">
       <?php if (!$brands_tax): ?>
-      <p class="mb-2 font-bold">لم يتم العثور على تاكسونومي للعلامات التجارية.</p>
-      <p class="text-sm">يرجى تثبيت إضافة <strong>YITH WooCommerce Brands</strong> أو إنشاء تاكسونومي باسم <code>product_brand</code>.</p>
+      <p class="mb-2 font-bold"><?php esc_html_e('لم يتم العثور على تاكسونومي للعلامات التجارية.', 'arqamweb'); ?></p>
+      <p class="text-sm"><?php
+        printf(
+          wp_kses(
+            /* translators: 1: plugin name wrapped in <strong>, 2: taxonomy slug wrapped in <code> */
+            __('يرجى تثبيت إضافة %1$s أو إنشاء تاكسونومي باسم %2$s.', 'arqamweb'),
+            ['strong' => [], 'code' => []]
+          ),
+          '<strong>YITH WooCommerce Brands</strong>',
+          '<code>product_brand</code>'
+        );
+      ?></p>
       <?php else: ?>
-      <p>لا توجد علامات تجارية حتى الآن. يرجى إضافتها من لوحة التحكم.</p>
+      <p><?php esc_html_e('لا توجد علامات تجارية حتى الآن. يرجى إضافتها من لوحة التحكم.', 'arqamweb'); ?></p>
       <?php endif; ?>
       <?php if (current_user_can('manage_options') && $brands_tax): ?>
       <a href="<?php echo esc_url(admin_url('edit-tags.php?taxonomy=' . $brands_tax . '&post_type=product')); ?>"
          class="mt-4 inline-block px-6 py-3 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">
-        إضافة علامات تجارية →
+        <?php esc_html_e('إضافة علامات تجارية', 'arqamweb'); ?> →
       </a>
       <?php endif; ?>
     </div>

@@ -1,6 +1,11 @@
 <?php
 defined('ABSPATH') || exit;
 
+/* ── Load theme translations ────────────────────────────────── */
+add_action('after_setup_theme', function () {
+    load_theme_textdomain('arqamweb', get_template_directory() . '/languages');
+}, 5);
+
 /* ── Auto-create pages on theme activation ──────────────────── */
 add_action('after_switch_theme', 'boya_setup_pages');
 
@@ -10,14 +15,14 @@ function boya_setup_pages() {
     }
 
     $pages = [
-        ['title' => 'الرئيسية',                         'slug' => 'home',          'template' => 'front-page.php'],
-        ['title' => 'من نحن',                            'slug' => 'about',         'template' => 'page-about.php'],
-        ['title' => 'العلامات التجارية',                  'slug' => 'brands',        'template' => 'page-brands.php'],
-        ['title' => 'الأقسام',                           'slug' => 'categories',    'template' => 'page-categories.php'],
-        ['title' => 'تواصل معنا',                        'slug' => 'contact',       'template' => 'page-contact.php'],
-        ['title' => 'العروض',                            'slug' => 'offers',        'template' => 'page-offers.php'],
-        ['title' => 'المنتجات',                          'slug' => 'products',      'template' => 'page-products.php'],
-        ['title' => 'سياسة الاسترجاع والاستبدال',         'slug' => 'return-policy', 'template' => 'page-return-policy.php'],
+        ['title' => __('الرئيسية', 'arqamweb'),                        'slug' => 'home',          'template' => 'front-page.php'],
+        ['title' => __('من نحن', 'arqamweb'),                           'slug' => 'about',         'template' => 'page-about.php'],
+        ['title' => __('العلامات التجارية', 'arqamweb'),                 'slug' => 'brands',        'template' => 'page-brands.php'],
+        ['title' => __('الأقسام', 'arqamweb'),                          'slug' => 'categories',    'template' => 'page-categories.php'],
+        ['title' => __('تواصل معنا', 'arqamweb'),                       'slug' => 'contact',       'template' => 'page-contact.php'],
+        ['title' => __('العروض', 'arqamweb'),                           'slug' => 'offers',        'template' => 'page-offers.php'],
+        ['title' => __('المنتجات', 'arqamweb'),                         'slug' => 'products',      'template' => 'page-products.php'],
+        ['title' => __('سياسة الاسترجاع والاستبدال', 'arqamweb'),        'slug' => 'return-policy', 'template' => 'page-return-policy.php'],
     ];
 
     $home_id = 0;
@@ -69,7 +74,7 @@ add_action('admin_notices', function () {
     printf(
         wp_kses(
             /* translators: %s: link to setup page */
-            __('بويا ستور: لم يتم إعداد الثيم بعد. <a href="%s">اضغط هنا للإعداد</a>', 'boya-store'),
+            __('بويا ستور: لم يتم إعداد الثيم بعد. <a href="%s">اضغط هنا للإعداد</a>', 'arqamweb'),
             ['a' => ['href' => []]]
         ),
         esc_url(admin_url('themes.php?page=boya-store-setup'))
@@ -80,8 +85,8 @@ add_action('admin_notices', function () {
 /* ── Theme setup admin page ─────────────────────────────────── */
 add_action('admin_menu', function () {
     add_theme_page(
-        'Boya Store Setup',
-        'Boya Store Setup',
+        __('إعداد بويا ستور', 'arqamweb'),
+        __('إعداد بويا ستور', 'arqamweb'),
         'manage_options',
         'boya-store-setup',
         'boya_setup_admin_page'
@@ -95,36 +100,46 @@ function boya_setup_admin_page() {
     $permalink      = get_option('permalink_structure');
 
     echo '<div class="wrap" dir="rtl">';
-    echo '<h1>Boya Store Theme Settings</h1>';
+    echo '<h1>' . esc_html__('إعدادات ثيم بويا ستور', 'arqamweb') . '</h1>';
 
     if (isset($_POST['boya_run_setup']) && check_admin_referer('boya_setup_nonce')) {
         boya_setup_pages();
-        echo '<div class="notice notice-success"><p>تم الإعداد بنجاح!</p></div>';
+        echo '<div class="notice notice-success"><p>' . esc_html__('تم الإعداد بنجاح!', 'arqamweb') . '</p></div>';
     }
 
-    echo '<h2>حالة الصفحات</h2><ul>';
+    echo '<h2>' . esc_html__('حالة الصفحات', 'arqamweb') . '</h2><ul>';
     foreach ($pages_to_check as $slug) {
-        $exists = get_page_by_path($slug) ? '✅ موجودة' : '❌ غير موجودة';
-        echo '<li><strong>' . esc_html($slug) . '</strong>: ' . esc_html($exists) . '</li>';
+        $exists = get_page_by_path($slug)
+            ? esc_html__('✅ موجودة', 'arqamweb')
+            : esc_html__('❌ غير موجودة', 'arqamweb');
+        echo '<li><strong>' . esc_html($slug) . '</strong>: ' . $exists . '</li>';
     }
     echo '</ul>';
 
-    echo '<h2>إعدادات أخرى</h2><ul>';
-    echo '<li><strong>الصفحة الرئيسية:</strong> ' . ($show_on_front === 'page' && $front_id ? '✅ مضبوطة' : '❌ غير مضبوطة') . '</li>';
-    echo '<li><strong>هيكل الروابط:</strong> ' . ($permalink ? '✅ ' . esc_html($permalink) : '❌ غير مضبوط') . '</li>';
+    echo '<h2>' . esc_html__('إعدادات أخرى', 'arqamweb') . '</h2><ul>';
+    echo '<li><strong>' . esc_html__('الصفحة الرئيسية:', 'arqamweb') . '</strong> '
+        . ($show_on_front === 'page' && $front_id
+            ? esc_html__('✅ مضبوطة', 'arqamweb')
+            : esc_html__('❌ غير مضبوطة', 'arqamweb'))
+        . '</li>';
+    echo '<li><strong>' . esc_html__('هيكل الروابط:', 'arqamweb') . '</strong> '
+        . ($permalink
+            ? '✅ ' . esc_html($permalink)
+            : esc_html__('❌ غير مضبوط', 'arqamweb'))
+        . '</li>';
     echo '</ul>';
 
-    echo '<h2>تعليمات التثبيت</h2><ol>';
-    echo '<li>WP Admin → Appearance → Themes → Add New → Upload → boya-store-theme.zip</li>';
-    echo '<li>Activate the theme</li>';
-    echo '<li>Appearance → Boya Store Setup → Run Setup</li>';
-    echo '<li>Settings → Permalinks → Save Changes</li>';
+    echo '<h2>' . esc_html__('تعليمات التثبيت', 'arqamweb') . '</h2><ol>';
+    echo '<li>' . esc_html__('لوحة التحكم ← المظهر ← القوالب ← أضف جديد ← رفع ← boya-store-theme.zip', 'arqamweb') . '</li>';
+    echo '<li>' . esc_html__('تفعيل الثيم', 'arqamweb') . '</li>';
+    echo '<li>' . esc_html__('المظهر ← إعداد بويا ستور ← تشغيل الإعداد', 'arqamweb') . '</li>';
+    echo '<li>' . esc_html__('الإعدادات ← الروابط الدائمة ← حفظ التغييرات', 'arqamweb') . '</li>';
     echo '</ol>';
 
     echo '<form method="post">';
     wp_nonce_field('boya_setup_nonce');
     echo '<input type="hidden" name="boya_run_setup" value="1">';
-    submit_button('تشغيل الإعداد');
+    submit_button(__('تشغيل الإعداد', 'arqamweb'));
     echo '</form>';
     echo '</div>';
 }

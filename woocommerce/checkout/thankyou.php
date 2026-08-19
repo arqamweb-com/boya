@@ -31,27 +31,27 @@ if (!isset($order) || !$order) {
 
           <div class="grid sm:grid-cols-2 gap-4 mb-8">
             <div class="bg-card rounded-2xl border border-border/60 p-5 shadow-[var(--shadow-soft)]">
-              <div class="text-xs font-bold text-brand-orange mb-2 tracking-wider">تاريخ الطلب</div>
+              <div class="text-xs font-bold text-brand-orange mb-2 tracking-wider"><?php esc_html_e('تاريخ الطلب', 'arqamweb'); ?></div>
               <div class="font-black"><?php echo esc_html(wc_format_datetime($order->get_date_created())); ?></div>
             </div>
             <div class="bg-card rounded-2xl border border-border/60 p-5 shadow-[var(--shadow-soft)]">
-              <div class="text-xs font-bold text-brand-orange mb-2 tracking-wider">وسيلة الدفع</div>
-              <div class="font-black"><?php echo wp_kses_post($order->get_payment_method_title() ?: 'غير محددة'); ?></div>
+              <div class="text-xs font-bold text-brand-orange mb-2 tracking-wider"><?php esc_html_e('وسيلة الدفع', 'arqamweb'); ?></div>
+              <div class="font-black"><?php echo wp_kses_post($order->get_payment_method_title() ?: __('غير محددة', 'arqamweb')); ?></div>
             </div>
             <?php if ($order->get_billing_email()) : ?>
             <div class="bg-card rounded-2xl border border-border/60 p-5 shadow-[var(--shadow-soft)]">
-              <div class="text-xs font-bold text-brand-orange mb-2 tracking-wider">البريد الإلكتروني</div>
+              <div class="text-xs font-bold text-brand-orange mb-2 tracking-wider"><?php esc_html_e('البريد الإلكتروني', 'arqamweb'); ?></div>
               <div class="font-black break-words"><?php echo esc_html($order->get_billing_email()); ?></div>
             </div>
             <?php endif; ?>
             <div class="bg-card rounded-2xl border border-border/60 p-5 shadow-[var(--shadow-soft)]">
-              <div class="text-xs font-bold text-brand-orange mb-2 tracking-wider">الإجمالي</div>
+              <div class="text-xs font-bold text-brand-orange mb-2 tracking-wider"><?php esc_html_e('الإجمالي', 'arqamweb'); ?></div>
               <div class="font-black text-brand-navy"><?php echo wp_kses_post($order->get_formatted_order_total()); ?></div>
             </div>
           </div>
 
           <div class="bg-card rounded-3xl border border-border/60 p-6 md:p-8 shadow-[var(--shadow-elegant)]">
-            <h2 class="text-2xl font-black mb-6">تفاصيل الطلب</h2>
+            <h2 class="text-2xl font-black mb-6"><?php esc_html_e('تفاصيل الطلب', 'arqamweb'); ?></h2>
             <div class="space-y-4">
               <?php foreach ($order->get_items() as $item_id => $item) :
                 $product = $item->get_product();
@@ -63,7 +63,13 @@ if (!isset($order) || !$order) {
                 </div>
                 <div class="flex-1 min-w-0">
                   <h3 class="font-bold leading-tight"><?php echo esc_html($item->get_name()); ?></h3>
-                  <p class="text-sm text-muted-foreground">الكمية: <?php echo esc_html($item->get_quantity()); ?></p>
+                  <p class="text-sm text-muted-foreground"><?php
+                    printf(
+                      /* translators: %s: ordered item quantity */
+                      esc_html__('الكمية: %s', 'arqamweb'),
+                      esc_html($item->get_quantity())
+                    );
+                  ?></p>
                 </div>
                 <div class="font-black text-brand-navy"><?php echo wp_kses_post($order->get_formatted_line_subtotal($item)); ?></div>
               </div>
@@ -72,24 +78,24 @@ if (!isset($order) || !$order) {
 
             <div class="mt-6 border-t border-border/60 pt-5 space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-muted-foreground">المجموع الفرعي</span>
+                <span class="text-muted-foreground"><?php esc_html_e('المجموع الفرعي', 'arqamweb'); ?></span>
                 <span class="font-bold"><?php echo wp_kses_post(wc_price($order->get_subtotal(), ['currency' => $order->get_currency()])); ?></span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-muted-foreground">الشحن</span>
+                <span class="text-muted-foreground"><?php esc_html_e('الشحن', 'arqamweb'); ?></span>
                 <span class="font-bold"><?php echo wp_kses_post(wc_price($order->get_shipping_total(), ['currency' => $order->get_currency()])); ?></span>
               </div>
               <div class="flex items-center justify-between text-xl">
-                <span class="font-black">الإجمالي</span>
+                <span class="font-black"><?php esc_html_e('الإجمالي', 'arqamweb'); ?></span>
                 <span class="font-black text-brand-navy"><?php echo wp_kses_post($order->get_formatted_order_total()); ?></span>
               </div>
             </div>
           </div>
 
           <div class="flex flex-wrap justify-center gap-3 mt-8">
-            <a href="<?php echo esc_url(home_url('/products')); ?>" class="px-7 py-3.5 rounded-full text-white font-black" style="background:var(--gradient-warm)">متابعة التسوق</a>
+            <a href="<?php echo esc_url(home_url('/products')); ?>" class="px-7 py-3.5 rounded-full text-white font-black" style="background:var(--gradient-warm)"><?php esc_html_e('متابعة التسوق', 'arqamweb'); ?></a>
             <?php if (is_user_logged_in()) : ?>
-            <a href="<?php echo esc_url(wc_get_account_endpoint_url('orders')); ?>" class="px-7 py-3.5 rounded-full border-2 border-brand-navy text-brand-navy font-bold hover:bg-brand-navy hover:text-white transition-colors">تتبع طلبك</a>
+            <a href="<?php echo esc_url(wc_get_account_endpoint_url('orders')); ?>" class="px-7 py-3.5 rounded-full border-2 border-brand-navy text-brand-navy font-bold hover:bg-brand-navy hover:text-white transition-colors"><?php esc_html_e('تتبع طلبك', 'arqamweb'); ?></a>
             <?php endif; ?>
           </div>
 
@@ -99,9 +105,9 @@ if (!isset($order) || !$order) {
         <?php do_action('woocommerce_thankyou', $order->get_id()); ?>
       <?php else : ?>
         <div class="bg-card rounded-3xl border border-border/60 p-8 shadow-[var(--shadow-soft)] text-center">
-          <h2 class="text-2xl font-black mb-3">تم استلام طلبك</h2>
-          <p class="text-muted-foreground mb-6">شكراً لك. سنراجع الطلب ونرسل لك التفاصيل قريباً.</p>
-          <a href="<?php echo esc_url(home_url('/products')); ?>" class="inline-flex px-7 py-3.5 rounded-full text-white font-black" style="background:var(--gradient-warm)">متابعة التسوق</a>
+          <h2 class="text-2xl font-black mb-3"><?php esc_html_e('تم استلام طلبك', 'arqamweb'); ?></h2>
+          <p class="text-muted-foreground mb-6"><?php esc_html_e('شكراً لك. سنراجع الطلب ونرسل لك التفاصيل قريباً.', 'arqamweb'); ?></p>
+          <a href="<?php echo esc_url(home_url('/products')); ?>" class="inline-flex px-7 py-3.5 rounded-full text-white font-black" style="background:var(--gradient-warm)"><?php esc_html_e('متابعة التسوق', 'arqamweb'); ?></a>
         </div>
       <?php endif; ?>
     </div>

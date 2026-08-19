@@ -6,7 +6,7 @@ defined('ABSPATH') || exit;
 
 $current_user = wp_get_current_user();
 $first_name   = ($current_user && $current_user->exists()) ? ($current_user->first_name ?: $current_user->display_name) : '';
-$title_name   = is_user_logged_in() && $first_name ? $first_name : 'تسجيل الدخول';
+$title_name   = is_user_logged_in() && $first_name ? $first_name : __('تسجيل الدخول', 'arqamweb');
 $menu_items   = function_exists('wc_get_account_menu_items') ? wc_get_account_menu_items() : [];
 
 $icons = [

@@ -15,11 +15,11 @@ defined('ABSPATH') || exit;
     </svg>
   </div>
 
-  <h2>سلتك فارغة حالياً</h2>
-  <p>ابدأ بتصفح منتجات بويا ستور وأضف المنتجات المناسبة لاحتياجك.</p>
+  <h2><?php esc_html_e('سلتك فارغة حالياً', 'arqamweb'); ?></h2>
+  <p><?php esc_html_e('ابدأ بتصفح منتجات بويا ستور وأضف المنتجات المناسبة لاحتياجك.', 'arqamweb'); ?></p>
 
   <div class="boya-empty-state__actions">
-    <a href="<?php echo esc_url(home_url('/products')); ?>" class="boya-btn boya-btn--primary">تصفح المنتجات</a>
-    <a href="<?php echo esc_url(home_url('/categories')); ?>" class="boya-btn boya-btn--ghost">عرض الأقسام</a>
+    <a href="<?php echo esc_url(home_url('/products')); ?>" class="boya-btn boya-btn--primary"><?php esc_html_e('تصفح المنتجات', 'arqamweb'); ?></a>
+    <a href="<?php echo esc_url(home_url('/categories')); ?>" class="boya-btn boya-btn--ghost"><?php esc_html_e('عرض الأقسام', 'arqamweb'); ?></a>
   </div>
 </div>

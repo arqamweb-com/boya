@@ -18,11 +18,11 @@ do_action('woocommerce_before_cart');
           <path d="M16 10a4 4 0 0 1-8 0"/>
         </svg>
       </div>
-      <h2>سلتك فارغة حالياً</h2>
-      <p>ابدأ بتصفح منتجات بويا ستور وأضف المنتجات المناسبة لاحتياجك.</p>
+      <h2><?php esc_html_e('سلتك فارغة حالياً', 'arqamweb'); ?></h2>
+      <p><?php esc_html_e('ابدأ بتصفح منتجات بويا ستور وأضف المنتجات المناسبة لاحتياجك.', 'arqamweb'); ?></p>
       <div class="boya-empty-state__actions">
-        <a href="<?php echo esc_url(home_url('/products')); ?>" class="boya-btn boya-btn--primary">تصفح المنتجات</a>
-        <a href="<?php echo esc_url(home_url('/categories')); ?>" class="boya-btn boya-btn--ghost">عرض الأقسام</a>
+        <a href="<?php echo esc_url(home_url('/products')); ?>" class="boya-btn boya-btn--primary"><?php esc_html_e('تصفح المنتجات', 'arqamweb'); ?></a>
+        <a href="<?php echo esc_url(home_url('/categories')); ?>" class="boya-btn boya-btn--ghost"><?php esc_html_e('عرض الأقسام', 'arqamweb'); ?></a>
       </div>
     </div>
   <?php else : ?>
@@ -30,8 +30,15 @@ do_action('woocommerce_before_cart');
     <div class="boya-cart-layout">
       <div class="boya-cart-main">
         <div class="boya-section-heading">
-          <span><?php echo esc_html(WC()->cart->get_cart_contents_count()); ?> منتج في السلة</span>
-          <h2>راجع المنتجات والكميات</h2>
+          <span><?php
+            $boya_cart_count = (int) WC()->cart->get_cart_contents_count();
+            printf(
+              /* translators: %s: number of products in the cart */
+              esc_html(_n('%s منتج في السلة', '%s منتجات في السلة', $boya_cart_count, 'arqamweb')),
+              esc_html(number_format_i18n($boya_cart_count))
+            );
+          ?></span>
+          <h2><?php esc_html_e('راجع المنتجات والكميات', 'arqamweb'); ?></h2>
         </div>
 
         <form class="woocommerce-cart-form boya-cart-form" action="<?php echo esc_url(wc_get_cart_url()); ?>" method="post">
@@ -102,15 +109,15 @@ do_action('woocommerce_before_cart');
 
                 <div class="boya-cart-item__details">
                   <div class="boya-cart-item__cell">
-                    <span>السعر</span>
+                    <span><?php esc_html_e('السعر', 'arqamweb'); ?></span>
                     <strong><?php echo apply_filters('woocommerce_cart_item_price', WC()->cart->get_product_price($_product), $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></strong>
                   </div>
                   <div class="boya-cart-item__cell boya-cart-item__cell--qty">
-                    <span>الكمية</span>
+                    <span><?php esc_html_e('الكمية', 'arqamweb'); ?></span>
                     <?php echo apply_filters('woocommerce_cart_item_quantity', $quantity, $cart_item_key, $cart_item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                   </div>
                   <div class="boya-cart-item__cell">
-                    <span>الإجمالي</span>
+                    <span><?php esc_html_e('الإجمالي', 'arqamweb'); ?></span>
                     <strong><?php echo apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($_product, $cart_item['quantity']), $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></strong>
                   </div>
                 </div>
@@ -140,14 +147,14 @@ do_action('woocommerce_before_cart');
             <?php if (wc_coupons_enabled()) : ?>
               <div class="boya-coupon">
                 <label for="coupon_code" class="screen-reader-text"><?php esc_html_e('Coupon:', 'woocommerce'); ?></label>
-                <input type="text" name="coupon_code" class="boya-coupon-input" id="coupon_code" value="" placeholder="كود الخصم"/>
-                <button type="submit" class="boya-btn boya-btn--secondary" name="apply_coupon" value="<?php esc_attr_e('Apply coupon', 'woocommerce'); ?>">تطبيق الكود</button>
+                <input type="text" name="coupon_code" class="boya-coupon-input" id="coupon_code" value="" placeholder="<?php esc_attr_e('كود الخصم', 'arqamweb'); ?>"/>
+                <button type="submit" class="boya-btn boya-btn--secondary" name="apply_coupon" value="<?php esc_attr_e('Apply coupon', 'woocommerce'); ?>"><?php esc_html_e('تطبيق الكود', 'arqamweb'); ?></button>
                 <?php do_action('woocommerce_cart_coupon'); ?>
               </div>
             <?php endif; ?>
 
             <button type="submit" class="boya-btn boya-btn--outline" name="update_cart" value="<?php esc_attr_e('Update cart', 'woocommerce'); ?>">
-              تحديث السلة
+              <?php esc_html_e('تحديث السلة', 'arqamweb'); ?>
             </button>
             <?php do_action('woocommerce_cart_actions'); ?>
             <?php wp_nonce_field('woocommerce-cart', 'woocommerce-cart-nonce'); ?>
@@ -160,26 +167,33 @@ do_action('woocommerce_before_cart');
 
       <aside class="boya-order-summary">
         <div class="boya-order-summary__head">
-          <span>ملخص الطلب</span>
-          <strong><?php echo esc_html(WC()->cart->get_cart_contents_count()); ?> منتج</strong>
+          <span><?php esc_html_e('ملخص الطلب', 'arqamweb'); ?></span>
+          <strong><?php
+            $boya_cart_count = (int) WC()->cart->get_cart_contents_count();
+            printf(
+              /* translators: %s: number of products in the cart */
+              esc_html(_n('%s منتج', '%s منتجات', $boya_cart_count, 'arqamweb')),
+              esc_html(number_format_i18n($boya_cart_count))
+            );
+          ?></strong>
         </div>
 
         <div class="boya-order-summary__rows">
           <div class="boya-order-summary__row">
-            <span>المجموع الفرعي</span>
+            <span><?php esc_html_e('المجموع الفرعي', 'arqamweb'); ?></span>
             <strong><?php echo WC()->cart->get_cart_subtotal(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></strong>
           </div>
 
           <?php do_action('woocommerce_cart_totals_before_shipping'); ?>
 
           <div class="boya-order-summary__row">
-            <span>الشحن</span>
+            <span><?php esc_html_e('الشحن', 'arqamweb'); ?></span>
             <strong>
               <?php
               if (WC()->cart->needs_shipping()) {
-                echo wp_kses_post(WC()->cart->get_cart_shipping_total() ?: 'يُحسب عند إتمام الشراء');
+                echo wp_kses_post(WC()->cart->get_cart_shipping_total() ?: __('يُحسب عند إتمام الشراء', 'arqamweb'));
               } else {
-                echo esc_html('لا يوجد شحن');
+                echo esc_html__('لا يوجد شحن', 'arqamweb');
               }
               ?>
             </strong>
@@ -190,7 +204,7 @@ do_action('woocommerce_before_cart');
           <?php if (WC()->cart->get_coupons()) : ?>
             <?php foreach (WC()->cart->get_coupons() as $code => $coupon) : ?>
               <div class="boya-order-summary__row boya-order-summary__row--discount">
-                <span>خصم <mark><?php echo esc_html(strtoupper($code)); ?></mark></span>
+                <span><?php esc_html_e('خصم', 'arqamweb'); ?> <mark><?php echo esc_html(strtoupper($code)); ?></mark></span>
                 <strong>-<?php echo wp_kses_post(wc_price(WC()->cart->get_coupon_discount_amount($code, WC()->cart->display_cart_ex_tax))); ?></strong>
               </div>
             <?php endforeach; ?>
@@ -199,7 +213,7 @@ do_action('woocommerce_before_cart');
           <?php do_action('woocommerce_cart_totals_before_order_total'); ?>
 
           <div class="boya-order-summary__row boya-order-summary__row--total">
-            <span>الإجمالي</span>
+            <span><?php esc_html_e('الإجمالي', 'arqamweb'); ?></span>
             <strong><?php echo WC()->cart->get_cart_total(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></strong>
           </div>
 
@@ -210,7 +224,7 @@ do_action('woocommerce_before_cart');
           <?php do_action('woocommerce_proceed_to_checkout'); ?>
         </div>
 
-        <a href="<?php echo esc_url(home_url('/products')); ?>" class="boya-order-summary__continue">متابعة التسوق</a>
+        <a href="<?php echo esc_url(home_url('/products')); ?>" class="boya-order-summary__continue"><?php esc_html_e('متابعة التسوق', 'arqamweb'); ?></a>
       </aside>
     </div>
 

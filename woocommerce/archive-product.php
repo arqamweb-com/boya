@@ -39,25 +39,38 @@ if ($is_brand_archive) {
 
 // Page title
 if ($is_search && $search_query) {
-    $page_label   = 'نتائج البحث';
-    $page_title   = 'بحثك عن <span class="text-gradient-warm">"' . esc_html($search_query) . '"</span>';
-    $page_sub     = 'اعثر بسرعة على المنتجات الأصلية والعلامات التجارية المناسبة لاحتياجك.';
+    $page_label   = __('نتائج البحث', 'arqamweb');
+    $page_title   = sprintf(
+        /* translators: %s: the search term, already wrapped in a highlight span */
+        esc_html__('بحثك عن %s', 'arqamweb'),
+        '<span class="text-gradient-warm">&quot;' . esc_html($search_query) . '&quot;</span>'
+    );
+    $page_sub     = __('اعثر بسرعة على المنتجات الأصلية والعلامات التجارية المناسبة لاحتياجك.', 'arqamweb');
 } elseif ($is_brand_archive) {
-    $page_label   = 'العلامة التجارية';
+    $page_label   = __('العلامة التجارية', 'arqamweb');
     $page_title   = esc_html($queried->name);
-    $page_sub     = $queried->description ?: 'منتجات أصلية من علامة ' . esc_html($queried->name) . '.';
+    $page_sub     = $queried->description ?: sprintf(
+        /* translators: %s: term name */
+        __('منتجات أصلية من علامة %s.', 'arqamweb'),
+        esc_html($queried->name)
+    );
 } elseif (is_product_category() && $queried) {
-    $page_label   = 'تصفح القسم';
+    $page_label   = __('تصفح القسم', 'arqamweb');
     $page_title   = esc_html($queried->name);
-    $page_sub     = $queried->description ?: 'تشكيلة متنوعة من المنتجات في هذا القسم.';
+    $page_sub     = $queried->description ?: __('تشكيلة متنوعة من المنتجات في هذا القسم.', 'arqamweb');
 } elseif (is_product_tag() && $queried) {
-    $page_label   = 'وسم المنتج';
+    $page_label   = __('وسم المنتج', 'arqamweb');
     $page_title   = esc_html($queried->name);
-    $page_sub     = $queried->description ?: 'منتجات موسومة بـ ' . esc_html($queried->name);
+    $page_sub     = $queried->description ?: sprintf(
+        /* translators: %s: term name */
+        __('منتجات موسومة بـ %s', 'arqamweb'),
+        esc_html($queried->name)
+    );
 } else {
-    $page_label   = 'متجرنا';
-    $page_title   = 'تشكيلتنا الكاملة من <span class="text-gradient-warm">المنتجات</span>';
-    $page_sub     = 'منتجات أصلية 100% من أفضل العلامات التجارية، بأسعار تنافسية.';
+    $page_label   = __('متجرنا', 'arqamweb');
+    $page_title   = esc_html__('تشكيلتنا الكاملة من', 'arqamweb')
+        . ' <span class="text-gradient-warm">' . esc_html__('المنتجات', 'arqamweb') . '</span>';
+    $page_sub     = __('منتجات أصلية 100% من أفضل العلامات التجارية، بأسعار تنافسية.', 'arqamweb');
 }
 ?>
 
@@ -81,10 +94,10 @@ if ($is_search && $search_query) {
       <input type="search"
              name="s"
              value="<?php echo esc_attr($search_query); ?>"
-             placeholder="اكتب اسم المنتج أو العلامة التجارية..."
+             placeholder="<?php esc_attr_e('اكتب اسم المنتج أو العلامة التجارية...', 'arqamweb'); ?>"
              class="boya-search-input"
-             aria-label="كلمة البحث" />
-      <button type="submit" class="boya-search-submit">بحث</button>
+             aria-label="<?php esc_attr_e('كلمة البحث', 'arqamweb'); ?>" />
+      <button type="submit" class="boya-search-submit"><?php esc_html_e('بحث', 'arqamweb'); ?></button>
     </form>
     <?php endif; ?>
   </div>
@@ -104,13 +117,29 @@ if ($is_search && $search_query) {
     <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-12">
       <div>
         <div class="text-sm font-bold text-brand-red mb-2 tracking-wider">
-          <?php echo $result_count > 0 ? esc_html(number_format_i18n($result_count)) . ' منتج' : ''; ?>
+          <?php
+          if ($result_count > 0) {
+              printf(
+                  /* translators: %s: number of products found */
+                  esc_html(_n('%s منتج', '%s منتجات', $result_count, 'arqamweb')),
+                  esc_html(number_format_i18n($result_count))
+              );
+          }
+          ?>
         </div>
         <h2 class="text-3xl md:text-4xl font-black">
           <?php if ($result_count > 0): ?>
-            <?php echo $is_search ? 'النتائج <span class="text-gradient-warm">المطابقة</span>' : 'المنتجات <span class="text-gradient-warm">المتاحة</span>'; ?>
+            <?php
+              if ($is_search) {
+                  esc_html_e('النتائج', 'arqamweb');
+                  echo ' <span class="text-gradient-warm">' . esc_html__('المطابقة', 'arqamweb') . '</span>';
+              } else {
+                  esc_html_e('المنتجات', 'arqamweb');
+                  echo ' <span class="text-gradient-warm">' . esc_html__('المتاحة', 'arqamweb') . '</span>';
+              }
+            ?>
           <?php else: ?>
-            لا توجد <span class="text-gradient-warm">نتائج</span>
+            <?php esc_html_e('لا توجد', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('نتائج', 'arqamweb'); ?></span>
           <?php endif; ?>
         </h2>
       </div>
@@ -124,7 +153,7 @@ if ($is_search && $search_query) {
       <div class="flex flex-wrap gap-2">
         <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>"
            class="px-4 py-2 rounded-full text-sm font-bold transition-colors <?php echo !is_product_category() ? 'bg-brand-navy text-white' : 'bg-secondary text-foreground hover:bg-brand-navy hover:text-white'; ?>">
-          الكل
+          <?php esc_html_e('الكل', 'arqamweb'); ?>
         </a>
         <?php foreach ($filter_cats as $fc):
           $active = is_product_category($fc->slug);
@@ -141,11 +170,11 @@ if ($is_search && $search_query) {
       <div class="flex flex-wrap gap-2">
         <a href="<?php echo esc_url(add_query_arg(['s' => $search_query, 'post_type' => 'product'], home_url('/'))); ?>"
            class="px-4 py-2 rounded-full text-sm font-bold bg-brand-navy text-white">
-          المنتجات
+          <?php esc_html_e('المنتجات', 'arqamweb'); ?>
         </a>
         <a href="<?php echo esc_url(add_query_arg('s', $search_query, home_url('/'))); ?>"
            class="px-4 py-2 rounded-full text-sm font-bold bg-secondary text-foreground hover:bg-brand-navy hover:text-white transition-colors">
-          كل النتائج
+          <?php esc_html_e('كل النتائج', 'arqamweb'); ?>
         </a>
       </div>
       <?php endif; ?>
@@ -157,10 +186,10 @@ if ($is_search && $search_query) {
 
         <?php if ($brand_cats): ?>
         <div class="boya-filter-field">
-          <label for="boya-filter-cat">القسم</label>
+          <label for="boya-filter-cat"><?php esc_html_e('القسم', 'arqamweb'); ?></label>
           <div class="boya-filter-select">
             <select id="boya-filter-cat" name="pcat" data-boya-filter>
-              <option value="0">كل الأقسام</option>
+              <option value="0"><?php esc_html_e('كل الأقسام', 'arqamweb'); ?></option>
               <?php foreach ($brand_cats as $fc): ?>
               <option value="<?php echo esc_attr($fc->term_id); ?>" <?php selected($active_cat, $fc->term_id); ?>>
                 <?php echo esc_html($fc->name); ?> (<?php echo esc_html($fc->count); ?>)
@@ -175,10 +204,10 @@ if ($is_search && $search_query) {
 
         <?php if ($brand_tags): ?>
         <div class="boya-filter-field">
-          <label for="boya-filter-tag">الوسم</label>
+          <label for="boya-filter-tag"><?php esc_html_e('الوسم', 'arqamweb'); ?></label>
           <div class="boya-filter-select">
             <select id="boya-filter-tag" name="ptag" data-boya-filter>
-              <option value="0">كل الوسوم</option>
+              <option value="0"><?php esc_html_e('كل الوسوم', 'arqamweb'); ?></option>
               <?php foreach ($brand_tags as $ft): ?>
               <option value="<?php echo esc_attr($ft->term_id); ?>" <?php selected($active_tag, $ft->term_id); ?>>
                 <?php echo esc_html($ft->name); ?> (<?php echo esc_html($ft->count); ?>)
@@ -193,10 +222,10 @@ if ($is_search && $search_query) {
 
         <button type="button" class="boya-filter-reset" data-boya-filter-reset
                 <?php echo ($active_cat || $active_tag) ? '' : 'hidden'; ?>>
-          إعادة تعيين
+          <?php esc_html_e('إعادة تعيين', 'arqamweb'); ?>
         </button>
 
-        <noscript><button type="submit" class="boya-filter-submit">تصفية</button></noscript>
+        <noscript><button type="submit" class="boya-filter-submit"><?php esc_html_e('تصفية', 'arqamweb'); ?></button></noscript>
       </form>
       <?php endif; ?>
     </div>
@@ -253,15 +282,15 @@ if ($is_search && $search_query) {
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
         </div>
         <?php if ($is_search): ?>
-        <h3 class="text-2xl md:text-3xl font-black mb-3">لا توجد منتجات تطابق بحثك</h3>
-        <p class="text-muted-foreground leading-relaxed mb-8">جرّب كلمة بحث مختلفة أو تصفح الأقسام.</p>
+        <h3 class="text-2xl md:text-3xl font-black mb-3"><?php esc_html_e('لا توجد منتجات تطابق بحثك', 'arqamweb'); ?></h3>
+        <p class="text-muted-foreground leading-relaxed mb-8"><?php esc_html_e('جرّب كلمة بحث مختلفة أو تصفح الأقسام.', 'arqamweb'); ?></p>
         <?php else: ?>
-        <h3 class="text-2xl md:text-3xl font-black mb-3">لا توجد منتجات حالياً</h3>
-        <p class="text-muted-foreground leading-relaxed mb-8">سيتم إضافة منتجات قريباً.</p>
+        <h3 class="text-2xl md:text-3xl font-black mb-3"><?php esc_html_e('لا توجد منتجات حالياً', 'arqamweb'); ?></h3>
+        <p class="text-muted-foreground leading-relaxed mb-8"><?php esc_html_e('سيتم إضافة منتجات قريباً.', 'arqamweb'); ?></p>
         <?php endif; ?>
         <div class="flex flex-wrap justify-center gap-2">
-          <a href="<?php echo esc_url(home_url('/products')); ?>" class="px-5 py-3 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">كل المنتجات</a>
-          <a href="<?php echo esc_url(home_url('/categories')); ?>" class="px-5 py-3 rounded-full bg-secondary text-foreground font-bold hover:bg-brand-navy hover:text-white transition-colors">تصفح الأقسام</a>
+          <a href="<?php echo esc_url(home_url('/products')); ?>" class="px-5 py-3 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors"><?php esc_html_e('كل المنتجات', 'arqamweb'); ?></a>
+          <a href="<?php echo esc_url(home_url('/categories')); ?>" class="px-5 py-3 rounded-full bg-secondary text-foreground font-bold hover:bg-brand-navy hover:text-white transition-colors"><?php esc_html_e('تصفح الأقسام', 'arqamweb'); ?></a>
         </div>
       </div>
     </div>
@@ -275,10 +304,10 @@ if ($is_search && $search_query) {
     <div class="mt-20">
       <div class="flex items-end justify-between gap-6 mb-10">
         <div>
-          <div class="text-sm font-bold text-brand-red mb-2 tracking-wider">اقتراحات</div>
-          <h3 class="text-3xl md:text-4xl font-black">منتجات <span class="text-gradient-warm">الأكثر طلبًا</span></h3>
+          <div class="text-sm font-bold text-brand-red mb-2 tracking-wider"><?php esc_html_e('اقتراحات', 'arqamweb'); ?></div>
+          <h3 class="text-3xl md:text-4xl font-black"><?php esc_html_e('منتجات', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('الأكثر طلبًا', 'arqamweb'); ?></span></h3>
         </div>
-        <a href="<?php echo esc_url(home_url('/products')); ?>" class="hidden md:inline-flex text-sm font-bold text-brand-navy hover:text-brand-orange transition-colors">عرض الكل</a>
+        <a href="<?php echo esc_url(home_url('/products')); ?>" class="hidden md:inline-flex text-sm font-bold text-brand-navy hover:text-brand-orange transition-colors"><?php esc_html_e('عرض الكل', 'arqamweb'); ?></a>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
         <?php while ($suggested->have_posts()): $suggested->the_post();

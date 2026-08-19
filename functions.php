@@ -110,8 +110,8 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     unset($fields['shipping']['shipping_postcode']);
 
     if (isset($fields['billing']['billing_company'])) {
-        $fields['billing']['billing_company']['label']       = 'اسم المؤسسة/المحل';
-        $fields['billing']['billing_company']['placeholder'] = 'اكتب اسم المؤسسة أو المحل';
+        $fields['billing']['billing_company']['label']       = __('اسم المؤسسة/المحل', 'arqamweb');
+        $fields['billing']['billing_company']['placeholder'] = __('اكتب اسم المؤسسة أو المحل', 'arqamweb');
         $fields['billing']['billing_company']['required']    = true;
         $fields['billing']['billing_company']['priority']    = 35;
         $fields['billing']['billing_company']['class']       = ['form-row-wide'];
@@ -119,8 +119,8 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     } else {
         $fields['billing']['billing_company'] = [
             'type'        => 'text',
-            'label'       => 'اسم المؤسسة/المحل',
-            'placeholder' => 'اكتب اسم المؤسسة أو المحل',
+            'label'       => __('اسم المؤسسة/المحل', 'arqamweb'),
+            'placeholder' => __('اكتب اسم المؤسسة أو المحل', 'arqamweb'),
             'required'    => true,
             'class'       => ['form-row-wide'],
             'clear'       => true,
@@ -129,8 +129,8 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     }
 
     if (isset($fields['billing']['billing_phone'])) {
-        $fields['billing']['billing_phone']['label']       = 'رقم الموبايل';
-        $fields['billing']['billing_phone']['placeholder'] = 'اكتب رقم الموبايل';
+        $fields['billing']['billing_phone']['label']       = __('رقم الموبايل', 'arqamweb');
+        $fields['billing']['billing_phone']['placeholder'] = __('اكتب رقم الموبايل', 'arqamweb');
         $fields['billing']['billing_phone']['required']    = true;
         $fields['billing']['billing_phone']['priority']    = 25;
         $fields['billing']['billing_phone']['class']       = ['form-row-wide'];
@@ -144,8 +144,8 @@ add_filter('woocommerce_form_field_args', function ($args, $key) {
         return $args;
     }
 
-    $args['label']       = 'رقم الموبايل';
-    $args['placeholder'] = 'اكتب رقم الموبايل';
+    $args['label']       = __('رقم الموبايل', 'arqamweb');
+    $args['placeholder'] = __('اكتب رقم الموبايل', 'arqamweb');
     $args['required']    = true;
 
     $args['custom_attributes'] = isset($args['custom_attributes']) && is_array($args['custom_attributes'])
@@ -159,7 +159,7 @@ add_filter('woocommerce_form_field_args', function ($args, $key) {
 
 add_action('woocommerce_after_checkout_validation', function ($data, $errors) {
     if (trim((string) ($data['billing_phone'] ?? '')) === '') {
-        $errors->add('billing_phone_required', 'من فضلك اكتب رقم الموبايل.');
+        $errors->add('billing_phone_required', __('من فضلك اكتب رقم الموبايل.', 'arqamweb'));
     }
 }, 10, 2);
 
@@ -284,7 +284,7 @@ add_filter('woocommerce_form_field_args', function ($args, $key) {
 /* Server-side enforcement: block submission without the store name */
 add_action('woocommerce_after_checkout_validation', function ($data, $errors) {
     if (trim((string) ($data['billing_company'] ?? '')) === '') {
-        $errors->add('billing_company_required', 'من فضلك اكتب اسم المؤسسة أو المحل.');
+        $errors->add('billing_company_required', __('من فضلك اكتب اسم المؤسسة أو المحل.', 'arqamweb'));
     }
 }, 10, 2);
 
@@ -383,6 +383,28 @@ add_action('wp_enqueue_scripts', function () {
     // action + nonce in data attributes.
     wp_localize_script('boya-store-theme', 'boyaAjax', [
         'url' => admin_url('admin-ajax.php'),
+    ]);
+
+    // Every user-facing string used by assets/js/theme.js lives here so it can
+    // be translated like the rest of the theme.
+    wp_localize_script('boya-store-theme', 'boyaI18n', [
+        'heroSlides'     => [
+            __('دهانات سيارات', 'arqamweb'),
+            __('دهانات خشب', 'arqamweb'),
+            __('دهانات إنشائية', 'arqamweb'),
+            __('منتجات صناعية', 'arqamweb'),
+        ],
+        'galleryLabel'   => __('معرض صور المنتج', 'arqamweb'),
+        'close'          => __('إغلاق', 'arqamweb'),
+        'prev'           => __('السابق', 'arqamweb'),
+        'next'           => __('التالي', 'arqamweb'),
+        'contactSuccess' => __('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.', 'arqamweb'),
+        'contactError'   => __('حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.', 'arqamweb'),
+        'loading'        => __('جارٍ التحميل...', 'arqamweb'),
+        'loadMore'       => __('عرض المزيد', 'arqamweb'),
+        /* translators: 1: loaded count, 2: total count, 3: unit word */
+        'countFormat'    => __('عرض %1$s من %2$s %3$s', 'arqamweb'),
+        'defaultUnit'    => __('منتج', 'arqamweb'),
     ]);
 
     // AJAX product filtering (products page + single brand archive).
@@ -542,13 +564,22 @@ function boya_handle_contact() {
         $headers[] = 'Reply-To: ' . $name . ' <' . $email . '>';
     }
 
-    $body = '<p><strong>الاسم:</strong> ' . esc_html($name) . '</p>'
-          . '<p><strong>الجوال:</strong> ' . esc_html($phone) . '</p>'
-          . '<p><strong>البريد:</strong> ' . esc_html($email) . '</p>'
-          . '<p><strong>الموضوع:</strong> ' . esc_html($subject) . '</p>'
-          . '<p><strong>الرسالة:</strong><br>' . nl2br(esc_html($message)) . '</p>';
+    $body = '<p><strong>' . esc_html__('الاسم:', 'arqamweb') . '</strong> ' . esc_html($name) . '</p>'
+          . '<p><strong>' . esc_html__('الجوال:', 'arqamweb') . '</strong> ' . esc_html($phone) . '</p>'
+          . '<p><strong>' . esc_html__('البريد:', 'arqamweb') . '</strong> ' . esc_html($email) . '</p>'
+          . '<p><strong>' . esc_html__('الموضوع:', 'arqamweb') . '</strong> ' . esc_html($subject) . '</p>'
+          . '<p><strong>' . esc_html__('الرسالة:', 'arqamweb') . '</strong><br>' . nl2br(esc_html($message)) . '</p>';
 
-    $sent = wp_mail($to, 'رسالة جديدة من بويا ستور: ' . $subject, $body, $headers);
+    $sent = wp_mail(
+        $to,
+        sprintf(
+            /* translators: %s: the subject submitted in the contact form */
+            __('رسالة جديدة من بويا ستور: %s', 'arqamweb'),
+            $subject
+        ),
+        $body,
+        $headers
+    );
 
     if ($sent) {
         wp_safe_redirect(esc_url(home_url('/contact?contact=success')));
@@ -576,7 +607,13 @@ add_filter('woocommerce_add_to_cart_fragments', function ($fragments) {
 
     // Count label inside cart panel header
     $fragments['.boya-cart-count-label'] =
-        '<span class="boya-cart-count-label mt-1">' . $count . ' منتج في السلة</span>';
+        '<span class="boya-cart-count-label mt-1">'
+        . esc_html(sprintf(
+            /* translators: %s: number of products in the cart */
+            _n('%s منتج في السلة', '%s منتجات في السلة', $count, 'arqamweb'),
+            number_format_i18n($count)
+        ))
+        . '</span>';
 
     // Mini-cart items
     ob_start();
@@ -592,9 +629,9 @@ add_filter('woocommerce_add_to_cart_fragments', function ($fragments) {
         $checkout_url = esc_url(wc_get_checkout_url());
         $fragments['div.boya-cart-footer'] =
             '<div class="boya-cart-footer p-5 space-y-3 shrink-0">' .
-            '<div class="boya-cart-total flex items-center justify-between font-black text-lg"><span>الإجمالي</span><span>' . $subtotal . '</span></div>' .
-            '<a href="' . $cart_url . '" class="boya-cart-secondary-btn">عرض السلة</a>' .
-            '<a href="' . $checkout_url . '" class="boya-cart-primary-btn">إتمام الشراء</a>' .
+            '<div class="boya-cart-total flex items-center justify-between font-black text-lg"><span>' . esc_html__('الإجمالي', 'arqamweb') . '</span><span>' . $subtotal . '</span></div>' .
+            '<a href="' . $cart_url . '" class="boya-cart-secondary-btn">' . esc_html__('عرض السلة', 'arqamweb') . '</a>' .
+            '<a href="' . $checkout_url . '" class="boya-cart-primary-btn">' . esc_html__('إتمام الشراء', 'arqamweb') . '</a>' .
             '</div>';
     }
 
@@ -934,13 +971,17 @@ function boya_render_product_card($product) {
     $badge_color = 'var(--brand-orange)';
     if ($on_sale && $regular > 0) {
         $pct         = round((($regular - $sale) / $regular) * 100);
-        $badge       = 'خصم ' . $pct . '%';
+        $badge       = sprintf(
+            /* translators: %s: discount percentage */
+            __('خصم %s%%', 'arqamweb'),
+            $pct
+        );
         $badge_color = 'var(--brand-red)';
     } elseif ($product->is_featured()) {
-        $badge       = 'مميز';
+        $badge       = __('مميز', 'arqamweb');
         $badge_color = 'var(--brand-orange)';
     } elseif (function_exists('get_post_time') && (time() - (int) get_post_time('U', false, $id)) < (30 * DAY_IN_SECONDS)) {
-        $badge       = 'جديد';
+        $badge       = __('جديد', 'arqamweb');
         $badge_color = 'var(--brand-green)';
     }
 
@@ -987,10 +1028,28 @@ function boya_render_product_card($product) {
         </h3>
         <div class="flex items-baseline gap-2">
           <?php if ($on_sale && $sale > 0): ?>
-            <span class="text-xl font-black text-brand-navy"><?php echo esc_html(number_format($sale, 0)); ?> ج.م</span>
-            <span class="text-sm text-muted-foreground line-through"><?php echo esc_html(number_format($regular, 0)); ?> ج.م</span>
+            <span class="text-xl font-black text-brand-navy"><?php
+              printf(
+                  /* translators: %s: formatted product price */
+                  esc_html__('%s ج.م', 'arqamweb'),
+                  esc_html(number_format($sale, 0))
+              );
+            ?></span>
+            <span class="text-sm text-muted-foreground line-through"><?php
+              printf(
+                  /* translators: %s: formatted product price */
+                  esc_html__('%s ج.م', 'arqamweb'),
+                  esc_html(number_format($regular, 0))
+              );
+            ?></span>
           <?php elseif ($price > 0): ?>
-            <span class="text-xl font-black text-brand-navy"><?php echo esc_html(number_format($price, 0)); ?> ج.م</span>
+            <span class="text-xl font-black text-brand-navy"><?php
+              printf(
+                  /* translators: %s: formatted product price */
+                  esc_html__('%s ج.م', 'arqamweb'),
+                  esc_html(number_format($price, 0))
+              );
+            ?></span>
           <?php else: ?>
             <span class="text-xl font-black text-brand-navy"><?php echo wp_kses_post($product->get_price_html()); ?></span>
           <?php endif; ?>
@@ -1189,7 +1248,7 @@ function boya_render_search_cards($query, $products_only = false) {
         }
 
         $post_type_obj   = get_post_type_object(get_post_type());
-        $post_type_label = $post_type_obj ? $post_type_obj->labels->singular_name : 'نتيجة';
+        $post_type_label = $post_type_obj ? $post_type_obj->labels->singular_name : __('نتيجة', 'arqamweb');
         ?>
         <article class="group bg-card rounded-3xl border border-border/60 shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-elegant)] overflow-hidden transition-all duration-500 hover:-translate-y-1">
           <?php if (has_post_thumbnail()) : ?>
@@ -1208,7 +1267,7 @@ function boya_render_search_cards($query, $products_only = false) {
               <?php echo esc_html(wp_trim_words(get_the_excerpt(), 22)); ?>
             </p>
             <a href="<?php the_permalink(); ?>" class="inline-flex items-center gap-2 text-sm font-bold text-brand-navy hover:text-brand-orange transition-colors">
-              عرض التفاصيل
+              <?php esc_html_e('عرض التفاصيل', 'arqamweb'); ?>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
             </a>
           </div>
@@ -1246,7 +1305,7 @@ function boya_render_load_more($args = []) {
         'total'     => 0,
         'query'     => [],
         'next_url'  => '',
-        'unit'      => 'منتج',
+        'unit'      => __('منتج', 'arqamweb'),
     ]);
 
     $paged     = max(1, (int) $args['paged']);
@@ -1270,13 +1329,14 @@ function boya_render_load_more($args = []) {
          data-q-<?php echo esc_attr($key); ?>="<?php echo esc_attr($value); ?>"
          <?php endforeach; ?>>
       <button type="button" class="boya-load-more-btn" data-boya-load-more-btn>
-        <span class="boya-load-more-label">عرض المزيد</span>
+        <span class="boya-load-more-label"><?php esc_html_e('عرض المزيد', 'arqamweb'); ?></span>
         <span class="boya-load-more-spinner" aria-hidden="true"></span>
       </button>
       <?php if ((int) $args['total'] > 0) : ?>
       <p class="boya-load-more-count" data-boya-load-more-count>
         <?php printf(
-            'عرض %s من %s %s',
+            /* translators: 1: loaded count, 2: total count, 3: unit word */
+            esc_html__('عرض %1$s من %2$s %3$s', 'arqamweb'),
             esc_html(number_format_i18n((int) $args['loaded'])),
             esc_html(number_format_i18n((int) $args['total'])),
             esc_html($args['unit'])
@@ -1285,7 +1345,7 @@ function boya_render_load_more($args = []) {
       <?php endif; ?>
       <?php if ($args['next_url']) : ?>
       <noscript>
-        <a class="boya-load-more-fallback" href="<?php echo esc_url($args['next_url']); ?>">عرض المزيد</a>
+        <a class="boya-load-more-fallback" href="<?php echo esc_url($args['next_url']); ?>"><?php esc_html_e('عرض المزيد', 'arqamweb'); ?></a>
       </noscript>
       <?php endif; ?>
     </div>
@@ -1307,14 +1367,14 @@ function boya_render_products_results($cat = 0, $tag = 0, $paged = 1, $brand = 0
         ?>
         <div class="text-center py-16 text-muted-foreground">
           <?php if ($cat > 0 || $tag > 0): ?>
-          <p class="font-bold mb-2">لا توجد منتجات مطابقة لاختيارك.</p>
-          <p class="text-sm">جرّب قسماً أو وسماً مختلفاً.</p>
+          <p class="font-bold mb-2"><?php esc_html_e('لا توجد منتجات مطابقة لاختيارك.', 'arqamweb'); ?></p>
+          <p class="text-sm"><?php esc_html_e('جرّب قسماً أو وسماً مختلفاً.', 'arqamweb'); ?></p>
           <?php else: ?>
-          <p>لا توجد منتجات حتى الآن.</p>
+          <p><?php esc_html_e('لا توجد منتجات حتى الآن.', 'arqamweb'); ?></p>
           <?php if (current_user_can('manage_options')): ?>
           <a href="<?php echo esc_url(admin_url('post-new.php?post_type=product')); ?>"
              class="mt-4 inline-block px-6 py-3 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">
-            إضافة منتج →
+            <?php esc_html_e('إضافة منتج →', 'arqamweb'); ?>
           </a>
           <?php endif; ?>
           <?php endif; ?>
@@ -1606,7 +1666,7 @@ add_filter('woocommerce_form_field_args', function ($args, $key, $value) {
 // Server-side enforcement: block order submission without phone
 add_action('woocommerce_after_checkout_validation', function ($data, $errors) {
     if (empty($data['billing_phone'])) {
-        $errors->add('billing_phone_required', __('يرجى إدخال رقم الموبايل، فهو حقل إجباري.', 'boya-store'));
+        $errors->add('billing_phone_required', __('يرجى إدخال رقم الموبايل، فهو حقل إجباري.', 'arqamweb'));
     }
 }, 10, 2);
 

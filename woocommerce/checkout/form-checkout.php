@@ -23,18 +23,18 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
       enctype="multipart/form-data"
       aria-label="<?php echo esc_attr__('Checkout', 'woocommerce'); ?>">
 
-  <div class="boya-checkout-steps" aria-label="خطوات إتمام الطلب">
+  <div class="boya-checkout-steps" aria-label="<?php esc_attr_e('خطوات إتمام الطلب', 'arqamweb'); ?>">
     <div class="boya-checkout-step is-active">
       <span>1</span>
-      <strong>بياناتك</strong>
+      <strong><?php esc_html_e('بياناتك', 'arqamweb'); ?></strong>
     </div>
     <div class="boya-checkout-step">
       <span>2</span>
-      <strong>الشحن</strong>
+      <strong><?php esc_html_e('الشحن', 'arqamweb'); ?></strong>
     </div>
     <div class="boya-checkout-step">
       <span>3</span>
-      <strong>الدفع</strong>
+      <strong><?php esc_html_e('الدفع', 'arqamweb'); ?></strong>
     </div>
   </div>
 
@@ -57,8 +57,8 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
                 </svg>
               </span>
               <span>
-                <small>الخطوة الأولى</small>
-                بيانات الفاتورة والتوصيل
+                <small><?php esc_html_e('الخطوة الأولى', 'arqamweb'); ?></small>
+                <?php esc_html_e('بيانات الفاتورة والتوصيل', 'arqamweb'); ?>
               </span>
             </h3>
             <?php do_action('woocommerce_checkout_billing'); ?>
@@ -75,8 +75,8 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
                 </svg>
               </span>
               <span>
-                <small>الخطوة الثانية</small>
-                عنوان الشحن
+                <small><?php esc_html_e('الخطوة الثانية', 'arqamweb'); ?></small>
+                <?php esc_html_e('عنوان الشحن', 'arqamweb'); ?>
               </span>
             </h3>
             <?php do_action('woocommerce_checkout_shipping'); ?>
@@ -106,8 +106,8 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
             </svg>
           </span>
           <span>
-            <small>الخطوة الثالثة</small>
-            ملخص طلبك والدفع
+            <small><?php esc_html_e('الخطوة الثالثة', 'arqamweb'); ?></small>
+            <?php esc_html_e('ملخص طلبك والدفع', 'arqamweb'); ?>
           </span>
         </h3>
         <?php do_action('woocommerce_checkout_before_order_review'); ?>

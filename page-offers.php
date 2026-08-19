@@ -14,12 +14,12 @@ get_header();
   </div>
   <div class="absolute inset-0 opacity-[0.04]" style="background-image:linear-gradient(white 1px,transparent 1px),linear-gradient(90deg,white 1px,transparent 1px);background-size:60px 60px"></div>
   <div class="container mx-auto px-6 pt-20 pb-28 lg:pt-28 lg:pb-36 relative text-center">
-    <div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow">عروض حصرية</div>
+    <div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow"><?php esc_html_e('عروض حصرية', 'arqamweb'); ?></div>
     <h1 class="text-4xl md:text-6xl font-black leading-tight">
-      أفضل <span class="text-gradient-warm">العروض والخصومات</span>
+      <?php esc_html_e('أفضل', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('العروض والخصومات', 'arqamweb'); ?></span>
     </h1>
     <p class="text-lg text-white/70 max-w-2xl mx-auto mt-6 leading-relaxed">
-      لا تفوّت تشكيلتنا الحصرية من العروض على أبرز منتجاتنا الأكثر طلبًا.
+      <?php esc_html_e('لا تفوّت تشكيلتنا الحصرية من العروض على أبرز منتجاتنا الأكثر طلبًا.', 'arqamweb'); ?>
     </p>
   </div>
   <div class="absolute bottom-0 left-0 right-0">

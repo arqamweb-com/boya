@@ -20,18 +20,18 @@ $is_wc_page = function_exists('is_woocommerce') && ( is_cart() || is_checkout() 
   <div class="container mx-auto px-6 pt-20 pb-28 lg:pt-24 lg:pb-32 relative text-center">
     <?php
     if (is_cart()):
-      echo '<div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow">التسوق</div>';
-      echo '<h1 class="text-4xl md:text-5xl font-black">سلة <span class="text-gradient-warm">التسوق</span></h1>';
+      echo '<div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow">' . esc_html__('التسوق', 'arqamweb') . '</div>';
+      echo '<h1 class="text-4xl md:text-5xl font-black">' . esc_html__('سلة', 'arqamweb') . ' <span class="text-gradient-warm">' . esc_html__('التسوق', 'arqamweb') . '</span></h1>';
     elseif (is_checkout() && !is_order_received_page()):
-      echo '<div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow">الدفع</div>';
-      echo '<h1 class="text-4xl md:text-5xl font-black">إتمام <span class="text-gradient-warm">الشراء</span></h1>';
+      echo '<div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow">' . esc_html__('الدفع', 'arqamweb') . '</div>';
+      echo '<h1 class="text-4xl md:text-5xl font-black">' . esc_html__('إتمام', 'arqamweb') . ' <span class="text-gradient-warm">' . esc_html__('الشراء', 'arqamweb') . '</span></h1>';
     elseif (is_order_received_page()):
-      echo '<div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow">تم الطلب</div>';
-      echo '<h1 class="text-4xl md:text-5xl font-black">شكراً على <span class="text-gradient-warm">طلبك!</span></h1>';
+      echo '<div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow">' . esc_html__('تم الطلب', 'arqamweb') . '</div>';
+      echo '<h1 class="text-4xl md:text-5xl font-black">' . esc_html__('شكراً على', 'arqamweb') . ' <span class="text-gradient-warm">' . esc_html__('طلبك!', 'arqamweb') . '</span></h1>';
     elseif (is_account_page()):
       $name = wp_get_current_user()->first_name ?: wp_get_current_user()->display_name;
-      echo '<div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow">حسابي</div>';
-      echo '<h1 class="text-4xl md:text-5xl font-black">مرحباً <span class="text-gradient-warm">' . esc_html($name) . '</span></h1>';
+      echo '<div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow">' . esc_html__('حسابي', 'arqamweb') . '</div>';
+      echo '<h1 class="text-4xl md:text-5xl font-black">' . esc_html__('مرحباً', 'arqamweb') . ' <span class="text-gradient-warm">' . esc_html($name) . '</span></h1>';
     else:
       the_title('<h1 class="text-4xl md:text-5xl font-black">', '</h1>');
     endif;

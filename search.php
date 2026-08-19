@@ -22,16 +22,16 @@ $all_url           = add_query_arg(['s' => $search_query], home_url('/'));
   <div class="absolute inset-0 opacity-[0.04]" style="background-image:linear-gradient(white 1px,transparent 1px),linear-gradient(90deg,white 1px,transparent 1px);background-size:60px 60px"></div>
 
   <div class="container mx-auto px-6 pt-20 pb-28 lg:pt-28 lg:pb-36 relative text-center">
-    <div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow">نتائج البحث</div>
+    <div class="inline-block text-sm font-bold mb-4 tracking-wider text-brand-yellow"><?php esc_html_e('نتائج البحث', 'arqamweb'); ?></div>
     <h1 class="text-4xl md:text-6xl font-black leading-tight">
       <?php if ($search_query): ?>
-        بحثك عن <span class="text-gradient-warm">"<?php echo esc_html($search_query); ?>"</span>
+        <?php esc_html_e('بحثك عن', 'arqamweb'); ?> <span class="text-gradient-warm">"<?php echo esc_html($search_query); ?>"</span>
       <?php else: ?>
-        ابحث في <span class="text-gradient-warm">منتجات بويا ستور</span>
+        <?php esc_html_e('ابحث في', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('منتجات بويا ستور', 'arqamweb'); ?></span>
       <?php endif; ?>
     </h1>
     <p class="text-lg text-white/70 max-w-2xl mx-auto mt-6 leading-relaxed">
-      اعثر بسرعة على المنتجات الأصلية، العلامات التجارية، والأقسام المناسبة لاحتياجك.
+      <?php esc_html_e('اعثر بسرعة على المنتجات الأصلية، العلامات التجارية، والأقسام المناسبة لاحتياجك.', 'arqamweb'); ?>
     </p>
 
     <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>" class="boya-search-form mt-10 max-w-2xl mx-auto">
@@ -39,11 +39,11 @@ $all_url           = add_query_arg(['s' => $search_query], home_url('/'));
       <input type="search"
              name="s"
              value="<?php echo esc_attr($search_query); ?>"
-             placeholder="اكتب اسم المنتج أو العلامة التجارية..."
+             placeholder="<?php esc_attr_e('اكتب اسم المنتج أو العلامة التجارية...', 'arqamweb'); ?>"
              class="boya-search-input"
-             aria-label="كلمة البحث" />
+             aria-label="<?php esc_attr_e('كلمة البحث', 'arqamweb'); ?>" />
       <button type="submit" class="boya-search-submit">
-        بحث
+        <?php esc_html_e('بحث', 'arqamweb'); ?>
       </button>
     </form>
   </div>
@@ -62,10 +62,28 @@ $all_url           = add_query_arg(['s' => $search_query], home_url('/'));
     <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-12">
       <div>
         <div class="text-sm font-bold text-brand-red mb-2 tracking-wider">
-          <?php echo $result_count > 0 ? esc_html(number_format_i18n($result_count)) . ' نتيجة' : 'ابدأ البحث'; ?>
+          <?php
+          if ($result_count > 0) {
+              printf(
+                  /* translators: %s: number of search results */
+                  esc_html(_n('%s نتيجة', '%s نتائج', $result_count, 'arqamweb')),
+                  esc_html(number_format_i18n($result_count))
+              );
+          } else {
+              esc_html_e('ابدأ البحث', 'arqamweb');
+          }
+          ?>
         </div>
         <h2 class="text-3xl md:text-4xl font-black">
-          <?php echo $result_count > 0 ? 'النتائج <span class="text-gradient-warm">المطابقة</span>' : 'لا توجد <span class="text-gradient-warm">نتائج مطابقة</span>'; ?>
+          <?php
+          if ($result_count > 0) {
+              esc_html_e('النتائج', 'arqamweb');
+              echo ' <span class="text-gradient-warm">' . esc_html__('المطابقة', 'arqamweb') . '</span>';
+          } else {
+              esc_html_e('لا توجد', 'arqamweb');
+              echo ' <span class="text-gradient-warm">' . esc_html__('نتائج مطابقة', 'arqamweb') . '</span>';
+          }
+          ?>
         </h2>
       </div>
 
@@ -73,11 +91,11 @@ $all_url           = add_query_arg(['s' => $search_query], home_url('/'));
       <div class="flex flex-wrap gap-2">
         <a href="<?php echo esc_url($products_url); ?>"
            class="px-4 py-2 rounded-full text-sm font-bold transition-colors <?php echo $is_product_search ? 'bg-brand-navy text-white' : 'bg-secondary text-foreground hover:bg-brand-navy hover:text-white'; ?>">
-          المنتجات
+          <?php esc_html_e('المنتجات', 'arqamweb'); ?>
         </a>
         <a href="<?php echo esc_url($all_url); ?>"
            class="px-4 py-2 rounded-full text-sm font-bold transition-colors <?php echo !$is_product_search ? 'bg-brand-navy text-white' : 'bg-secondary text-foreground hover:bg-brand-navy hover:text-white'; ?>">
-          كل النتائج
+          <?php esc_html_e('كل النتائج', 'arqamweb'); ?>
         </a>
       </div>
       <?php endif; ?>
@@ -102,7 +120,7 @@ $all_url           = add_query_arg(['s' => $search_query], home_url('/'));
         'max_pages' => (int) $wp_query->max_num_pages,
         'loaded'    => min($result_count, $paged * max(1, (int) $wp_query->get('posts_per_page'))),
         'total'     => $result_count,
-        'unit'      => $is_product_search ? 'منتج' : 'نتيجة',
+        'unit'      => $is_product_search ? __('منتج', 'arqamweb') : __('نتيجة', 'arqamweb'),
         'query'     => [
           's'         => $search_query,
           'post_type' => $is_product_search ? 'product' : '',
@@ -119,13 +137,13 @@ $all_url           = add_query_arg(['s' => $search_query], home_url('/'));
           <div class="mx-auto mb-5 h-16 w-16 rounded-2xl bg-brand-orange/10 text-brand-orange flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
           </div>
-          <h3 class="text-2xl md:text-3xl font-black mb-3">جرّب كلمة بحث أخرى</h3>
+          <h3 class="text-2xl md:text-3xl font-black mb-3"><?php esc_html_e('جرّب كلمة بحث أخرى', 'arqamweb'); ?></h3>
           <p class="text-muted-foreground leading-relaxed mb-8">
-            استخدم اسم المنتج، نوع الدهان، أو العلامة التجارية. يمكنك أيضًا تصفح الأقسام للوصول للمنتج المناسب.
+            <?php esc_html_e('استخدم اسم المنتج، نوع الدهان، أو العلامة التجارية. يمكنك أيضًا تصفح الأقسام للوصول للمنتج المناسب.', 'arqamweb'); ?>
           </p>
           <div class="flex flex-wrap justify-center gap-2">
-            <a href="<?php echo esc_url(home_url('/products')); ?>" class="px-5 py-3 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">كل المنتجات</a>
-            <a href="<?php echo esc_url(home_url('/categories')); ?>" class="px-5 py-3 rounded-full bg-secondary text-foreground font-bold hover:bg-brand-navy hover:text-white transition-colors">تصفح الأقسام</a>
+            <a href="<?php echo esc_url(home_url('/products')); ?>" class="px-5 py-3 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors"><?php esc_html_e('كل المنتجات', 'arqamweb'); ?></a>
+            <a href="<?php echo esc_url(home_url('/categories')); ?>" class="px-5 py-3 rounded-full bg-secondary text-foreground font-bold hover:bg-brand-navy hover:text-white transition-colors"><?php esc_html_e('تصفح الأقسام', 'arqamweb'); ?></a>
           </div>
         </div>
       </div>
@@ -137,10 +155,10 @@ $all_url           = add_query_arg(['s' => $search_query], home_url('/'));
       <div class="mt-20">
         <div class="flex items-end justify-between gap-6 mb-10">
           <div>
-            <div class="text-sm font-bold text-brand-red mb-2 tracking-wider">اقتراحات سريعة</div>
-            <h3 class="text-3xl md:text-4xl font-black">منتجات <span class="text-gradient-warm">الأكثر طلبًا</span></h3>
+            <div class="text-sm font-bold text-brand-red mb-2 tracking-wider"><?php esc_html_e('اقتراحات سريعة', 'arqamweb'); ?></div>
+            <h3 class="text-3xl md:text-4xl font-black"><?php esc_html_e('منتجات', 'arqamweb'); ?> <span class="text-gradient-warm"><?php esc_html_e('الأكثر طلبًا', 'arqamweb'); ?></span></h3>
           </div>
-          <a href="<?php echo esc_url(home_url('/products')); ?>" class="hidden md:inline-flex text-sm font-bold text-brand-navy hover:text-brand-orange transition-colors">عرض الكل</a>
+          <a href="<?php echo esc_url(home_url('/products')); ?>" class="hidden md:inline-flex text-sm font-bold text-brand-navy hover:text-brand-orange transition-colors"><?php esc_html_e('عرض الكل', 'arqamweb'); ?></a>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
           <?php while ($suggested_products->have_posts()) : $suggested_products->the_post();

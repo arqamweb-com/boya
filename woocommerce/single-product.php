@@ -28,7 +28,7 @@ while (have_posts()) :
     $price_html = $product->get_price_html();
     $is_on_sale = $product->is_on_sale();
     $is_featured = $product->is_featured();
-    $stock_status = $product->is_in_stock() ? 'متاح للشحن' : 'غير متاح حالياً';
+    $stock_status = $product->is_in_stock() ? __('متاح للشحن', 'arqamweb') : __('غير متاح حالياً', 'arqamweb');
     $stock_class = $product->is_in_stock() ? 'is-in-stock' : 'is-out-stock';
     $product_tags = get_the_terms($product_id, 'product_tag');
 
@@ -38,7 +38,7 @@ while (have_posts()) :
         $first_tag = $product_tags[0];
         $product_type = $first_tag->name;
     } else {
-        $product_type = 'غير محدد';
+        $product_type = __('غير محدد', 'arqamweb');
     }
 
 
@@ -92,10 +92,10 @@ while (have_posts()) :
     <main class="boya-product-page">
         <section class="boya-product-hero">
             <div class="container mx-auto px-6">
-                <nav class="boya-product-breadcrumb" aria-label="مسار المنتج">
-                    <a href="<?php echo esc_url(home_url('/')); ?>">الرئيسية</a>
+                <nav class="boya-product-breadcrumb" aria-label="<?php esc_attr_e('مسار المنتج', 'arqamweb'); ?>">
+                    <a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('الرئيسية', 'arqamweb'); ?></a>
                     <span>/</span>
-                    <a href="<?php echo esc_url(home_url('/products')); ?>">المنتجات</a>
+                    <a href="<?php echo esc_url(home_url('/products')); ?>"><?php esc_html_e('المنتجات', 'arqamweb'); ?></a>
                     <?php if ($primary_cat) : ?>
                         <span>/</span>
                         <a href="<?php echo esc_url(get_term_link($primary_cat)); ?>"><?php echo esc_html($primary_cat->name); ?></a>
@@ -123,24 +123,34 @@ while (have_posts()) :
                             <div class="boya-product-gallery__badges">
                                 <?php if ($is_on_sale) : ?>
                                     <span class="boya-product-badge boya-product-badge--sale">
-                  <?php echo $discount_pct > 0 ? esc_html('خصم ' . $discount_pct . '%') : esc_html('عرض خاص'); ?>
+                  <?php echo $discount_pct > 0 ? sprintf(
+                      /* translators: %s: discount percentage */
+                      esc_html__('خصم %s%%', 'arqamweb'),
+                      esc_html($discount_pct)
+                  ) : esc_html(__('عرض خاص', 'arqamweb')); ?>
                 </span>
                                 <?php endif; ?>
                                 <?php if ($is_featured) : ?>
-                                    <span class="boya-product-badge boya-product-badge--featured">منتج مميز</span>
+                                    <span class="boya-product-badge boya-product-badge--featured"><?php esc_html_e('منتج مميز', 'arqamweb'); ?></span>
                                 <?php endif; ?>
                             </div>
                         </div>
 
                         <?php if (count($gallery_items) > 1) : ?>
-                            <div class="boya-product-thumbs" aria-label="صور المنتج">
+                            <div class="boya-product-thumbs" aria-label="<?php esc_attr_e('صور المنتج', 'arqamweb'); ?>">
                                 <?php foreach ($gallery_items as $index => $image) : ?>
                                     <button type="button"
                                             class="boya-product-thumb <?php echo $index === 0 ? 'is-active' : ''; ?>"
                                             data-boya-product-thumb
                                             data-full="<?php echo esc_url($image['full']); ?>"
                                             data-alt="<?php echo esc_attr($image['alt']); ?>"
-                                            aria-label="<?php echo esc_attr($index === 0 ? 'عرض الصورة الرئيسية' : 'عرض صورة ' . ($index + 1)); ?>"
+                                            aria-label="<?php echo $index === 0
+                                                ? esc_attr__('عرض الصورة الرئيسية', 'arqamweb')
+                                                : esc_attr(sprintf(
+                                                    /* translators: %s: gallery image number */
+                                                    __('عرض صورة %s', 'arqamweb'),
+                                                    $index + 1
+                                                  )); ?>"
                                             aria-pressed="<?php echo $index === 0 ? 'true' : 'false'; ?>">
                                         <img src="<?php echo esc_url($image['thumb']); ?>"
                                              alt="<?php echo esc_attr($image['alt']); ?>" loading="lazy"/>
@@ -157,7 +167,7 @@ while (have_posts()) :
                             <?php elseif ($primary_cat) : ?>
                                 <a href="<?php echo esc_url(get_term_link($primary_cat)); ?>"><?php echo esc_html($primary_cat->name); ?></a>
                             <?php else : ?>
-                                <span>بويا ستور</span>
+                                <span><?php esc_html_e('بويا ستور', 'arqamweb'); ?></span>
                             <?php endif; ?>
                         </div>
 
@@ -187,7 +197,13 @@ while (have_posts()) :
                   <?php endfor; ?>
                 </span>
                                     <?php echo esc_html(number_format($rating, 1)); ?>
-                                    · <?php echo esc_html(number_format_i18n($review_count)); ?> تقييم
+                                    · <?php
+                                    printf(
+                                        /* translators: %s: number of reviews */
+                                        esc_html(_n('%s تقييم', '%s تقييمات', $review_count, 'arqamweb')),
+                                        esc_html(number_format_i18n($review_count))
+                                    );
+                                    ?>
                                 </a>
                             <?php endif; ?>
                         </div>
@@ -207,28 +223,33 @@ while (have_posts()) :
                                 <?php woocommerce_template_single_add_to_cart(); ?>
                             </div>
 
-                            <a href="<?php echo esc_url('https://wa.me/201038314148?text=' . rawurlencode('أحتاج تفاصيل عن المنتج: ' . $name . ' - ' . get_permalink($product_id))); ?>"
+                            <a href="<?php echo esc_url('https://wa.me/201038314148?text=' . rawurlencode(sprintf(
+                                /* translators: 1: product name, 2: product URL */
+                                __('أحتاج تفاصيل عن المنتج: %1$s - %2$s', 'arqamweb'),
+                                $name,
+                                get_permalink($product_id)
+                            ))); ?>"
                                class="boya-whatsapp-product"
                                target="_blank"
                                rel="noreferrer">
-                                استفسر عبر واتساب
+                                <?php esc_html_e('استفسر عبر واتساب', 'arqamweb'); ?>
                             </a>
                         </div>
 
                         <dl class="boya-product-facts">
                             <?php if ($product_code) : ?>
                                 <div>
-                                    <dt>كود المنتج</dt>
+                                    <dt><?php esc_html_e('كود المنتج', 'arqamweb'); ?></dt>
                                     <dd><?php echo esc_html($product_code); ?></dd>
                                 </div>
                             <?php endif; ?>
                             <div>
-                                <dt>نوع المنتج</dt>
+                                <dt><?php esc_html_e('نوع المنتج', 'arqamweb'); ?></dt>
                                 <dd><?php echo esc_html($product_type); ?></dd>
                             </div>
                             <?php if ($primary_cat) : ?>
                                 <div>
-                                    <dt>القسم</dt>
+                                    <dt><?php esc_html_e('القسم', 'arqamweb'); ?></dt>
                                     <dd>
                                         <a href="<?php echo esc_url(get_term_link($primary_cat)); ?>"><?php echo esc_html($primary_cat->name); ?></a>
                                     </dd>
@@ -236,7 +257,7 @@ while (have_posts()) :
                             <?php endif; ?>
                             <?php if ($brand_term) : ?>
                                 <div>
-                                    <dt>العلامة التجارية</dt>
+                                    <dt><?php esc_html_e('العلامة التجارية', 'arqamweb'); ?></dt>
                                     <dd>
                                         <a href="<?php echo esc_url(get_term_link($brand_term)); ?>"><?php echo esc_html($brand_term->name); ?></a>
                                     </dd>
@@ -249,23 +270,23 @@ while (have_posts()) :
                 <div class="boya-product-service-strip opacity-0 translate-y-8 blur-[2px]">
                     <div>
                         <span aria-hidden="true">✓</span>
-                        <strong>منتجات أصلية</strong>
-                        <small>توريد من علامات موثوقة</small>
+                        <strong><?php esc_html_e('منتجات أصلية', 'arqamweb'); ?></strong>
+                        <small><?php esc_html_e('توريد من علامات موثوقة', 'arqamweb'); ?></small>
                     </div>
                     <div>
                         <span aria-hidden="true">↺</span>
-                        <strong>استبدال مرن</strong>
-                        <small>حسب سياسة المتجر</small>
+                        <strong><?php esc_html_e('استبدال مرن', 'arqamweb'); ?></strong>
+                        <small><?php esc_html_e('حسب سياسة المتجر', 'arqamweb'); ?></small>
                     </div>
                     <div>
                         <span aria-hidden="true">☎</span>
-                        <strong>دعم فني</strong>
-                        <small>مساعدة في اختيار المنتج</small>
+                        <strong><?php esc_html_e('دعم فني', 'arqamweb'); ?></strong>
+                        <small><?php esc_html_e('مساعدة في اختيار المنتج', 'arqamweb'); ?></small>
                     </div>
                     <div>
                         <span aria-hidden="true">→</span>
-                        <strong>توصيل سريع</strong>
-                        <small>لكافة مناطق الجمهورية</small>
+                        <strong><?php esc_html_e('توصيل سريع', 'arqamweb'); ?></strong>
+                        <small><?php esc_html_e('لكافة مناطق الجمهورية', 'arqamweb'); ?></small>
                     </div>
                 </div>
             </div>
@@ -279,10 +300,9 @@ while (have_posts()) :
                     </div>
 
                     <aside class="boya-product-side-note opacity-0 translate-y-8 blur-[2px]">
-                        <h2>تحتاج مساعدة؟</h2>
-                        <p>لو المنتج مرتبط بدرجة لون أو نظام دهان معين، تواصل معنا قبل الطلب لتأكيد الاختيار
-                            المناسب.</p>
-                        <a href="<?php echo esc_url(home_url('/contact')); ?>">تواصل معنا</a>
+                        <h2><?php esc_html_e('تحتاج مساعدة؟', 'arqamweb'); ?></h2>
+                        <p><?php esc_html_e('لو المنتج مرتبط بدرجة لون أو نظام دهان معين، تواصل معنا قبل الطلب لتأكيد الاختيار المناسب.', 'arqamweb'); ?></p>
+                        <a href="<?php echo esc_url(home_url('/contact')); ?>"><?php esc_html_e('تواصل معنا', 'arqamweb'); ?></a>
                     </aside>
                 </div>
 
@@ -301,8 +321,8 @@ while (have_posts()) :
                         ?>
                         <div class="boya-related-products opacity-0 translate-y-8 blur-[2px]">
                             <div class="boya-section-heading">
-                                <span>اختيارات قريبة</span>
-                                <h2>منتجات مشابهة</h2>
+                                <span><?php esc_html_e('اختيارات قريبة', 'arqamweb'); ?></span>
+                                <h2><?php esc_html_e('منتجات مشابهة', 'arqamweb'); ?></h2>
                             </div>
                             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
                                 <?php
