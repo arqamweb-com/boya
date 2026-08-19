@@ -25,7 +25,7 @@ add_action('after_setup_theme', function () {
 function boya_menu_inline_css() {
     return <<<'CSS'
 .boya-has-dropdown{position:relative}
-.boya-has-dropdown>.boya-dropdown{position:absolute;top:100%;right:0;min-width:220px;background:var(--card);border:1px solid color-mix(in oklab, var(--border) 60%, transparent);border-radius:1rem;box-shadow:var(--shadow-elegant);padding:.5rem;display:flex;flex-direction:column;gap:.125rem;opacity:0;visibility:hidden;transform:translateY(.5rem);transition:opacity .25s,transform .25s,visibility .25s;z-index:60}
+.boya-has-dropdown>.boya-dropdown{position:absolute;top:100%;inset-inline-start:0;min-width:220px;background:var(--card);border:1px solid color-mix(in oklab, var(--border) 60%, transparent);border-radius:1rem;box-shadow:var(--shadow-elegant);padding:.5rem;display:flex;flex-direction:column;gap:.125rem;opacity:0;visibility:hidden;transform:translateY(.5rem);transition:opacity .25s,transform .25s,visibility .25s;z-index:60}
 .boya-has-dropdown:hover>.boya-dropdown{opacity:1;visibility:visible;transform:translateY(0)}
 .boya-dropdown a{display:block;padding:.55rem .85rem;border-radius:.75rem;font-size:.95rem;font-weight:600;color:color-mix(in oklab, var(--foreground) 80%, transparent);transition:color .2s,background-color .2s;text-decoration:none}
 .boya-dropdown a:hover,.boya-dropdown a.is-active{color:var(--brand-orange);background:var(--secondary)}

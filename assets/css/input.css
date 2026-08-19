@@ -3525,13 +3525,21 @@
    with `dir`, so they are flipped by hand for LTR. `.translate-x-full` is the
    hidden state toggled by assets/js/theme.js.
 
+   Both selectors are needed. WordPress only prints `dir` on <html> when
+   is_rtl() is true, so on an English site the document has NO dir attribute
+   at all and an ancestor selector never matches — the panel itself is what
+   reliably carries `dir` (header.php sets it from is_rtl()). The ancestor
+   form is kept for documents that do declare dir="ltr" explicitly.
+
    These rules are deliberately OUTSIDE any @layer: unlayered styles outrank
    every cascade layer, which is what it takes to override Tailwind's own
    `utilities` layer (specificity alone loses to a later layer). */
-[dir="ltr"] .boya-slide-cart {
+[dir="ltr"] .boya-slide-cart,
+.boya-slide-cart[dir="ltr"] {
   box-shadow: 24px 0 70px color-mix(in oklab, var(--brand-navy) 24%, transparent);
 }
 
-[dir="ltr"] .boya-slide-cart.translate-x-full {
+[dir="ltr"] .boya-slide-cart.translate-x-full,
+.boya-slide-cart[dir="ltr"].translate-x-full {
   --tw-translate-x: -100%;
 }
