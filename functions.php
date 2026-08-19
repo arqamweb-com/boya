@@ -1790,3 +1790,17 @@ add_action('wp_footer', function () {
     </script>
     <?php
 }, 99);
+
+/**
+ * Allow Order Moderator role to access WP Admin.
+ */
+add_filter('woocommerce_prevent_admin_access', function ($prevent_access) {
+
+    $user = wp_get_current_user();
+
+    if (in_array('order_moderator', (array)$user->roles, true)) {
+        return false;
+    }
+
+    return $prevent_access;
+});
