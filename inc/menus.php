@@ -92,7 +92,7 @@ class Boya_Mobile_Walker extends Walker_Nav_Menu {
 
     public function start_lvl(&$output, $depth = 0, $args = null) {
         // Collapsed by default; toggled open via the parent's button.
-        $output .= '<div class="boya-mobile-submenu pr-4 hidden">';
+        $output .= '<div class="boya-mobile-submenu ps-4 hidden">';
     }
 
     public function end_lvl(&$output, $depth = 0, $args = null) {
@@ -136,7 +136,7 @@ class Boya_Mobile_Walker extends Walker_Nav_Menu {
 class Boya_Footer_Walker extends Walker_Nav_Menu {
 
     public function start_lvl(&$output, $depth = 0, $args = null) {
-        $output .= '<ul class="space-y-2 pr-3 mt-2">';
+        $output .= '<ul class="space-y-2 ps-3 mt-2">';
     }
 
     public function end_lvl(&$output, $depth = 0, $args = null) {

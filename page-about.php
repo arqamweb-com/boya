@@ -39,7 +39,7 @@ $images = get_template_directory_uri() . '/assets/images';
           <img src="<?php echo esc_url($images . '/about-factory.jpg'); ?>" alt="<?php esc_attr_e('مصنع بويا ستور', 'arqamweb'); ?>" width="800" height="1000" loading="lazy" class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-gradient-to-tr from-brand-navy/40 to-transparent"></div>
         </div>
-        <div class="absolute -bottom-8 -left-8 bg-white rounded-3xl p-6 shadow-[var(--shadow-elegant)] max-w-xs">
+        <div class="absolute -bottom-8 -end-8 bg-white rounded-3xl p-6 shadow-[var(--shadow-elegant)] max-w-xs">
           <div class="grid grid-cols-2 gap-4">
             <div class="p-3 rounded-2xl bg-secondary/60"><div class="text-2xl font-black" style="color:var(--brand-red)">+20</div><div class="text-xs text-muted-foreground mt-0.5"><?php esc_html_e('سنة خبرة', 'arqamweb'); ?></div></div>
             <div class="p-3 rounded-2xl bg-secondary/60"><div class="text-2xl font-black" style="color:var(--brand-orange)">+50K</div><div class="text-xs text-muted-foreground mt-0.5"><?php esc_html_e('عميل', 'arqamweb'); ?></div></div>

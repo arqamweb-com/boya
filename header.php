@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?>>
 <head>
 <meta charset="<?php bloginfo('charset'); ?>" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -85,7 +85,7 @@ $boya_logo_alt = boya_get_site_logo_alt();
       <?php $cart_count = (function_exists('WC') && WC()->cart) ? WC()->cart->get_cart_contents_count() : 0; ?>
       <button id="cart-toggle" class="p-2.5 rounded-full hover:bg-secondary transition-colors relative cursor-pointer" aria-label="<?php esc_attr_e('سلة التسوق', 'arqamweb'); ?>" aria-expanded="false">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>
-        <span class="boya-cart-count absolute -top-1 -left-1 h-5 w-5 rounded-full bg-brand-red text-white text-[10px] font-bold flex items-center justify-center<?php echo $cart_count === 0 ? ' hidden' : ''; ?>"><?php echo esc_html($cart_count); ?></span>
+        <span class="boya-cart-count absolute -top-1 -end-1 h-5 w-5 rounded-full bg-brand-red text-white text-[10px] font-bold flex items-center justify-center<?php echo $cart_count === 0 ? ' hidden' : ''; ?>"><?php echo esc_html($cart_count); ?></span>
       </button>
 
       <!-- Mobile menu button -->
@@ -122,7 +122,7 @@ $boya_logo_alt = boya_get_site_logo_alt();
      aria-hidden="true" role="dialog" aria-label="<?php esc_attr_e('بحث', 'arqamweb'); ?>">
 
   <button id="close-search"
-          class="absolute top-6 left-6 h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+          class="absolute top-6 end-6 h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
           aria-label="<?php esc_attr_e('إغلاق البحث', 'arqamweb'); ?>">
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
   </button>
@@ -136,7 +136,7 @@ $boya_logo_alt = boya_get_site_logo_alt();
              value="<?php echo get_search_query(); ?>"
              class="w-full px-6 py-5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/40 text-lg focus:outline-none focus:border-brand-orange transition-colors" />
       <button type="submit"
-              class="absolute left-4 top-1/2 -translate-y-1/2 h-10 w-10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+              class="absolute end-4 top-1/2 -translate-y-1/2 h-10 w-10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
               aria-label="<?php esc_attr_e('بحث', 'arqamweb'); ?>">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
       </button>
@@ -154,9 +154,10 @@ $boya_logo_alt = boya_get_site_logo_alt();
 </div>
 
 <div id="slide-cart"
-     class="boya-slide-cart fixed top-0 right-0 bottom-0 z-[9998] w-full max-w-sm flex flex-col
+     class="boya-slide-cart fixed top-0 start-0 bottom-0 z-[9998] w-full max-w-sm flex flex-col
             translate-x-full transition-transform duration-300"
-     aria-hidden="true" role="dialog" aria-label="<?php esc_attr_e('سلة التسوق', 'arqamweb'); ?>" dir="rtl">
+     aria-hidden="true" role="dialog" aria-label="<?php esc_attr_e('سلة التسوق', 'arqamweb'); ?>"
+     dir="<?php echo is_rtl() ? 'rtl' : 'ltr'; ?>">
 
   <!-- Cart header -->
   <div class="boya-cart-header flex items-center justify-between p-5 shrink-0">

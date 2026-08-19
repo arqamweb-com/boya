@@ -3518,3 +3518,20 @@
     display: none;
   }
 }
+
+/* ── LTR mirroring ────────────────────────────────────────────────────────
+   The slide cart is anchored to the inline-start edge (`start-0`), but
+   `translate` and `box-shadow` are physical properties that do not mirror
+   with `dir`, so they are flipped by hand for LTR. `.translate-x-full` is the
+   hidden state toggled by assets/js/theme.js.
+
+   These rules are deliberately OUTSIDE any @layer: unlayered styles outrank
+   every cascade layer, which is what it takes to override Tailwind's own
+   `utilities` layer (specificity alone loses to a later layer). */
+[dir="ltr"] .boya-slide-cart {
+  box-shadow: 24px 0 70px color-mix(in oklab, var(--brand-navy) 24%, transparent);
+}
+
+[dir="ltr"] .boya-slide-cart.translate-x-full {
+  --tw-translate-x: -100%;
+}

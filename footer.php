@@ -1,6 +1,6 @@
 <!-- WhatsApp FAB -->
 <a href="https://wa.me/201038314148" target="_blank" rel="noreferrer"
-   class="fixed bottom-6 left-6 z-40 h-14 w-14 rounded-full bg-brand-green text-white flex items-center justify-center shadow-[var(--shadow-elegant)] hover:scale-110 transition-transform"
+   class="fixed bottom-6 end-6 z-40 h-14 w-14 rounded-full bg-brand-green text-white flex items-center justify-center shadow-[var(--shadow-elegant)] hover:scale-110 transition-transform"
    aria-label="<?php esc_attr_e('تواصل واتساب', 'arqamweb'); ?>">
   <span class="absolute inset-0 rounded-full bg-brand-green animate-ping opacity-30"></span>
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 relative"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>

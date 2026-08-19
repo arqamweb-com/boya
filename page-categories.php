@@ -87,7 +87,7 @@ get_header();
         <?php endif; ?>
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
         <?php if ($count_txt): ?>
-        <div class="absolute top-4 right-4 px-3 py-1 rounded-full glass text-xs font-bold text-foreground"><?php echo esc_html($count_txt); ?></div>
+        <div class="absolute top-4 start-4 px-3 py-1 rounded-full glass text-xs font-bold text-foreground"><?php echo esc_html($count_txt); ?></div>
         <?php endif; ?>
         <div class="absolute bottom-0 right-0 left-0 p-6 text-white">
           <h3 class="text-2xl font-black mb-1"><?php echo esc_html($cat->name); ?></h3>

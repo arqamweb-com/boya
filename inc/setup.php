@@ -99,7 +99,7 @@ function boya_setup_admin_page() {
     $show_on_front  = get_option('show_on_front');
     $permalink      = get_option('permalink_structure');
 
-    echo '<div class="wrap" dir="rtl">';
+    echo '<div class="wrap" dir="' . (is_rtl() ? 'rtl' : 'ltr') . '">';
     echo '<h1>' . esc_html__('إعدادات ثيم بويا ستور', 'arqamweb') . '</h1>';
 
     if (isset($_POST['boya_run_setup']) && check_admin_referer('boya_setup_nonce')) {

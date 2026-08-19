@@ -161,7 +161,7 @@ $images = get_template_directory_uri() . '/assets/images';
         <div class="absolute inset-0" style="background:linear-gradient(135deg,<?php echo esc_attr($accent); ?>,color-mix(in oklab,<?php echo esc_attr($accent); ?> 50%,var(--brand-navy)))"></div>
         <?php endif; ?>
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
-        <?php if ($cnt_txt): ?><div class="absolute top-4 right-4 px-3 py-1 rounded-full glass text-xs font-bold text-foreground"><?php echo esc_html($cnt_txt); ?></div><?php endif; ?>
+        <?php if ($cnt_txt): ?><div class="absolute top-4 start-4 px-3 py-1 rounded-full glass text-xs font-bold text-foreground"><?php echo esc_html($cnt_txt); ?></div><?php endif; ?>
         <div class="absolute bottom-0 right-0 left-0 p-6 text-white">
           <h3 class="text-2xl font-black mb-1"><?php echo esc_html($hcat->name); ?></h3>
           <?php if ($hcat->description): ?><p class="text-sm text-white/80 mb-4"><?php echo esc_html(wp_trim_words($hcat->description, 6)); ?></p><?php endif; ?>
@@ -307,7 +307,7 @@ $images = get_template_directory_uri() . '/assets/images';
           <img src="<?php echo esc_url($images . '/about-factory.jpg'); ?>" alt="<?php esc_attr_e('مصنع بويا ستور', 'arqamweb'); ?>" width="800" height="1000" loading="lazy" class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-gradient-to-tr from-brand-navy/40 to-transparent"></div>
         </div>
-        <div class="absolute -bottom-8 -left-8 bg-white rounded-3xl p-6 shadow-[var(--shadow-elegant)] max-w-xs">
+        <div class="absolute -bottom-8 -end-8 bg-white rounded-3xl p-6 shadow-[var(--shadow-elegant)] max-w-xs">
           <div class="grid grid-cols-2 gap-4">
             <div class="p-3 rounded-2xl bg-secondary/60"><div class="text-2xl font-black" style="color:var(--brand-red)">+20</div><div class="text-xs text-muted-foreground mt-0.5"><?php esc_html_e('سنة خبرة', 'arqamweb'); ?></div></div>
             <div class="p-3 rounded-2xl bg-secondary/60"><div class="text-2xl font-black" style="color:var(--brand-orange)">+50K</div><div class="text-xs text-muted-foreground mt-0.5"><?php esc_html_e('عميل', 'arqamweb'); ?></div></div>
@@ -381,7 +381,7 @@ $images = get_template_directory_uri() . '/assets/images';
           <div class="blaze-track">
             <?php foreach ($testimonials as $t): ?>
             <div class="group relative p-8 rounded-3xl bg-card border border-border/60 hover:shadow-[var(--shadow-elegant)] transition-shadow duration-500">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute top-6 left-6 h-8 w-8 opacity-10" style="color:<?php echo esc_attr($t['color']); ?>"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute top-6 end-6 h-8 w-8 opacity-10" style="color:<?php echo esc_attr($t['color']); ?>"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
               <div class="flex gap-1 mb-4">
                 <?php for ($i=0;$i<5;$i++): ?><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-brand-yellow text-brand-yellow"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><?php endfor; ?>
               </div>
@@ -436,7 +436,7 @@ $images = get_template_directory_uri() . '/assets/images';
         ];
         foreach ($faqs as $i => $f): ?>
         <div class="rounded-2xl border transition-all duration-300 overflow-hidden border-border bg-card" data-accordion-item>
-          <button data-accordion-trigger class="w-full flex items-center justify-between gap-6 p-6 text-right">
+          <button data-accordion-trigger class="w-full flex items-center justify-between gap-6 p-6 text-start">
             <span class="font-bold text-lg"><?php echo esc_html($f['q']); ?></span>
             <span class="shrink-0 h-9 w-9 rounded-full flex items-center justify-center transition-all duration-300 bg-secondary text-foreground" data-accordion-icon>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>

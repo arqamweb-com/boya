@@ -26,7 +26,7 @@ get_header();
     <section class="space-y-3">
       <h2 class="text-2xl md:text-3xl font-black text-brand-navy"><?php esc_html_e('ثانيًا: شروط الاسترجاع', 'arqamweb'); ?></h2>
       <div class="text-foreground/80 leading-loose space-y-2">
-        <ul class="list-disc pr-6 space-y-2">
+        <ul class="list-disc ps-6 space-y-2">
           <li><?php esc_html_e('أن يكون المنتج غير مستخدم وفي حالته الأصلية.', 'arqamweb'); ?></li>
           <li><?php esc_html_e('أن يكون المنتج داخل التغليف الأصلي مع جميع الملحقات.', 'arqamweb'); ?></li>
           <li><?php esc_html_e('تقديم فاتورة الشراء أو رقم الطلب.', 'arqamweb'); ?></li>
@@ -39,7 +39,7 @@ get_header();
       <h2 class="text-2xl md:text-3xl font-black text-brand-navy"><?php esc_html_e('ثالثًا: شروط الاستبدال', 'arqamweb'); ?></h2>
       <div class="text-foreground/80 leading-loose space-y-2">
         <p><?php esc_html_e('يمكن استبدال المنتج في حالة:', 'arqamweb'); ?></p>
-        <ul class="list-disc pr-6 space-y-2">
+        <ul class="list-disc ps-6 space-y-2">
           <li><?php esc_html_e('وجود عيب صناعي.', 'arqamweb'); ?></li>
           <li><?php esc_html_e('استلام منتج غير مطابق للطلب.', 'arqamweb'); ?></li>
         </ul>
@@ -51,7 +51,7 @@ get_header();
     <section class="space-y-3">
       <h2 class="text-2xl md:text-3xl font-black text-brand-navy"><?php esc_html_e('رابعًا: المنتجات غير القابلة للاسترجاع', 'arqamweb'); ?></h2>
       <div class="text-foreground/80 leading-loose space-y-2">
-        <ul class="list-disc pr-6 space-y-2">
+        <ul class="list-disc ps-6 space-y-2">
           <li><?php esc_html_e('الدهانات التي تم فتحها أو استخدامها.', 'arqamweb'); ?></li>
           <li><?php esc_html_e('المنتجات المخصصة أو التي تم تجهيزها حسب الطلب.', 'arqamweb'); ?></li>
           <li><?php esc_html_e('أي منتج تالف نتيجة سوء الاستخدام أو التخزين.', 'arqamweb'); ?></li>
@@ -62,7 +62,7 @@ get_header();
     <section class="space-y-3">
       <h2 class="text-2xl md:text-3xl font-black text-brand-navy"><?php esc_html_e('خامسًا: استرداد المبالغ', 'arqamweb'); ?></h2>
       <div class="text-foreground/80 leading-loose space-y-2">
-        <ul class="list-disc pr-6 space-y-2">
+        <ul class="list-disc ps-6 space-y-2">
           <li><?php esc_html_e('يتم رد المبلغ خلال 5 إلى 10 أيام عمل بعد استلام وفحص المنتج.', 'arqamweb'); ?></li>
           <li><?php esc_html_e('يتم الاسترداد بنفس وسيلة الدفع الأصلية.', 'arqamweb'); ?></li>
           <li><?php esc_html_e('قد يتم خصم رسوم الشحن (إن وجدت) في حالات الاسترجاع غير الناتج عن خطأ من المتجر.', 'arqamweb'); ?></li>
@@ -73,7 +73,7 @@ get_header();
     <section class="space-y-3">
       <h2 class="text-2xl md:text-3xl font-black text-brand-navy"><?php esc_html_e('سادسًا: إجراءات الاسترجاع', 'arqamweb'); ?></h2>
       <div class="text-foreground/80 leading-loose space-y-2">
-        <ol class="list-decimal pr-6 space-y-2">
+        <ol class="list-decimal ps-6 space-y-2">
           <li>
             <?php
             printf(
@@ -94,7 +94,7 @@ get_header();
     <section class="space-y-3">
       <h2 class="text-2xl md:text-3xl font-black text-brand-navy"><?php esc_html_e('سابعًا: ملاحظات هامة', 'arqamweb'); ?></h2>
       <div class="text-foreground/80 leading-loose space-y-2">
-        <ul class="list-disc pr-6 space-y-2">
+        <ul class="list-disc ps-6 space-y-2">
           <li><?php esc_html_e('يجب التأكد من المنتج عند الاستلام قبل الاستخدام.', 'arqamweb'); ?></li>
           <li><?php esc_html_e('المتجر غير مسؤول عن أي أضرار ناتجة عن سوء التطبيق أو الاستخدام الخاطئ للمنتجات.', 'arqamweb'); ?></li>
         </ul>

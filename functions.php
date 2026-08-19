@@ -602,7 +602,7 @@ add_filter('woocommerce_add_to_cart_fragments', function ($fragments) {
 
     // Header badge
     $fragments['.boya-cart-count'] =
-        '<span class="boya-cart-count absolute -top-1 -left-1 h-5 w-5 rounded-full bg-brand-red text-white text-[10px] font-bold flex items-center justify-center' .
+        '<span class="boya-cart-count absolute -top-1 -end-1 h-5 w-5 rounded-full bg-brand-red text-white text-[10px] font-bold flex items-center justify-center' .
         ($count === 0 ? ' !hidden' : '') . '">' . $count . '</span>';
 
     // Count label inside cart panel header
@@ -998,7 +998,7 @@ function boya_render_product_card($product) {
         <span class="boya-card-code-badge"><?php echo esc_html($code); ?></span>
         <?php endif; ?>
         <?php if ($badge): ?>
-        <span class="absolute top-4 right-4 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-lg" style="background:<?php echo esc_attr($badge_color); ?>"><?php echo esc_html($badge); ?></span>
+        <span class="absolute top-4 start-4 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-lg" style="background:<?php echo esc_attr($badge_color); ?>"><?php echo esc_html($badge); ?></span>
         <?php endif; ?>
 
         <a href="<?php echo $cart_url; ?>"
