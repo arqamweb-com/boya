@@ -36,6 +36,64 @@ CSS;
 }
 
 /* ════════════════════════════════════════════════════════════════
+   LANGUAGE SWITCHER (WPML)
+   ════════════════════════════════════════════════════════════════ */
+
+/**
+ * Return the site's active languages as reported by WPML.
+ *
+ * Uses the `wpml_active_languages` filter rather than the legacy
+ * icl_get_languages() so the theme keeps working — and simply renders no
+ * switcher at all — on installs where WPML is not present (e.g. a local copy).
+ *
+ * @return array Language rows keyed by code, or [] when unavailable.
+ */
+function boya_get_languages() {
+    if (!has_filter('wpml_active_languages')) {
+        return [];
+    }
+
+    $languages = apply_filters('wpml_active_languages', null, ['skip_missing' => 0]);
+
+    return (is_array($languages) && count($languages) > 1) ? $languages : [];
+}
+
+/**
+ * Compact AR | EN language switcher for the header icon row.
+ *
+ * Renders one pill with a segment per language; the active one is filled and
+ * is not a link. Shown at every breakpoint, so it covers mobile too.
+ */
+function boya_render_language_switcher() {
+    $languages = boya_get_languages();
+    if (!$languages) {
+        return;
+    }
+    ?>
+    <div class="flex items-center gap-0.5 rounded-full border border-border/70 bg-secondary/50 p-0.5 text-[11px] font-black leading-none"
+         role="group"
+         aria-label="<?php esc_attr_e('اختيار اللغة', 'arqamweb'); ?>">
+      <?php foreach ($languages as $language) :
+        $code  = isset($language['language_code']) ? $language['language_code'] : '';
+        $label = strtoupper($code);
+        $name  = !empty($language['native_name']) ? $language['native_name'] : $label;
+
+        if (!empty($language['active'])) : ?>
+          <span class="px-2.5 py-1.5 rounded-full bg-brand-navy text-white"
+                aria-current="true"><?php echo esc_html($label); ?></span>
+        <?php else : ?>
+          <a href="<?php echo esc_url($language['url']); ?>"
+             class="px-2.5 py-1.5 rounded-full text-foreground/60 hover:text-brand-orange hover:bg-secondary transition-colors"
+             lang="<?php echo esc_attr($code); ?>"
+             hreflang="<?php echo esc_attr($code); ?>"
+             aria-label="<?php echo esc_attr($name); ?>"><?php echo esc_html($label); ?></a>
+        <?php endif;
+      endforeach; ?>
+    </div>
+    <?php
+}
+
+/* ════════════════════════════════════════════════════════════════
    WALKERS
    ════════════════════════════════════════════════════════════════ */
 

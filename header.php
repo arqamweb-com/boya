@@ -88,6 +88,9 @@ $boya_logo_alt = boya_get_site_logo_alt();
         <span class="boya-cart-count absolute -top-1 -end-1 h-5 w-5 rounded-full bg-brand-red text-white text-[10px] font-bold flex items-center justify-center<?php echo $cart_count === 0 ? ' hidden' : ''; ?>"><?php echo esc_html($cart_count); ?></span>
       </button>
 
+      <!-- Language switcher (WPML) — renders nothing when WPML is absent -->
+      <?php boya_render_language_switcher(); ?>
+
       <!-- Mobile menu button -->
       <button id="mobile-menu-btn" class="lg:hidden p-2.5 rounded-full hover:bg-secondary transition-colors" aria-expanded="false" aria-label="<?php esc_attr_e('القائمة', 'arqamweb'); ?>">
         <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
