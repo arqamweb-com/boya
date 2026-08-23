@@ -53,7 +53,7 @@ $images = get_template_directory_uri() . '/assets/images';
         <div>
           <div class="text-sm font-bold text-brand-purple mb-3 tracking-wider"><?php esc_html_e('من نحن', 'arqamweb'); ?></div>
           <h2 class="text-4xl md:text-5xl font-black leading-tight mb-6">
-            قصة شغف<span class="block text-gradient-warm"><?php esc_html_e('بالألوان والإتقان', 'arqamweb'); ?></span>
+              <?php esc_html_e('قصة شغف', 'arqamweb'); ?><span class="block text-gradient-warm"><?php esc_html_e('بالألوان والإتقان', 'arqamweb'); ?></span>
           </h2>
           <p class="text-muted-foreground leading-relaxed text-lg">
             <?php esc_html_e('منذ تأسيس بويا ستور، التزمنا بتقديم أرقى منتجات الدهانات للعملاء في جمهورية مصر العربية. نعمل مع أكبر العلامات التجارية العالمية لنوفر حلولاً متكاملة للمحترفين والهواة على حدٍ سواء.', 'arqamweb'); ?>

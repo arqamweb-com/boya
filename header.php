@@ -43,12 +43,12 @@ $boya_logo_alt = boya_get_site_logo_alt();
 
 <!-- Main header -->
 <header id="site-header" class="sticky top-0 z-50 transition-all duration-500 bg-white/80 backdrop-blur-sm">
-  <div class="container mx-auto px-6 py-4 flex items-center gap-8">
-    <a href="<?php echo esc_url(home_url('/')); ?>" class="flex items-center gap-3 shrink-0">
+  <div class="container mx-auto px-4 lg:px-6 py-4 flex items-center gap-2 sm:gap-3 lg:gap-8">
+    <a href="<?php echo esc_url(home_url('/')); ?>" class="flex items-center gap-3 min-w-0 lg:shrink-0">
       <img
         src="<?php echo esc_url($boya_logo_url); ?>"
         alt="<?php echo esc_attr($boya_logo_alt); ?>"
-        class="h-12 w-auto"
+        class="h-8 sm:h-9 lg:h-12 w-auto max-w-full object-contain"
         loading="eager"
         decoding="async"
         fetchpriority="high"
@@ -68,22 +68,22 @@ $boya_logo_alt = boya_get_site_logo_alt();
       ?>
     </nav>
 
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-0.5 lg:gap-1 ms-auto shrink-0">
 
       <!-- Search toggle -->
-      <button id="search-toggle" class="p-2.5 rounded-full hover:bg-secondary transition-colors cursor-pointer" aria-label="<?php esc_attr_e('بحث', 'arqamweb'); ?>" aria-expanded="false">
+      <button id="search-toggle" class="p-2 lg:p-2.5 rounded-full hover:bg-secondary transition-colors cursor-pointer" aria-label="<?php esc_attr_e('بحث', 'arqamweb'); ?>" aria-expanded="false">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
       </button>
 
       <!-- My Account -->
       <a href="<?php echo function_exists('wc_get_page_permalink') ? esc_url(wc_get_page_permalink('myaccount')) : esc_url(home_url('/my-account')); ?>"
-         class="p-2.5 rounded-full hover:bg-secondary transition-colors" aria-label="<?php esc_attr_e('حسابي', 'arqamweb'); ?>">
+         class="p-2 lg:p-2.5 rounded-full hover:bg-secondary transition-colors" aria-label="<?php esc_attr_e('حسابي', 'arqamweb'); ?>">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
       </a>
 
       <!-- Cart toggle -->
       <?php $cart_count = (function_exists('WC') && WC()->cart) ? WC()->cart->get_cart_contents_count() : 0; ?>
-      <button id="cart-toggle" class="p-2.5 rounded-full hover:bg-secondary transition-colors relative cursor-pointer" aria-label="<?php esc_attr_e('سلة التسوق', 'arqamweb'); ?>" aria-expanded="false">
+      <button id="cart-toggle" class="p-2 lg:p-2.5 rounded-full hover:bg-secondary transition-colors relative cursor-pointer" aria-label="<?php esc_attr_e('سلة التسوق', 'arqamweb'); ?>" aria-expanded="false">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>
         <span class="boya-cart-count absolute -top-1 -end-1 h-5 w-5 rounded-full bg-brand-red text-white text-[10px] font-bold flex items-center justify-center<?php echo $cart_count === 0 ? ' hidden' : ''; ?>"><?php echo esc_html($cart_count); ?></span>
       </button>
@@ -92,7 +92,7 @@ $boya_logo_alt = boya_get_site_logo_alt();
       <?php boya_render_language_switcher(); ?>
 
       <!-- Mobile menu button -->
-      <button id="mobile-menu-btn" class="lg:hidden p-2.5 rounded-full hover:bg-secondary transition-colors" aria-expanded="false" aria-label="<?php esc_attr_e('القائمة', 'arqamweb'); ?>">
+      <button id="mobile-menu-btn" class="lg:hidden p-2 lg:p-2.5 rounded-full hover:bg-secondary transition-colors" aria-expanded="false" aria-label="<?php esc_attr_e('القائمة', 'arqamweb'); ?>">
         <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
         <svg id="close-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
       </button>

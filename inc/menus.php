@@ -79,11 +79,11 @@ function boya_render_language_switcher() {
         $name  = !empty($language['native_name']) ? $language['native_name'] : $label;
 
         if (!empty($language['active'])) : ?>
-          <span class="px-2.5 py-1.5 rounded-full bg-brand-navy text-white"
+          <span class="px-2 lg:px-2.5 py-1.5 rounded-full bg-brand-navy text-white"
                 aria-current="true"><?php echo esc_html($label); ?></span>
         <?php else : ?>
           <a href="<?php echo esc_url($language['url']); ?>"
-             class="px-2.5 py-1.5 rounded-full text-foreground/60 hover:text-brand-orange hover:bg-secondary transition-colors"
+             class="px-2 lg:px-2.5 py-1.5 rounded-full text-foreground/60 hover:text-brand-orange hover:bg-secondary transition-colors"
              lang="<?php echo esc_attr($code); ?>"
              hreflang="<?php echo esc_attr($code); ?>"
              aria-label="<?php echo esc_attr($name); ?>"><?php echo esc_html($label); ?></a>
