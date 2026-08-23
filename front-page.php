@@ -25,10 +25,10 @@ $images = get_template_directory_uri() . '/assets/images';
 
         <h1 class="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1]">
           <?php esc_html_e('ألوان تصنع', 'arqamweb'); ?>
-          <span class="block mt-2">
+          <span class="boya-hero-accent block mt-2">
             <span class="text-gradient-warm"><?php esc_html_e('فرقاً حقيقياً', 'arqamweb'); ?></span>
           </span>
-          <?php esc_html_e('في عالمك', 'arqamweb'); ?>
+          <span class="block"><?php esc_html_e('في عالمك', 'arqamweb'); ?></span>
         </h1>
 
         <p class="text-lg text-white/70 max-w-xl leading-relaxed">

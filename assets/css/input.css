@@ -3574,3 +3574,28 @@
 .group:hover .boya-arrow:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
   translate: -.25rem 0;
 }
+
+/* ── Hero headline wrapping ───────────────────────────────────────────────
+   The h1 is authored as three stacked lines, with the accent phrase
+   ("فرقاً حقيقياً" / "a Real Difference") forced onto its own line. Arabic fits
+   that shape at every width, but the English string is long enough to wrap
+   again on a phone, which strands "Make" and "a Real" on two near-empty lines.
+
+   Below lg the accent flows inline instead, so the headline breaks as
+   "Colors That / Make a Real / Difference / in Your World". The trailing line
+   keeps its own block wrapper so "in" never rides up onto "Difference".
+
+   Keyed on RTL like the arrows above, because WordPress only ever prints
+   dir="rtl" on <html> and never dir="ltr" — so RTL is the only side that can
+   be selected reliably. */
+@media (max-width: 63.99rem) {
+  .boya-hero-accent {
+    display: inline;
+    margin-top: 0;
+  }
+
+  .boya-hero-accent:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+    display: block;
+    margin-top: .5rem;
+  }
+}
