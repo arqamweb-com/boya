@@ -29,8 +29,8 @@ if (!defined('ABSPATH')) {
                         <?php esc_html_e('واتساب', 'arqamweb'); ?>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="h-4 w-4 group-hover:-translate-x-1 transition-transform">
-                            <path d="m15 18-6-6 6-6"/>
+                             class="h-4 w-4 boya-arrow">
+                            <path d="m9 18 6-6-6-6"/>
                         </svg>
                     </a>
                     <div class="flex flex-wrap items-center gap-2">
@@ -82,10 +82,10 @@ if (!defined('ABSPATH')) {
                         <a href="https://wa.me/201038314148" target="_blank"
                            class="text-sm font-bold inline-flex items-center gap-1 hover:gap-2 transition-all">
                             <?php esc_html_e('تواصل معنا', 'arqamweb'); ?>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                            <svg class="boya-arrow" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                  stroke-linejoin="round">
-                                <path d="m15 18-6-6 6-6"/>
+                                <path d="m9 18 6-6-6-6"/>
                             </svg>
                         </a>
                     </div>
@@ -99,10 +99,10 @@ if (!defined('ABSPATH')) {
                         <a href="<?php echo esc_url(home_url('/contact')); ?>"
                            class="text-sm font-bold inline-flex items-center gap-1 hover:gap-2 transition-all">
                             <?php esc_html_e('تواصل معنا الآن', 'arqamweb'); ?>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                            <svg class="boya-arrow" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                  stroke-linejoin="round">
-                                <path d="m15 18-6-6 6-6"/>
+                                <path d="m9 18 6-6-6-6"/>
                             </svg>
                         </a>
                     </div>

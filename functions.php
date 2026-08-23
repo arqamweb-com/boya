@@ -1268,7 +1268,7 @@ function boya_render_search_cards($query, $products_only = false) {
             </p>
             <a href="<?php the_permalink(); ?>" class="inline-flex items-center gap-2 text-sm font-bold text-brand-navy hover:text-brand-orange transition-colors">
               <?php esc_html_e('عرض التفاصيل', 'arqamweb'); ?>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+              <svg class="boya-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
             </a>
           </div>
         </article>
@@ -1374,7 +1374,7 @@ function boya_render_products_results($cat = 0, $tag = 0, $paged = 1, $brand = 0
           <?php if (current_user_can('manage_options')): ?>
           <a href="<?php echo esc_url(admin_url('post-new.php?post_type=product')); ?>"
              class="mt-4 inline-block px-6 py-3 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">
-            <?php esc_html_e('إضافة منتج →', 'arqamweb'); ?>
+            <?php esc_html_e('إضافة منتج', 'arqamweb'); ?> <span class="boya-arrow" aria-hidden="true">→</span>
           </a>
           <?php endif; ?>
           <?php endif; ?>

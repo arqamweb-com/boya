@@ -86,7 +86,7 @@ get_header();
       <?php if (current_user_can('manage_options') && $brands_tax): ?>
       <a href="<?php echo esc_url(admin_url('edit-tags.php?taxonomy=' . $brands_tax . '&post_type=product')); ?>"
          class="mt-4 inline-block px-6 py-3 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">
-        <?php esc_html_e('إضافة علامات تجارية', 'arqamweb'); ?> →
+        <?php esc_html_e('إضافة علامات تجارية', 'arqamweb'); ?> <span class="boya-arrow" aria-hidden="true">→</span>
       </a>
       <?php endif; ?>
     </div>

@@ -63,7 +63,7 @@ get_header();
               <div class="text-xs text-muted-foreground mb-1"><?php echo esc_html($c['title']); ?></div>
               <div class="font-bold break-words whitespace-pre-line"><?php echo esc_html($c['value']); ?></div>
               <?php if (!empty($c['cta'])): ?>
-              <a href="https://wa.me/201038314148" class="inline-block mt-2 text-xs font-bold" style="color:<?php echo esc_attr($c['color']); ?>"><?php echo esc_html($c['cta']); ?> ←</a>
+              <a href="https://wa.me/201038314148" class="inline-block mt-2 text-xs font-bold" style="color:<?php echo esc_attr($c['color']); ?>"><?php echo esc_html($c['cta']); ?> <span class="boya-arrow" aria-hidden="true">→</span></a>
               <?php endif; ?>
             </div>
           </div>

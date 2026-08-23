@@ -96,7 +96,7 @@ get_header();
           <?php endif; ?>
           <div class="flex items-center gap-2 text-sm font-bold opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500">
             <?php esc_html_e('استكشف القسم', 'arqamweb'); ?>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+            <svg class="boya-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
           </div>
         </div>
       </a>
@@ -109,7 +109,7 @@ get_header();
       <?php if (current_user_can('manage_options')): ?>
       <a href="<?php echo esc_url(admin_url('edit-tags.php?taxonomy=product_cat&post_type=product')); ?>"
          class="mt-4 inline-block px-6 py-3 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">
-        <?php esc_html_e('إضافة أقسام', 'arqamweb'); ?> →
+        <?php esc_html_e('إضافة أقسام', 'arqamweb'); ?> <span class="boya-arrow" aria-hidden="true">→</span>
       </a>
       <?php endif; ?>
     </div>

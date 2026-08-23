@@ -284,7 +284,7 @@ while (have_posts()) :
                         <small><?php esc_html_e('مساعدة في اختيار المنتج', 'arqamweb'); ?></small>
                     </div>
                     <div>
-                        <span aria-hidden="true">→</span>
+                        <span class="boya-arrow" aria-hidden="true">→</span>
                         <strong><?php esc_html_e('توصيل سريع', 'arqamweb'); ?></strong>
                         <small><?php esc_html_e('لكافة مناطق الجمهورية', 'arqamweb'); ?></small>
                     </div>

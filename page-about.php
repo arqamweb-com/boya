@@ -81,7 +81,7 @@ $images = get_template_directory_uri() . '/assets/images';
         </div>
         <div>
           <a href="<?php echo esc_url(home_url('/contact')); ?>" class="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">
-            <?php esc_html_e('تواصل معنا', 'arqamweb'); ?> <span class="inline-block group-hover:-translate-x-1 transition-transform">←</span>
+            <?php esc_html_e('تواصل معنا', 'arqamweb'); ?> <span class="boya-arrow" aria-hidden="true">→</span>
           </a>
         </div>
       </div>

@@ -38,7 +38,7 @@ $images = get_template_directory_uri() . '/assets/images';
         <div class="flex flex-wrap gap-4">
           <a href="<?php echo esc_url(home_url('/products')); ?>" class="group relative overflow-hidden px-8 py-4 rounded-full bg-white text-brand-navy font-bold shadow-[var(--shadow-elegant)] hover:scale-105 transition-transform inline-flex items-center gap-2">
             <?php esc_html_e('تسوق الآن', 'arqamweb'); ?>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 group-hover:-translate-x-1 transition-transform"><path d="m15 18-6-6 6-6" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 boya-arrow"><path d="m9 18 6-6-6-6" /></svg>
           </a>
           <a href="<?php echo esc_url(home_url('/brands')); ?>" class="px-8 py-4 rounded-full border-2 border-white/20 hover:bg-white/10 font-bold transition-colors">
             <?php esc_html_e('استكشف العلامات التجارية', 'arqamweb'); ?>
@@ -167,7 +167,7 @@ $images = get_template_directory_uri() . '/assets/images';
           <?php if ($hcat->description): ?><p class="text-sm text-white/80 mb-4"><?php echo esc_html(wp_trim_words($hcat->description, 6)); ?></p><?php endif; ?>
           <div class="flex items-center gap-2 text-sm font-bold opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500">
             <?php esc_html_e('استكشف القسم', 'arqamweb'); ?>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+            <svg class="boya-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
           </div>
         </div>
       </a>
@@ -179,7 +179,7 @@ $images = get_template_directory_uri() . '/assets/images';
     <div class="flex justify-center mt-12">
       <a href="<?php echo esc_url(home_url('/categories')); ?>" class="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">
         <?php esc_html_e('عرض كل الأقسام', 'arqamweb'); ?>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 group-hover:-translate-x-1 transition-transform"><path d="m15 18-6-6 6-6" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 boya-arrow"><path d="m9 18 6-6-6-6" /></svg>
       </a>
     </div>
   </div>
@@ -250,7 +250,7 @@ $images = get_template_directory_uri() . '/assets/images';
     <div class="flex justify-center mt-14">
       <a href="<?php echo esc_url(home_url('/products')); ?>" class="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">
         <?php esc_html_e('عرض كل المنتجات', 'arqamweb'); ?>
-        <span class="inline-block group-hover:-translate-x-1 transition-transform">←</span>
+        <span class="boya-arrow" aria-hidden="true">→</span>
       </a>
     </div>
   </div>
@@ -350,7 +350,7 @@ $images = get_template_directory_uri() . '/assets/images';
         </div>
         <div>
           <a href="<?php echo esc_url(home_url('/about')); ?>" class="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-brand-navy text-white font-bold hover:bg-brand-orange transition-colors">
-            <?php esc_html_e('عرض المزيد', 'arqamweb'); ?> <span class="inline-block group-hover:-translate-x-1 transition-transform">←</span>
+            <?php esc_html_e('عرض المزيد', 'arqamweb'); ?> <span class="boya-arrow" aria-hidden="true">→</span>
           </a>
         </div>
       </div>
@@ -402,11 +402,11 @@ $images = get_template_directory_uri() . '/assets/images';
 
         <div class="boya-slider-controls">
           <button type="button" class="blaze-prev" aria-label="<?php esc_attr_e('السابق', 'arqamweb'); ?>">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="boya-arrow"><polyline points="15 18 9 12 15 6"/></svg>
           </button>
           <div class="blaze-pagination"></div>
           <button type="button" class="blaze-next" aria-label="<?php esc_attr_e('التالي', 'arqamweb'); ?>">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="boya-arrow"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </div>
       </div>
@@ -488,7 +488,7 @@ $images = get_template_directory_uri() . '/assets/images';
               <div class="text-xs text-muted-foreground mb-1"><?php echo esc_html($c['title']); ?></div>
               <div class="font-bold break-words whitespace-pre-line"><?php echo esc_html($c['value']); ?></div>
               <?php if (!empty($c['cta'])): ?>
-              <a href="https://wa.me/201038314148" class="inline-block mt-2 text-xs font-bold" style="color:<?php echo esc_attr($c['color']); ?>"><?php echo esc_html($c['cta']); ?> ←</a>
+              <a href="https://wa.me/201038314148" class="inline-block mt-2 text-xs font-bold" style="color:<?php echo esc_attr($c['color']); ?>"><?php echo esc_html($c['cta']); ?> <span class="boya-arrow" aria-hidden="true">→</span></a>
               <?php endif; ?>
             </div>
           </div>

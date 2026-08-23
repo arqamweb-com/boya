@@ -3543,3 +3543,34 @@
 .boya-slide-cart[dir="ltr"].translate-x-full {
   --tw-translate-x: -100%;
 }
+
+/* ── Directional arrows ───────────────────────────────────────────────────
+   Inline "forward" arrows: CTA chevrons, slider prev/next, the little glyphs
+   after link text. The markup is authored in the LTR form — pointing right —
+   and mirrored for RTL, because WordPress only ever prints dir="rtl" on
+   <html> (never dir="ltr"), so keying the override on RTL is the only form
+   that resolves correctly in both languages.
+
+   The :where() list is exactly what Tailwind's own rtl: variant compiles to:
+   :dir(rtl) covers browsers that expose computed direction, the two attribute
+   selectors cover the rest, and :where() is forgiving so an unsupported
+   :dir() does not invalidate the whole rule.
+
+   `translate` and `scale` are independent longhands, so the hover nudge is
+   set per direction rather than inherited from the mirror. */
+.boya-arrow {
+  display: inline-block;
+  transition: translate .25s ease;
+}
+
+.group:hover .boya-arrow {
+  translate: .25rem 0;
+}
+
+.boya-arrow:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+  scale: -1 1;
+}
+
+.group:hover .boya-arrow:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+  translate: -.25rem 0;
+}

@@ -204,7 +204,7 @@ class Boya_Footer_Walker extends Walker_Nav_Menu {
     public function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
         $url   = !empty($item->url) ? esc_url($item->url) : '#';
         $label = esc_html($item->title);
-        $output .= '<li><a href="' . $url . '" class="text-white/70 hover:text-brand-orange transition-colors text-sm inline-block rtl:hover:-translate-x-1">' . $label . '</a>';
+        $output .= '<li><a href="' . $url . '" class="text-white/70 hover:text-brand-orange transition-colors text-sm inline-block hover:translate-x-1 rtl:hover:-translate-x-1">' . $label . '</a>';
     }
 
     public function end_el(&$output, $item, $depth = 0, $args = null) {
@@ -274,7 +274,7 @@ function boya_mobile_menu_fallback($args = []) {
 /** Shared footer link renderer. */
 function boya_footer_link_item($url, $label) {
     printf(
-        '<li><a href="%1$s" class="text-white/70 hover:text-brand-orange transition-colors text-sm inline-block rtl:hover:-translate-x-1">%2$s</a></li>',
+        '<li><a href="%1$s" class="text-white/70 hover:text-brand-orange transition-colors text-sm inline-block hover:translate-x-1 rtl:hover:-translate-x-1">%2$s</a></li>',
         esc_url($url),
         esc_html($label)
     );
