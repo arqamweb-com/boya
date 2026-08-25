@@ -16,7 +16,7 @@
     <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
       <div class="lg:col-span-2">
         <a href="<?php echo esc_url(home_url('/')); ?>">
-          <img src="https://www.arqamweb.com/wp-content/uploads/2026/05/BOYA-LOGO-WEB-WHITE.png" alt="<?php esc_attr_e('بويا ستور', 'arqamweb'); ?>" class="h-14 mb-5" />
+          <img src="https://boyastore-eg.com/wp-content/uploads/2026/08/BOYA-LOGO-WEB-WHITE.png" alt="<?php esc_attr_e('بويا ستور', 'arqamweb'); ?>" class="h-14 mb-5" />
         </a>
         <p class="text-white/70 leading-relaxed mb-6 max-w-sm">
           <?php esc_html_e('وجهتك الأولى لأفضل دهانات السيارات، الإنشاءات، الأخشاب والمنتجات الصناعية من أرقى العلامات التجارية العالمية.', 'arqamweb'); ?>

@@ -324,7 +324,7 @@ function boya_get_site_logo_url() {
         }
     }
 
-    return 'https://www.arqamweb.com/wp-content/uploads/2026/05/BOYA-LOGO-WEB.png';
+    return 'https://boyastore-eg.com/wp-content/uploads/2026/08/BOYA-LOGO-WEB.png';
 }
 
 function boya_get_site_logo_alt() {
